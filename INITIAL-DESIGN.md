@@ -1,5 +1,5 @@
 # Janus: Initial Design Document
-This document outlines the technical design for the WikiTranslate Android app (codename: Janus). It is intended for developers implementing the application.
+This document outlines the technical design for the Janus Android app. It is intended for developers implementing the application.
 
 # Architecture Overview
 The project will follow modern Android architecture best practices, utilizing an MVVM (Model-View-ViewModel) pattern with a Repository as the single source of truth.
