@@ -1,6 +1,6 @@
-*Janus* is an open-source Android app that provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia.
-
 [![CI](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml)
+
+**Janus** is an open-source Android app that provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia.
 
 Instead of literal machine translation, it finds the corresponding Wikipedia article in the target language to offer a more accurate and context-aware translation.
 
