@@ -3,16 +3,14 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
-import com.anysoftkeyboard.tools.dependencies.Versions
-
 android {
     namespace = "com.anysoftkeyboard.janus.app"
-    compileSdk = Versions.compileSdk
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.anysoftkeyboard.janus"
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
+        minSdk = 21
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -31,20 +29,15 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
-    }
 }
 
 dependencies {
     implementation(project(":database"))
     implementation(project(":network"))
-    implementation("androidx.core:core-ktx:${Versions.coreKtx}")
-    implementation("androidx.appcompat:appcompat:${Versions.appcompat}")
-    implementation("com.google.android.material:material:${Versions.material}")
-    testImplementation("junit:junit:${Versions.junit}")
-    androidTestImplementation("androidx.test.ext:junit:${Versions.testExtJunit}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espressoCore}")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.com.google.android.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 }

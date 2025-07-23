@@ -4,15 +4,13 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
-import com.anysoftkeyboard.tools.dependencies.Versions
-
 android {
     namespace = "com.anysoftkeyboard.janus.database"
-    compileSdk = Versions.compileSdk
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = Versions.minSdk
-        targetSdk = Versions.targetSdk
+        minSdk = 21
+        targetSdk = 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,23 +28,18 @@ android {
     kotlin {
         jvmToolchain(17)
     }
-    java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(17))
-        }
-    }
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:${Versions.coreKtx}")
-    implementation("androidx.appcompat:appcompat:${Versions.appcompat}")
-    implementation("com.google.android.material:material:${Versions.material}")
-    testImplementation("junit:junit:${Versions.junit}")
-    androidTestImplementation("androidx.test.ext:junit:${Versions.testExtJunit}")
-    androidTestImplementation("androidx.test.espresso:espresso-core:${Versions.espressoCore}")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.com.google.android.material)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
 
     // Room
-    implementation("androidx.room:room-runtime:${Versions.room}")
-    implementation("androidx.room:room-ktx:${Versions.room}")
-    ksp("androidx.room:room-compiler:${Versions.room}")
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 }
