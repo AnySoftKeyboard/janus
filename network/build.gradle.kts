@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.androidx.annotation)
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.kotlin.test.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.androidx.test.espresso.core)
 }
