@@ -6,5 +6,4 @@ import com.anysoftkeyboard.janus.network.Network
 class App(
     private val database: AppDatabase,
     private val network: Network,
-) {
-}
+) {}
