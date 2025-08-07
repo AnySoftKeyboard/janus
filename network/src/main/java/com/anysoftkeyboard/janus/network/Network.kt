@@ -1,4 +1,3 @@
 package com.anysoftkeyboard.janus.network
 
-interface Network {
-}
+interface Network {}
