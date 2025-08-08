@@ -1,7 +1,9 @@
 # Building
 - this project uses Gradle build system for Android related code. It uses Kotlin language.
+- dependencies are declared in the Gradle's toml format at the file @gradle/libs.versions.toml, follow this pattern when adding/modifiying dependencies.
 - Prefer not adding new 3rd party dependencies.
 - Do not add 3rd-party dependencies without approval. If you have a solution that requires a new 3rd party, ask for an approval before implementing this solution.
+- When you find yourself struggling with adding a dependency or implementing a request, please reach out to me for guidance.
 
 # Lint and Format
 - don't try to fix linting or formatting issues, we have auto-fixers for that. This is applicable for *all* code in the codebase.
