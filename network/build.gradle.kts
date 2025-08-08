@@ -11,7 +11,6 @@ android {
     minSdk = 21
     targetSdk = 35
 
-    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
 
@@ -40,6 +39,4 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.kotlin.test.junit)
-  androidTestImplementation(libs.androidx.test.ext.junit)
-  androidTestImplementation(libs.androidx.test.espresso.core)
 }

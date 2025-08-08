@@ -3,6 +3,8 @@ package com.anysoftkeyboard.janus.database
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import app.cash.turbine.test
+import com.anysoftkeyboard.janus.database.dao.TranslationDao
+import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals

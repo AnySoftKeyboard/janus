@@ -3,8 +3,6 @@ package com.anysoftkeyboard.janus.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -14,7 +12,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.anysoftkeyboard.janus.app.ui.BookmarksScreen
+import com.anysoftkeyboard.janus.app.ui.HistoryScreen
+import com.anysoftkeyboard.janus.app.ui.TranslateScreen
 import com.anysoftkeyboard.janus.app.ui.theme.JanusTheme
 
 class MainActivity : ComponentActivity() {
@@ -78,21 +78,6 @@ enum class TabScreen(
   Translate("translate", "Translate", Icons.Default.Translate),
   History("history", "History", Icons.Default.History),
   Bookmarks("bookmarks", "Bookmarks", Icons.Default.Favorite)
-}
-
-@Composable
-fun TranslateScreen() {
-  Surface(modifier = Modifier.fillMaxSize()) { Column { Text("Translate Screen Content") } }
-}
-
-@Composable
-fun HistoryScreen() {
-  Surface(modifier = Modifier.fillMaxSize()) { Column { Text("History Screen Content") } }
-}
-
-@Composable
-fun BookmarksScreen() {
-  Surface(modifier = Modifier.fillMaxSize()) { Column { Text("Bookmarks Screen Content") } }
 }
 
 @Preview(showBackground = true)

@@ -28,6 +28,7 @@ When creating a commit message, follow these guidelines:
   - For Kotlin, the test file name follows the pattern `[original_file_name]Test.java` and should be under the `src/test` folder in the module.
   - prefer creating fakes over mocks or patches. But, if it is simpler to patch or mock, do that.
   - remember that you need to use Robolectric as a test-runner in Android.
+- when a test fails, Gradle will give some output in the console, but you can read the full error message in test-report XML file. This file can be located at `[path/to/the/module]/build/test-results/testDebugUnitTest/TEST-[package.name.TestClassName].xml`. For example, if the test fail in a class named `com.anysoftkeyboard.janus.app.MainActivityTest` in a module `app`, then the test report will be `app/build/test-results/testDebugUnitTest/TEST-com.anysoftkeyboard.janus.app.MainActivityTest.xml`
 
 ## Running Tests
 - To run tests in gradle use `./gradlew :[path]:[to]:[module]:testDebugUnitTest`. For example, to run test under `database/`, call `./gradlew :detebase:testDebugUnitTest`.
