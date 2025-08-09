@@ -1,14 +1,13 @@
 package com.anysoftkeyboard.janus.app.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.viewmodels.BookmarksViewModel
 
 @Composable
-fun BookmarksScreen() {
-  // In a real app, you'd get this from a ViewModel
-  val bookmarks =
-      listOf(
-          UiTranslation("World", "English", "Mundo", "Spanish", "The planet we live on.", true),
-      )
-  TranslationList(translations = bookmarks)
+fun BookmarksScreen(viewModel: BookmarksViewModel) {
+  val bookmarks by viewModel.bookmarks.collectAsState()
+  TranslationList(translations = bookmarks.map { UiTranslation.fromTranslation(it) })
 }

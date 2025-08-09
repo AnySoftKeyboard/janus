@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,13 +28,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 
 @Composable
-fun TranslateScreen() {
+fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
   var sourceLang by remember { mutableStateOf("English") }
   var targetLang by remember { mutableStateOf("Spanish") }
-  val translation by remember { mutableStateOf<UiTranslation?>(null) }
+  val translation by viewModel.translation.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -55,9 +57,9 @@ fun TranslateScreen() {
                   selectedLanguage = targetLang, onLanguageSelected = { targetLang = it })
             }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { /*TODO*/ }) { Text("Translate") }
+        Button(onClick = { viewModel.search(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
-        translation?.let { TranslationCard(it) }
+        translation?.let { TranslationCard(UiTranslation.fromTranslation(it)) }
       }
 }
 
@@ -92,7 +94,7 @@ fun TranslationCard(translation: UiTranslation) {
       Text(text = translation.targetWord, style = MaterialTheme.typography.headlineMedium)
       Text(text = "in ${translation.targetLang}", style = MaterialTheme.typography.bodySmall)
       Spacer(modifier = Modifier.height(8.dp))
-      Text(text = translation.shortDescription, style = MaterialTheme.typography.bodyMedium)
+      Text(text = translation.shortDescription ?: "", style = MaterialTheme.typography.bodyMedium)
       IconButton(onClick = { /* TODO */ }) {
         Icon(imageVector = translation.favoriteIcon, contentDescription = "Favorite")
       }

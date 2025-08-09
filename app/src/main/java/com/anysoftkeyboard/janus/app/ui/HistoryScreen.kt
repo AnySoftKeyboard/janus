@@ -1,15 +1,13 @@
 package com.anysoftkeyboard.janus.app.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.viewmodels.HistoryViewModel
 
 @Composable
-fun HistoryScreen() {
-  // In a real app, you'd get this from a ViewModel
-  val history =
-      listOf(
-          UiTranslation("Hello", "English", "Hola", "Spanish", "A common greeting.", false),
-          UiTranslation("World", "English", "Mundo", "Spanish", "The planet we live on.", true),
-      )
-  TranslationList(translations = history)
+fun HistoryScreen(viewModel: HistoryViewModel) {
+  val history by viewModel.history.collectAsState()
+  TranslationList(translations = history.map { UiTranslation.fromTranslation(it) })
 }

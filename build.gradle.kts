@@ -5,6 +5,7 @@ plugins {
   alias(libs.plugins.kotlin.android) apply false
   alias(libs.plugins.ksp) apply false
   id("com.diffplug.spotless")
+  alias(libs.plugins.hilt) apply false
 }
 
 spotless {

@@ -1,10 +1,10 @@
 package com.anysoftkeyboard.janus.app.viewmodels
 
+import app.cash.turbine.test
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -68,19 +68,21 @@ class BookmarksViewModelTest {
                 targetShortDescription = "desc2_es",
                 targetSummary = "summary2_es",
                 isFavorite = true))
-    fakeRepository.setBookmarks(testTranslations)
-    testDispatcher.scheduler.advanceUntilIdle()
 
-    assertEquals(testTranslations.size, viewModel.bookmarks.value.size)
-    for (i in testTranslations.indices) {
-      assertEquals(testTranslations[i].sourceWord, viewModel.bookmarks.value[i].sourceWord)
-      assertEquals(
-          testTranslations[i].sourceLangCode, viewModel.bookmarks.value[i].sourceLangCode)
-      assertEquals(
-          testTranslations[i].translatedWord, viewModel.bookmarks.value[i].translatedWord)
-      assertEquals(
-          testTranslations[i].targetLangCode, viewModel.bookmarks.value[i].targetLangCode)
-      assertEquals(testTranslations[i].isFavorite, viewModel.bookmarks.value[i].isFavorite)
+    viewModel.bookmarks.test {
+      assertEquals(emptyList<Translation>(), awaitItem())
+
+      fakeRepository.setBookmarks(testTranslations)
+
+      val bookmarks = awaitItem()
+      assertEquals(testTranslations.size, bookmarks.size)
+      for (i in testTranslations.indices) {
+        assertEquals(testTranslations[i].sourceWord, bookmarks[i].sourceWord)
+        assertEquals(testTranslations[i].sourceLangCode, bookmarks[i].sourceLangCode)
+        assertEquals(testTranslations[i].translatedWord, bookmarks[i].translatedWord)
+        assertEquals(testTranslations[i].targetLangCode, bookmarks[i].targetLangCode)
+        assertEquals(testTranslations[i].isFavorite, bookmarks[i].isFavorite)
+      }
     }
   }
 }

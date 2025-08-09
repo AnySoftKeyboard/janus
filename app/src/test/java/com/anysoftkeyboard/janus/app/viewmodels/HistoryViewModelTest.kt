@@ -1,10 +1,10 @@
 package com.anysoftkeyboard.janus.app.viewmodels
 
+import app.cash.turbine.test
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -66,16 +66,21 @@ class HistoryViewModelTest {
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
                 targetSummary = "summary2_es"))
-    fakeRepository.setHistory(testTranslations)
-    testDispatcher.scheduler.advanceUntilIdle()
 
-    assertEquals(testTranslations.size, viewModel.history.value.size)
-    for (i in testTranslations.indices) {
-      assertEquals(testTranslations[i].sourceWord, viewModel.history.value[i].sourceWord)
-      assertEquals(testTranslations[i].sourceLangCode, viewModel.history.value[i].sourceLangCode)
-      assertEquals(testTranslations[i].translatedWord, viewModel.history.value[i].translatedWord)
-      assertEquals(testTranslations[i].targetLangCode, viewModel.history.value[i].targetLangCode)
-      assertEquals(testTranslations[i].isFavorite, viewModel.history.value[i].isFavorite)
+    viewModel.history.test {
+      assertEquals(emptyList<Translation>(), awaitItem())
+
+      fakeRepository.setHistory(testTranslations)
+
+      val history = awaitItem()
+      assertEquals(testTranslations.size, history.size)
+      for (i in testTranslations.indices) {
+        assertEquals(testTranslations[i].sourceWord, history[i].sourceWord)
+        assertEquals(testTranslations[i].sourceLangCode, history[i].sourceLangCode)
+        assertEquals(testTranslations[i].translatedWord, history[i].translatedWord)
+        assertEquals(testTranslations[i].targetLangCode, history[i].targetLangCode)
+        assertEquals(testTranslations[i].isFavorite, history[i].isFavorite)
+      }
     }
   }
 }

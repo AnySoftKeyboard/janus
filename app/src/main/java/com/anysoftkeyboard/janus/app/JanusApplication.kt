@@ -1,5 +1,6 @@
 package com.anysoftkeyboard.janus.app
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 
-class JanusApplication : Application()
+@HiltAndroidApp class JanusApplication : Application()

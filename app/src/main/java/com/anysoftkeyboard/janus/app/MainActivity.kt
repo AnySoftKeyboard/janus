@@ -19,7 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -27,7 +29,9 @@ import com.anysoftkeyboard.janus.app.ui.BookmarksScreen
 import com.anysoftkeyboard.janus.app.ui.HistoryScreen
 import com.anysoftkeyboard.janus.app.ui.TranslateScreen
 import com.anysoftkeyboard.janus.app.ui.theme.JanusTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -43,7 +47,7 @@ fun JanusApp() {
   Scaffold(
       bottomBar = {
         NavigationBar {
-          TabScreen.entries.forEach { screen ->
+          TabScreen.values().forEach { screen ->
             NavigationBarItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
                 label = { Text(screen.title) },
@@ -63,9 +67,9 @@ fun JanusApp() {
             navController,
             startDestination = TabScreen.Translate.route,
             Modifier.padding(innerPadding)) {
-              composable(TabScreen.Translate.route) { TranslateScreen() }
-              composable(TabScreen.History.route) { HistoryScreen() }
-              composable(TabScreen.Bookmarks.route) { BookmarksScreen() }
+              composable(TabScreen.Translate.route) { TranslateScreen(hiltViewModel()) }
+              composable(TabScreen.History.route) { HistoryScreen(hiltViewModel()) }
+              composable(TabScreen.Bookmarks.route) { BookmarksScreen(hiltViewModel()) }
             }
       }
 }
@@ -73,7 +77,7 @@ fun JanusApp() {
 enum class TabScreen(
     val route: String,
     val title: String,
-    val icon: androidx.compose.ui.graphics.vector.ImageVector
+    val icon: ImageVector,
 ) {
   Translate("translate", "Translate", Icons.Default.Translate),
   History("history", "History", Icons.Default.History),

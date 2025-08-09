@@ -25,63 +25,59 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
-    private const val BASE_URL = "https://en.wikipedia.org/w/"
-    private const val CACHE_SIZE = 10 * 1024 * 1024L // 10 MB
+  private const val BASE_URL = "https://en.wikipedia.org/w/"
+  private const val CACHE_SIZE = 10 * 1024 * 1024L // 10 MB
 
-    @Provides
-    @Singleton
-    fun provideTranslationRepository(
-        translationDao: TranslationDao,
-        wikipediaApi: WikipediaApi
-    ): TranslationRepository {
-        return TranslationRepository(translationDao, wikipediaApi)
-    }
+  @Provides
+  @Singleton
+  fun provideTranslationRepository(
+      translationDao: TranslationDao,
+      wikipediaApi: WikipediaApi
+  ): TranslationRepository {
+    return TranslationRepository(translationDao, wikipediaApi)
+  }
 
-    @Provides
-    @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "janus_database"
-        ).build()
-    }
+  @Provides
+  @Singleton
+  fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
+    return Room.databaseBuilder(context, AppDatabase::class.java, "janus_database").build()
+  }
 
-    @Provides
-    @Singleton
-    fun provideTranslationDao(appDatabase: AppDatabase): TranslationDao {
-        return appDatabase.translationDao()
-    }
+  @Provides
+  @Singleton
+  fun provideTranslationDao(appDatabase: AppDatabase): TranslationDao {
+    return appDatabase.translationDao()
+  }
 
-    @Provides
-    @Singleton
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
-    }
+  @Provides
+  @Singleton
+  fun provideMoshi(): Moshi {
+    return Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+  }
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
-        val cache = Cache(File(context.cacheDir, "http-cache"), CACHE_SIZE)
-        return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .cache(cache)
-            .build()
-    }
+  @Provides
+  @Singleton
+  fun provideOkHttpClient(@ApplicationContext context: Context): OkHttpClient {
+    val cache = Cache(File(context.cacheDir, "http-cache"), CACHE_SIZE)
+    return OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .cache(cache)
+        .build()
+  }
 
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(okHttpClient)
-            .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .build()
-    }
+  @Provides
+  @Singleton
+  fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .client(okHttpClient)
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .build()
+  }
 
-    @Provides
-    @Singleton
-    fun provideWikipediaApi(retrofit: Retrofit): WikipediaApi {
-        return retrofit.create(WikipediaApi::class.java)
-    }
+  @Provides
+  @Singleton
+  fun provideWikipediaApi(retrofit: Retrofit): WikipediaApi {
+    return retrofit.create(WikipediaApi::class.java)
+  }
 }
