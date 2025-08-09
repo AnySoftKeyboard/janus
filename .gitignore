@@ -23,3 +23,5 @@ gradle-app.setting
 # android local settings
 local.properties
 
+# Android Studio
+.idea

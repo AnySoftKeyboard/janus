@@ -1,5 +1,5 @@
 [versions]
-android_gradle_plugin = "8.11.1"
+android_gradle_plugin = "8.12.0"
 kotlin_gradle_plugin = "1.9.23"
 ksp_gradle_plugin = "1.9.23-1.0.19"
 coreKtx = "1.9.0"
