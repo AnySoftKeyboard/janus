@@ -10,7 +10,7 @@
 
 # Lint and Format
 - Do not manually fix linting or formatting issues. The project uses an auto-formatter.
-- You can run the auto-formatter with the command *
+- You can run the auto-formatter with the command 
 `./gradlew spotlessApply`. This applies to all code in the codebase.
 
 ---
