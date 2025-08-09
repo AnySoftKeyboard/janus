@@ -1,6 +1,8 @@
 plugins {
-  id("com.android.application")
-  id("org.jetbrains.kotlin.android")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -50,9 +52,19 @@ dependencies {
   implementation(libs.androidx.room.runtime)
   implementation(libs.androidx.room.ktx)
   implementation(libs.retrofit)
+  implementation(libs.retrofit.converter.moshi)
+  implementation(libs.okhttp)
+  implementation(libs.okhttp.logging.interceptor)
+  implementation(libs.moshi)
+  implementation(libs.moshi.kotlin)
+  implementation(libs.hilt.android)
+  implementation(libs.hilt.navigation.compose)
+  kapt(libs.hilt.compiler)
+
   testImplementation(libs.junit)
   testImplementation(libs.robolectric)
   testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.compose.ui.test.manifest)
+  testImplementation(libs.cash.turbine)
 }
