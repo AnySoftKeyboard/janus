@@ -3,6 +3,7 @@
 - dependencies are declared in the Gradle's toml format at the file @gradle/libs.versions.toml, follow this pattern when adding/modifiying dependencies.
 - Prefer not adding new 3rd party dependencies.
 - Do not add 3rd-party dependencies without approval. If you have a solution that requires a new 3rd party, ask for an approval before implementing this solution.
+- When implementing a request first search the codebase to find similar patterns and match them in your implementation. If you do not find good examples in the codebase, perform a web-search for examples.
 - When you find yourself struggling with adding a dependency or implementing a request, please reach out to me for guidance.
 
 # Lint and Format
