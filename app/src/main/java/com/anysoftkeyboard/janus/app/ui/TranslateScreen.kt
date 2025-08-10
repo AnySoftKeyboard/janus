@@ -1,5 +1,6 @@
 package com.anysoftkeyboard.janus.app.ui
 
+import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
@@ -37,6 +38,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.network.SearchResult
+
+private fun setHtmlToText(view: TextView, snippet: String) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    view.text = Html.fromHtml(snippet, Html.FROM_HTML_MODE_COMPACT)
+  } else {
+    @Suppress("DEPRECATION")
+    view.text = Html.fromHtml(snippet)
+  }
+}
 
 @Composable
 fun TranslateScreen(viewModel: TranslateViewModel) {
@@ -92,7 +102,7 @@ fun SearchResultItem(result: SearchResult, onClick: () -> Unit) {
           factory = { context ->
             TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
           },
-          update = { it.text = Html.fromHtml(result.snippet, Html.FROM_HTML_MODE_COMPACT) })
+          update = { setHtmlToText(it, result.snippet) })
     }
   }
 }
@@ -132,9 +142,7 @@ fun TranslationCard(translation: UiTranslation) {
           factory = { context ->
             TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
           },
-          update = {
-            it.text = Html.fromHtml(translation.shortDescription ?: "", Html.FROM_HTML_MODE_COMPACT)
-          })
+          update = { setHtmlToText(it, translation.shortDescription ?: "") })
       IconButton(onClick = { /* TODO */ }) {
         Icon(imageVector = translation.favoriteIcon, contentDescription = "Favorite")
       }
