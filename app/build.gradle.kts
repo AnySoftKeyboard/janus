@@ -3,6 +3,7 @@ plugins {
   id("org.jetbrains.kotlin.android")
   id("kotlin-kapt")
   id("dagger.hilt.android.plugin")
+  alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -31,7 +32,6 @@ android {
   }
   kotlinOptions { jvmTarget = "17" }
   buildFeatures { compose = true }
-  composeOptions { kotlinCompilerExtensionVersion = "1.5.12" }
 
   testOptions { unitTests.isIncludeAndroidResources = true }
 }

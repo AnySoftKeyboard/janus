@@ -6,6 +6,7 @@ plugins {
   alias(libs.plugins.ksp) apply false
   id("com.diffplug.spotless")
   alias(libs.plugins.hilt) apply false
+  alias(libs.plugins.compose.compiler) apply false
 }
 
 spotless {

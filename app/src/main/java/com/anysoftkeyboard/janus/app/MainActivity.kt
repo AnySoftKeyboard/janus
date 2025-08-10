@@ -47,7 +47,7 @@ fun JanusApp() {
   Scaffold(
       bottomBar = {
         NavigationBar {
-          TabScreen.values().forEach { screen ->
+          TabScreen.entries.forEach { screen ->
             NavigationBarItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
                 label = { Text(screen.title) },
