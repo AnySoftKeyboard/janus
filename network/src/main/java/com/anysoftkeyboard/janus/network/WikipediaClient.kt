@@ -20,6 +20,17 @@ class WikipediaClient(context: Context) {
 
   private val okHttpClient =
       OkHttpClient.Builder()
+          .addInterceptor { chain ->
+            val request =
+                chain
+                    .request()
+                    .newBuilder()
+                    .header(
+                        "User-Agent",
+                        "Janus-translations-android/1.0 (ask@evendanan.net) OkHttp/5.x")
+                    .build()
+            chain.proceed(request)
+          }
           .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
           .cache(cache)
           .build()
