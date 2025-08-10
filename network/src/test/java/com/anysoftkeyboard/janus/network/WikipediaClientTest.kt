@@ -7,6 +7,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
@@ -66,10 +67,7 @@ class WikipediaClientTest {
                     "ns": 0,
                     "title": "Monster Summer",
                     "pageid": 71763900,
-                    "size": 10071,
-                    "wordcount": 773,
-                    "snippet": "Monster <span class=\"searchmatch\">Summer</span> is a 2024 American adventure horror film directed by David Henrie, written by Cornelius Uliano and Bryan Schulz, and starring Mason Thames",
-                    "timestamp": "2025-08-09T19:56:14Z"
+                    "snippet": "Monster <span class=\"searchmatch\">Summer</span> is a 2024 American adventure horror film directed by David Henrie, written by Cornelius Uliano and Bryan Schulz, and starring Mason Thames"
                   }
                 ]
               }
@@ -93,5 +91,9 @@ class WikipediaClientTest {
     assertEquals(
         "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
         response.query.search[0].snippet)
+    assertEquals("Monster Summer", response.query.search[1].title)
+    assertNull(response.query.search[1].size)
+    assertNull(response.query.search[1].wordcount)
+    assertNull(response.query.search[1].timestamp)
   }
 }

@@ -34,8 +34,8 @@ data class SearchResult(
     @Json(name = "ns") val ns: Int,
     @Json(name = "title") val title: String,
     @Json(name = "pageid") val pageid: Long,
-    @Json(name = "size") val size: Int,
-    @Json(name = "wordcount") val wordcount: Int,
+    @Json(name = "size") val size: Int?,
+    @Json(name = "wordcount") val wordcount: Int?,
     @Json(name = "snippet") val snippet: String,
-    @Json(name = "timestamp") val timestamp: String
+    @Json(name = "timestamp") val timestamp: String?
 )
