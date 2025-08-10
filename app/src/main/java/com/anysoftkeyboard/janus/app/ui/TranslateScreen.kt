@@ -1,5 +1,8 @@
 package com.anysoftkeyboard.janus.app.ui
 
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 
@@ -35,7 +39,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
   var sourceLang by remember { mutableStateOf("English") }
   var targetLang by remember { mutableStateOf("Spanish") }
-  val translation by viewModel.translation.collectAsState()
+  val translations by viewModel.translations.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -59,7 +63,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { viewModel.search(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
-        translation?.let { TranslationCard(UiTranslation.fromTranslation(it)) }
+        TranslationList(translations.map { UiTranslation.fromTranslation(it) })
       }
 }
 
@@ -94,7 +98,13 @@ fun TranslationCard(translation: UiTranslation) {
       Text(text = translation.targetWord, style = MaterialTheme.typography.headlineMedium)
       Text(text = "in ${translation.targetLang}", style = MaterialTheme.typography.bodySmall)
       Spacer(modifier = Modifier.height(8.dp))
-      Text(text = translation.shortDescription ?: "", style = MaterialTheme.typography.bodyMedium)
+      AndroidView(
+          factory = { context ->
+            TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+          },
+          update = {
+            it.text = Html.fromHtml(translation.shortDescription, Html.FROM_HTML_MODE_COMPACT)
+          })
       IconButton(onClick = { /* TODO */ }) {
         Icon(imageVector = translation.favoriteIcon, contentDescription = "Favorite")
       }

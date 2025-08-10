@@ -16,25 +16,27 @@ open class TranslationRepository(
   open suspend fun search(
       lang: String,
       term: String,
-  ): Translation {
+  ): List<Translation> {
     val local = translationDao.findTranslation(term, lang, lang)
-    if (local != null) return local
+    if (local != null) return listOf(local)
 
     val searchResponse = wikipediaApi.search(searchTerm = "$lang $term")
-    val translation =
-        Translation(
-            sourceWord = term,
-            sourceLangCode = lang,
-            sourceArticleUrl = "https://en.wikipedia.org/wiki/$term",
-            sourceShortDescription = searchResponse.query.search.first().snippet,
-            sourceSummary = "summary",
-            translatedWord = "translated",
-            targetLangCode = "he",
-            targetArticleUrl = "https://he.wikipedia.org/wiki/$term",
-            targetShortDescription = "hebrew desc",
-            targetSummary = "hebrew summary",
-        )
-    translationDao.insertTranslation(translation)
-    return translation
+    val translations =
+        searchResponse.query.search.map { searchResult ->
+          Translation(
+              sourceWord = searchResult.title,
+              sourceLangCode = lang,
+              sourceArticleUrl = "https://en.wikipedia.org/?curid=${searchResult.pageid}",
+              sourceShortDescription = searchResult.snippet,
+              sourceSummary = "summary",
+              translatedWord = "translated",
+              targetLangCode = "he",
+              targetArticleUrl = "https://he.wikipedia.org/wiki/$term",
+              targetShortDescription = "hebrew desc",
+              targetSummary = "hebrew summary",
+          )
+        }
+    translationDao.insertTranslations(translations)
+    return translations
   }
 }

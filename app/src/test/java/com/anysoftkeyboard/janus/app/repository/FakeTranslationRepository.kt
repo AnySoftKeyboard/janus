@@ -15,14 +15,14 @@ constructor(private val translationDao: TranslationDao, private val wikipediaApi
 
   private val _history = MutableStateFlow(emptyList<Translation>())
   private val _bookmarks = MutableStateFlow(emptyList<Translation>())
-  var nextTranslation: Translation? = null
+  var nextTranslations: List<Translation> = emptyList()
 
   override fun getHistory(): Flow<List<Translation>> = _history.asStateFlow()
 
   override fun getBookmarks(): Flow<List<Translation>> = _bookmarks.asStateFlow()
 
-  override suspend fun search(lang: String, term: String): Translation {
-    return nextTranslation!!
+  override suspend fun search(lang: String, term: String): List<Translation> {
+    return nextTranslations
   }
 
   fun setHistory(history: List<Translation>) {

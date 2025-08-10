@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class TranslateViewModel @Inject constructor(private val repository: TranslationRepository) :
     ViewModel() {
-  private val _translation = MutableStateFlow<Translation?>(null)
-  val translation: StateFlow<Translation?> = _translation
+  private val _translations = MutableStateFlow<List<Translation>>(emptyList())
+  val translations: StateFlow<List<Translation>> = _translations
 
   fun search(lang: String, term: String) {
-    viewModelScope.launch { _translation.value = repository.search(lang, term) }
+    viewModelScope.launch { _translations.value = repository.search(lang, term) }
   }
 }
