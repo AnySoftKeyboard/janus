@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app.ui
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
@@ -33,13 +36,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
+import com.anysoftkeyboard.janus.network.SearchResult
 
 @Composable
 fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
-  var sourceLang by remember { mutableStateOf("English") }
-  var targetLang by remember { mutableStateOf("Spanish") }
-  val translations by viewModel.translations.collectAsState()
+  var sourceLang by remember { mutableStateOf("en") }
+  var targetLang by remember { mutableStateOf("he") }
+  val searchResults by viewModel.searchResults.collectAsState()
+  val translation by viewModel.translation.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -61,16 +66,41 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                   selectedLanguage = targetLang, onLanguageSelected = { targetLang = it })
             }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { viewModel.search(sourceLang, text) }) { Text("Translate") }
+        Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
-        TranslationList(translations.map { UiTranslation.fromTranslation(it) })
+
+        if (translation != null) {
+          TranslationCard(UiTranslation.fromTranslation(translation!!))
+        } else if (searchResults.isNotEmpty()) {
+          LazyColumn {
+            items(searchResults) { result ->
+              SearchResultItem(result) {
+                viewModel.fetchTranslation(result.pageid, sourceLang, targetLang)
+              }
+            }
+          }
+        }
       }
+}
+
+@Composable
+fun SearchResultItem(result: SearchResult, onClick: () -> Unit) {
+  Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
+      AndroidView(
+          factory = { context ->
+            TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+          },
+          update = { it.text = Html.fromHtml(result.snippet, Html.FROM_HTML_MODE_COMPACT) })
+    }
+  }
 }
 
 @Composable
 fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> Unit) {
   // In a real app, you'd get this from a ViewModel
-  val languages = listOf("English", "Spanish", "French", "German")
+  val languages = listOf("en", "he", "fr", "de")
   var expanded by remember { mutableStateOf(false) }
 
   Box {
@@ -103,7 +133,7 @@ fun TranslationCard(translation: UiTranslation) {
             TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
           },
           update = {
-            it.text = Html.fromHtml(translation.shortDescription, Html.FROM_HTML_MODE_COMPACT)
+            it.text = Html.fromHtml(translation.shortDescription ?: "", Html.FROM_HTML_MODE_COMPACT)
           })
       IconButton(onClick = { /* TODO */ }) {
         Icon(imageVector = translation.favoriteIcon, contentDescription = "Favorite")

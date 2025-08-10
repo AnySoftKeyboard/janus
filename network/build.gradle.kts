@@ -21,6 +21,7 @@ android {
     }
   }
   kotlin { jvmToolchain(17) }
+  testOptions { unitTests.isIncludeAndroidResources = true }
 }
 
 dependencies {

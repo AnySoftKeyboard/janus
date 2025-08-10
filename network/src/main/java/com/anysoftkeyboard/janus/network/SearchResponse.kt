@@ -5,7 +5,7 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class SearchResponse(
-    @Json(name = "batchcomplete") val batchcomplete: String,
+    @Json(name = "batchcomplete") val batchcomplete: String?,
     @Json(name = "continue") val continueData: ContinueData?,
     @Json(name = "query") val query: Query
 )
@@ -18,8 +18,8 @@ data class ContinueData(
 
 @JsonClass(generateAdapter = true)
 data class Query(
-    @Json(name = "searchinfo") val searchinfo: SearchInfo,
-    @Json(name = "search") val search: List<SearchResult>
+    @Json(name = "searchinfo") val searchinfo: SearchInfo?,
+    @Json(name = "search") val search: List<SearchResult>?
 )
 
 @JsonClass(generateAdapter = true)
@@ -39,3 +39,20 @@ data class SearchResult(
     @Json(name = "snippet") val snippet: String,
     @Json(name = "timestamp") val timestamp: String?
 )
+
+@JsonClass(generateAdapter = true)
+data class LangLinksResponse(@Json(name = "query") val query: LangLinksQuery)
+
+@JsonClass(generateAdapter = true)
+data class LangLinksQuery(@Json(name = "pages") val pages: Map<String, PageLangLinks>)
+
+@JsonClass(generateAdapter = true)
+data class PageLangLinks(
+    @Json(name = "pageid") val pageid: Long,
+    @Json(name = "ns") val ns: Int,
+    @Json(name = "title") val title: String,
+    @Json(name = "langlinks") val langlinks: List<LangLink>?
+)
+
+@JsonClass(generateAdapter = true)
+data class LangLink(@Json(name = "lang") val lang: String, @Json(name = "*") val title: String)

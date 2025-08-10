@@ -2,6 +2,7 @@ package com.anysoftkeyboard.janus.app.repository
 
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.network.SearchResult
 import com.anysoftkeyboard.janus.network.WikipediaApi
 import kotlinx.coroutines.flow.Flow
 
@@ -13,30 +14,41 @@ open class TranslationRepository(
 
   open fun getBookmarks(): Flow<List<Translation>> = translationDao.getBookmarks()
 
-  open suspend fun search(
+  open suspend fun searchArticles(
       lang: String,
       term: String,
-  ): List<Translation> {
-    val local = translationDao.findTranslation(term, lang, lang)
-    if (local != null) return listOf(local)
-
+  ): List<SearchResult> {
     val searchResponse = wikipediaApi.search(searchTerm = "$lang $term")
-    val translations =
-        searchResponse.query.search.map { searchResult ->
-          Translation(
-              sourceWord = searchResult.title,
-              sourceLangCode = lang,
-              sourceArticleUrl = "https://en.wikipedia.org/?curid=${searchResult.pageid}",
-              sourceShortDescription = searchResult.snippet,
-              sourceSummary = "summary",
-              translatedWord = "translated",
-              targetLangCode = "he",
-              targetArticleUrl = "https://he.wikipedia.org/wiki/$term",
-              targetShortDescription = "hebrew desc",
-              targetSummary = "hebrew summary",
-          )
-        }
-    translationDao.insertTranslations(translations)
-    return translations
+    return searchResponse.query.search ?: emptyList()
+  }
+
+  open suspend fun fetchTranslation(
+      pageId: Long,
+      sourceLang: String,
+      targetLang: String
+  ): Translation? {
+    val langLinksResponse = wikipediaApi.getLangLinks(pageId)
+    val page = langLinksResponse.query.pages.values.firstOrNull()
+    if (page == null) return null
+    val langLinks = page.langlinks
+    if (langLinks == null) return null
+
+    val targetLink = langLinks.find { it.lang == targetLang } ?: return null
+
+    val translation =
+        Translation(
+            sourceWord = page.title,
+            sourceLangCode = sourceLang,
+            sourceArticleUrl = "https://en.wikipedia.org/?curid=${page.pageid}",
+            sourceShortDescription = null,
+            sourceSummary = null,
+            translatedWord = targetLink.title,
+            targetLangCode = targetLang,
+            targetArticleUrl = "https://${targetLang}.wikipedia.org/wiki/${targetLink.title}",
+            targetShortDescription = null,
+            targetSummary = null,
+        )
+    translationDao.insertTranslation(translation)
+    return translation
   }
 }

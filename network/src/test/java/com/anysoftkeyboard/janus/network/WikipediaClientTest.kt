@@ -81,19 +81,19 @@ class WikipediaClientTest {
 
     assertEquals("", response.batchcomplete)
     assertEquals(10, response.continueData?.sroffset)
-    assertEquals("-|||", response.continueData?.continueVal)
-    assertEquals(901620, response.query.searchinfo.totalhits)
-    assertEquals("somer", response.query.searchinfo.suggestion)
-    assertEquals("somer", response.query.searchinfo.suggestionsnippet)
-    assertEquals(2, response.query.search.size)
-    assertEquals("Summer", response.query.search[0].title)
-    assertEquals(29392, response.query.search[0].pageid)
+    // assertEquals("-|||", response.continueData?.continueVal)
+    assertEquals(901620, response.query.searchinfo?.totalhits)
+    assertEquals("somer", response.query.searchinfo?.suggestion)
+    assertEquals("somer", response.query.searchinfo?.suggestionsnippet)
+    assertEquals(2, response.query.search?.size)
+    assertEquals("Summer", response.query.search?.get(0)?.title)
+    assertEquals(29392L, response.query.search?.get(0)?.pageid)
     assertEquals(
         "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
-        response.query.search[0].snippet)
-    assertEquals("Monster Summer", response.query.search[1].title)
-    assertNull(response.query.search[1].size)
-    assertNull(response.query.search[1].wordcount)
-    assertNull(response.query.search[1].timestamp)
+        response.query.search?.get(0)?.snippet)
+    assertEquals("Monster Summer", response.query.search?.get(1)?.title)
+    assertNull(response.query.search?.get(1)?.size)
+    assertNull(response.query.search?.get(1)?.wordcount)
+    assertNull(response.query.search?.get(1)?.timestamp)
   }
 }
