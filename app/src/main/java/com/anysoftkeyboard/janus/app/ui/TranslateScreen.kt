@@ -14,10 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -55,6 +60,8 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var targetLang by remember { mutableStateOf("he") }
   val searchResults by viewModel.searchResults.collectAsState()
   val translation by viewModel.translation.collectAsState()
+  val isLoading by viewModel.isLoading.collectAsState()
+  val errorFetchingTranslation by viewModel.errorFetchingTranslation.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -79,14 +86,17 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
         Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (translation != null) {
+        if (isLoading) {
+          CircularProgressIndicator()
+        } else if (translation != null) {
           TranslationCard(UiTranslation.fromTranslation(translation!!))
         } else if (searchResults.isNotEmpty()) {
           LazyColumn {
             items(searchResults) { result ->
-              SearchResultItem(result) {
-                viewModel.fetchTranslation(result.pageid, sourceLang, targetLang)
-              }
+              SearchResultItem(
+                  result = result, isLoading = isLoading, isError = errorFetchingTranslation) {
+                    viewModel.fetchTranslation(result.pageid, sourceLang, targetLang)
+                  }
             }
           }
         }
@@ -94,15 +104,31 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 }
 
 @Composable
-fun SearchResultItem(result: SearchResult, onClick: () -> Unit) {
+fun SearchResultItem(
+    result: SearchResult,
+    isLoading: Boolean,
+    isError: Boolean,
+    onClick: () -> Unit
+) {
   Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
-    Column(modifier = Modifier.padding(16.dp)) {
+    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
       Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
-      AndroidView(
-          factory = { context ->
-            TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
-          },
-          update = { setHtmlToText(it, result.snippet) })
+      Spacer(modifier = Modifier.width(8.dp))
+      if (isLoading) {
+        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+      } else if (isError) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "Error",
+            tint = MaterialTheme.colorScheme.error,
+            modifier = Modifier.size(24.dp))
+      } else {
+        AndroidView(
+            factory = { context ->
+              TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+            },
+            update = { setHtmlToText(it, result.snippet) })
+      }
     }
   }
 }

@@ -20,16 +20,34 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
   private val _translation = MutableStateFlow<Translation?>(null)
   val translation: StateFlow<Translation?> = _translation
 
+  private val _isLoading = MutableStateFlow(false)
+  val isLoading: StateFlow<Boolean> = _isLoading
+
+  private val _errorFetchingTranslation = MutableStateFlow(false)
+  val errorFetchingTranslation: StateFlow<Boolean> = _errorFetchingTranslation
+
   fun searchArticles(lang: String, term: String) {
     viewModelScope.launch {
+      _isLoading.value = true
+      _errorFetchingTranslation.value = false
       _searchResults.value = repository.searchArticles(lang, term)
       _translation.value = null
+      _isLoading.value = false
     }
   }
 
   fun fetchTranslation(pageId: Long, sourceLang: String, targetLang: String) {
     viewModelScope.launch {
-      _translation.value = repository.fetchTranslation(pageId, sourceLang, targetLang)
+      _isLoading.value = true
+      _errorFetchingTranslation.value = false
+      try {
+        _translation.value = repository.fetchTranslation(pageId, sourceLang, targetLang)
+      } catch (e: Exception) {
+        _errorFetchingTranslation.value = true
+        _translation.value = null // Clear previous translation on error
+      } finally {
+        _isLoading.value = false
+      }
     }
   }
 }
