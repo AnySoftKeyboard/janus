@@ -13,6 +13,9 @@ interface TranslationDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertTranslation(translation: Translation)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertTranslations(translations: List<Translation>)
+
   @Query(
       "SELECT * FROM translation_history WHERE sourceWord = :sourceWord AND sourceLangCode = :sourceLang AND targetLangCode = :targetLang LIMIT 1")
   suspend fun findTranslation(

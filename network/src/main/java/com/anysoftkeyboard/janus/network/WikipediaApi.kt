@@ -10,4 +10,7 @@ interface WikipediaApi {
       @Query("srlimit") limit: Int = 10,
       @Query("srprop") properties: String = "snippet"
   ): SearchResponse
+
+  @GET("api.php?action=query&prop=langlinks&format=json&lllimit=500")
+  suspend fun getLangLinks(@Query("pageids") pageId: Long): LangLinksResponse
 }
