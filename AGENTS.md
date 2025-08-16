@@ -18,8 +18,9 @@
 - Before creating a commit, always run `./gradlew testDebugUnitTest` to ensure all tests are passing and `./gradlew spotlessApply` to ensure proper formatting.
 
 ## Commit Messages
-- **Title:** The title should be concise and prefixed with `[Gemini-cli]`.
-- **Description:** Include a short description of the issue (e.g., bug, feature-request, chore) and a brief summary of the solution.
+- **Title:** The title should be concise and prefixed with `[LLM]`.
+- **Description:** Include a short description of the issue (bug, feature-request, crash, chore, etc) and a short description of the solution.
+- Add your name at the end of the description to signify the commit was made by an AI Agent.
 
 ---
 
