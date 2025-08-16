@@ -20,7 +20,7 @@
 ## Commit Messages
 - **Title:** The title should be concise and prefixed with `[LLM]`.
 - **Description:** Include a short description of the issue (bug, feature-request, crash, chore, etc) and a short description of the solution.
-- Instruct the Agent to add its name at the end of the description to signify the commit was made by an AI Agent.
+- Add your name at the end of the description to signify the commit was made by an AI Agent.
 
 ---
 
