@@ -1,5 +1,10 @@
 package com.anysoftkeyboard.janus.app.ui
 
+import android.os.Build
+import android.text.Html
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,8 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -27,15 +39,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
+import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
+import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
+import com.anysoftkeyboard.janus.network.SearchResult
+
+private fun setHtmlToText(view: TextView, snippet: String) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    view.text = Html.fromHtml(snippet, Html.FROM_HTML_MODE_COMPACT)
+  } else {
+    @Suppress("DEPRECATION")
+    view.text = Html.fromHtml(snippet)
+  }
+}
 
 @Composable
 fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
-  var sourceLang by remember { mutableStateOf("English") }
-  var targetLang by remember { mutableStateOf("Spanish") }
-  val translation by viewModel.translation.collectAsState()
+  var sourceLang by remember { mutableStateOf("en") }
+  var targetLang by remember { mutableStateOf("he") }
+  val pageState by viewModel.pageState.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -57,16 +82,75 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                   selectedLanguage = targetLang, onLanguageSelected = { targetLang = it })
             }
         Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { viewModel.search(sourceLang, text) }) { Text("Translate") }
+        Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
-        translation?.let { TranslationCard(UiTranslation.fromTranslation(it)) }
+
+        when (pageState) {
+          is TranslateViewState.Empty -> Text(text = "Welcome. What do you want to translate?")
+          is TranslateViewState.FetchingOptions -> CircularProgressIndicator()
+          is TranslateViewState.OptionsFetched -> {
+            val translations = (pageState as TranslateViewState.OptionsFetched).translations
+            LazyColumn {
+              items((pageState as TranslateViewState.OptionsFetched).options) { item ->
+                SearchResultItem(
+                    result = item,
+                    isLoading = translations[item] is TranslationState.Translating,
+                    isError = translations[item] is TranslationState.Error,
+                    onClick = {
+                      viewModel.fetchTranslation(
+                          (pageState as TranslateViewState.OptionsFetched),
+                          item,
+                          sourceLang,
+                          targetLang)
+                    })
+              }
+            }
+          }
+          is TranslateViewState.Error -> {
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Error",
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(24.dp))
+          }
+        }
       }
+}
+
+@Composable
+fun SearchResultItem(
+    result: SearchResult,
+    isLoading: Boolean,
+    isError: Boolean,
+    onClick: () -> Unit
+) {
+  Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
+    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+      Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
+      Spacer(modifier = Modifier.width(8.dp))
+      if (isLoading) {
+        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+      } else if (isError) {
+        Icon(
+            imageVector = Icons.Default.Warning,
+            contentDescription = "Error",
+            tint = MaterialTheme.colorScheme.error,
+            modifier = Modifier.size(24.dp))
+      } else {
+        AndroidView(
+            factory = { context ->
+              TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+            },
+            update = { setHtmlToText(it, result.snippet) })
+      }
+    }
+  }
 }
 
 @Composable
 fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> Unit) {
   // In a real app, you'd get this from a ViewModel
-  val languages = listOf("English", "Spanish", "French", "German")
+  val languages = listOf("en", "he", "fr", "de")
   var expanded by remember { mutableStateOf(false) }
 
   Box {
@@ -94,7 +178,11 @@ fun TranslationCard(translation: UiTranslation) {
       Text(text = translation.targetWord, style = MaterialTheme.typography.headlineMedium)
       Text(text = "in ${translation.targetLang}", style = MaterialTheme.typography.bodySmall)
       Spacer(modifier = Modifier.height(8.dp))
-      Text(text = translation.shortDescription ?: "", style = MaterialTheme.typography.bodyMedium)
+      AndroidView(
+          factory = { context ->
+            TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+          },
+          update = { setHtmlToText(it, translation.shortDescription ?: "") })
       IconButton(onClick = { /* TODO */ }) {
         Icon(imageVector = translation.favoriteIcon, contentDescription = "Favorite")
       }

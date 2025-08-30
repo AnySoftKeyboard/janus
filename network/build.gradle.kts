@@ -21,6 +21,7 @@ android {
     }
   }
   kotlin { jvmToolchain(17) }
+  testOptions { unitTests.isIncludeAndroidResources = true }
 }
 
 dependencies {
@@ -39,4 +40,5 @@ dependencies {
   testImplementation(libs.mockk)
   testImplementation(libs.kotlinx.coroutines.test)
   testImplementation(libs.kotlin.test.junit)
+  testImplementation(libs.okhttp.mockwebserver)
 }

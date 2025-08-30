@@ -1,19 +1,24 @@
 package com.anysoftkeyboard.janus.app.repository
 
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
-import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.network.ContinueData
+import com.anysoftkeyboard.janus.network.LangLink
+import com.anysoftkeyboard.janus.network.LangLinksQuery
+import com.anysoftkeyboard.janus.network.LangLinksResponse
+import com.anysoftkeyboard.janus.network.PageLangLinks
 import com.anysoftkeyboard.janus.network.Query
+import com.anysoftkeyboard.janus.network.SearchInfo
 import com.anysoftkeyboard.janus.network.SearchResponse
 import com.anysoftkeyboard.janus.network.SearchResult
 import com.anysoftkeyboard.janus.network.WikipediaApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -32,46 +37,65 @@ class TranslationRepositoryTest {
   }
 
   @Test
-  fun `test search, term in db`() = runTest {
+  fun `test searchArticles`() = runTest {
     val term = "term"
     val lang = "en"
-    val translation =
-        Translation(
-            sourceWord = term,
-            sourceLangCode = lang,
-            targetLangCode = lang,
-            sourceArticleUrl = "",
-            sourceShortDescription = "",
-            sourceSummary = "",
-            translatedWord = "",
-            targetArticleUrl = "",
-            targetShortDescription = "",
-            targetSummary = "")
-    whenever(translationDao.findTranslation(term, lang, lang)).thenReturn(translation)
+    val searchResult =
+        SearchResult(
+            ns = 0,
+            title = "title",
+            pageid = 1,
+            size = 1,
+            wordcount = 1,
+            snippet = "snippet",
+            timestamp = "2025-01-01T00:00:00Z")
+    val query =
+        Query(
+            searchinfo = SearchInfo(totalhits = 1, suggestion = null, suggestionsnippet = null),
+            search = listOf(searchResult))
+    val searchResponse =
+        SearchResponse(
+            batchcomplete = "",
+            continueData = ContinueData(sroffset = 1, continueVal = "-|||"),
+            query = query)
 
-    val result = repository.search(lang, term)
+    whenever(wikipediaApi.search(searchTerm = "$lang $term")).thenReturn(searchResponse)
 
-    assertEquals(translation, result)
-    verify(wikipediaApi, never()).search(any(), any(), any())
-    verify(translationDao, never()).insertTranslation(any())
+    val result = repository.searchArticles(lang, term)
+
+    assertEquals(1, result.size)
+    assertEquals("title", result[0].title)
   }
 
   @Test
-  fun `test search, term not in db`() = runTest {
-    val term = "term"
-    val lang = "en"
-    val searchResult = SearchResult("title", "snippet")
-    val query = Query(listOf(searchResult))
-    val searchResponse = SearchResponse(query)
+  fun `test fetchTranslation`() = runTest {
+    val pageId = 1L
+    val sourceLang = "en"
+    val targetLang = "he"
+    val langLink = LangLink(lang = targetLang, title = "כותרת")
+    val pageLangLinks =
+        PageLangLinks(pageid = pageId, ns = 0, title = "title", langlinks = listOf(langLink))
+    val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
+    val langLinksResponse = LangLinksResponse(query = langLinksQuery)
+    val searchResult =
+        SearchResult(
+            ns = 0,
+            title = "title",
+            pageid = pageId,
+            size = 1,
+            wordcount = 1,
+            snippet = "snippet",
+            timestamp = "2025-01-01T00:00:00Z")
 
-    whenever(translationDao.findTranslation(term, lang, lang)).thenReturn(null)
-    whenever(wikipediaApi.search(searchTerm = "$lang $term")).thenReturn(searchResponse)
+    whenever(wikipediaApi.getLangLinks(pageId)).thenReturn(langLinksResponse)
 
-    val result = repository.search(lang, term)
+    val result = repository.fetchTranslation(searchResult, sourceLang, targetLang)
 
-    assertEquals(term, result.sourceWord)
-    assertEquals(lang, result.sourceLangCode)
-    assertEquals("snippet", result.sourceShortDescription)
-    verify(translationDao).insertTranslation(result)
+    assertNotNull(result)
+    assertEquals("title", result.sourceWord)
+    assertEquals(sourceLang, result.sourceLangCode)
+    assertEquals("כותרת", result.translatedWord)
+    assertEquals(targetLang, result.targetLangCode)
+    verify(translationDao).insertTranslation(any())
   }
 }

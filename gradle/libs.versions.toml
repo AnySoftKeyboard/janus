@@ -1,5 +1,5 @@
 [versions]
-android_gradle_plugin = "8.12.0"
+android_gradle_plugin = "8.12.2"
 kotlin_gradle_plugin = "2.2.0"
 ksp_gradle_plugin = "2.2.0-2.0.2"
 coreKtx = "1.16.0"
@@ -42,6 +42,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
 moshi = { group = "com.squareup.moshi", name = "moshi", version.ref = "moshi" }
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx_annotation" }

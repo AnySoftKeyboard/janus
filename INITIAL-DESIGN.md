@@ -82,7 +82,8 @@ The database uses a denormalized single table. While this creates some data redu
 * Caching Strategy: A two-layer cache will be implemented for efficiency and offline access.
 * Database First: The Repository will first query the Room database for a cached translation before making a network call.
 * HTTP Cache: OkHttp will be configured with an HTTP cache to respect server cache headers.
-
+* Will follow Wikipedia's Robot's guidelines: https://wikitech.wikimedia.org/wiki/Robot_policy
+*
 ## Key Logic and UI/UX
 * Reverse Lookups: The app will not assume that a translation is symmetrical (A -> B ≠ B -> A). A reverse translation will always be treated as a new, independent lookup to ensure accuracy.
 * Navigation: A Bottom Navigation Bar will provide access to the three main screens: Translate, History, and Bookmarked.

@@ -2,6 +2,7 @@ package com.anysoftkeyboard.janus.app.repository
 
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.network.SearchResult
 import com.anysoftkeyboard.janus.network.WikipediaApi
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -15,14 +16,27 @@ constructor(private val translationDao: TranslationDao, private val wikipediaApi
 
   private val _history = MutableStateFlow(emptyList<Translation>())
   private val _bookmarks = MutableStateFlow(emptyList<Translation>())
+  var nextSearchResults: List<SearchResult> = emptyList()
   var nextTranslation: Translation? = null
 
   override fun getHistory(): Flow<List<Translation>> = _history.asStateFlow()
 
   override fun getBookmarks(): Flow<List<Translation>> = _bookmarks.asStateFlow()
 
-  override suspend fun search(lang: String, term: String): Translation {
-    return nextTranslation!!
+  override suspend fun searchArticles(lang: String, term: String): List<SearchResult> {
+    return nextSearchResults
+  }
+
+  override suspend fun fetchTranslation(
+      searchPage: SearchResult,
+      sourceLang: String,
+      targetLang: String
+  ): Translation {
+    val current = nextTranslation
+    if (current == null) {
+      throw Exception("Translation not found")
+    }
+    return current
   }
 
   fun setHistory(history: List<Translation>) {

@@ -16,6 +16,7 @@ android {
     consumerProguardFiles("consumer-rules.pro")
   }
   kotlin { jvmToolchain(17) }
+  testOptions { unitTests.isIncludeAndroidResources = true }
 }
 
 dependencies {
