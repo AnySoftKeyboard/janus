@@ -19,28 +19,29 @@ open class TranslationRepository(
       term: String,
   ): List<SearchResult> {
     val searchResponse = wikipediaApi.search(searchTerm = "$lang $term")
-    return searchResponse.query.search ?: emptyList()
+    return searchResponse.query.search ?: throw Exception("Search failed")
   }
 
   open suspend fun fetchTranslation(
-      pageId: Long,
+      searchPage: SearchResult,
       sourceLang: String,
       targetLang: String
-  ): Translation? {
-    val langLinksResponse = wikipediaApi.getLangLinks(pageId)
-    val page = langLinksResponse.query.pages.values.firstOrNull()
-    if (page == null) return null
-    val langLinks = page.langlinks
-    if (langLinks == null) return null
+  ): Translation {
+    val langLinksResponse = wikipediaApi.getLangLinks(searchPage.pageid)
+    val page =
+        langLinksResponse.query.pages.values.firstOrNull() ?: throw Exception("Page not found")
+    val langLinks = page.langlinks ?: throw Exception("langLinks not found")
 
-    val targetLink = langLinks.find { it.lang == targetLang } ?: return null
+    val targetLink =
+        langLinks.find { it.lang == targetLang }
+            ?: throw Exception("$targetLang translation not found")
 
     val translation =
         Translation(
             sourceWord = page.title,
             sourceLangCode = sourceLang,
             sourceArticleUrl = "https://en.wikipedia.org/?curid=${page.pageid}",
-            sourceShortDescription = null,
+            sourceShortDescription = searchPage.snippet,
             sourceSummary = null,
             translatedWord = targetLink.title,
             targetLangCode = targetLang,

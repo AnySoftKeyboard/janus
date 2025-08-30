@@ -28,11 +28,15 @@ constructor(private val translationDao: TranslationDao, private val wikipediaApi
   }
 
   override suspend fun fetchTranslation(
-      pageId: Long,
+      searchPage: SearchResult,
       sourceLang: String,
       targetLang: String
-  ): Translation? {
-    return nextTranslation
+  ): Translation {
+    val current = nextTranslation
+    if (current == null) {
+      throw Exception("Translation not found")
+    }
+    return current
   }
 
   fun setHistory(history: List<Translation>) {

@@ -61,6 +61,17 @@ object AppModule {
     val cache = Cache(File(context.cacheDir, "http-cache"), CACHE_SIZE)
     return OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS))
+        .addInterceptor { chain ->
+          val request =
+              chain
+                  .request()
+                  .newBuilder()
+                  .header(
+                      "User-Agent", "Janus-translations-android/1.0 (ask@evendanan.net) OkHttp/5.x")
+                  .build()
+          chain.proceed(request)
+        }
         .cache(cache)
         .build()
   }

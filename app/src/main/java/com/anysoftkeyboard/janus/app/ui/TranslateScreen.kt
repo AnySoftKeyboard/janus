@@ -42,6 +42,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
+import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
+import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
 import com.anysoftkeyboard.janus.network.SearchResult
 
 private fun setHtmlToText(view: TextView, snippet: String) {
@@ -58,10 +60,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
   var sourceLang by remember { mutableStateOf("en") }
   var targetLang by remember { mutableStateOf("he") }
-  val searchResults by viewModel.searchResults.collectAsState()
-  val translation by viewModel.translation.collectAsState()
-  val isLoading by viewModel.isLoading.collectAsState()
-  val errorFetchingTranslation by viewModel.errorFetchingTranslation.collectAsState()
+  val pageState by viewModel.pageState.collectAsState()
 
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -86,18 +85,33 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
         Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
 
-        if (isLoading) {
-          CircularProgressIndicator()
-        } else if (translation != null) {
-          TranslationCard(UiTranslation.fromTranslation(translation!!))
-        } else if (searchResults.isNotEmpty()) {
-          LazyColumn {
-            items(searchResults) { result ->
-              SearchResultItem(
-                  result = result, isLoading = isLoading, isError = errorFetchingTranslation) {
-                    viewModel.fetchTranslation(result.pageid, sourceLang, targetLang)
-                  }
+        when (pageState) {
+          is TranslateViewState.Empty -> Text(text = "Welcome. What do you want to translate?")
+          is TranslateViewState.FetchingOptions -> CircularProgressIndicator()
+          is TranslateViewState.OptionsFetched -> {
+            val translations = (pageState as TranslateViewState.OptionsFetched).translations
+            LazyColumn {
+              items((pageState as TranslateViewState.OptionsFetched).options) { item ->
+                SearchResultItem(
+                    result = item,
+                    isLoading = translations[item] is TranslationState.Translating,
+                    isError = translations[item] is TranslationState.Error,
+                    onClick = {
+                      viewModel.fetchTranslation(
+                          (pageState as TranslateViewState.OptionsFetched),
+                          item,
+                          sourceLang,
+                          targetLang)
+                    })
+              }
             }
+          }
+          is TranslateViewState.Error -> {
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Error",
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(24.dp))
           }
         }
       }

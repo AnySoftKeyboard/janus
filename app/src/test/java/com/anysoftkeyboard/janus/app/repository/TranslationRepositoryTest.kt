@@ -77,13 +77,22 @@ class TranslationRepositoryTest {
         PageLangLinks(pageid = pageId, ns = 0, title = "title", langlinks = listOf(langLink))
     val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
     val langLinksResponse = LangLinksResponse(query = langLinksQuery)
+    val searchResult =
+        SearchResult(
+            ns = 0,
+            title = "title",
+            pageid = pageId,
+            size = 1,
+            wordcount = 1,
+            snippet = "snippet",
+            timestamp = "2025-01-01T00:00:00Z")
 
     whenever(wikipediaApi.getLangLinks(pageId)).thenReturn(langLinksResponse)
 
-    val result = repository.fetchTranslation(pageId, sourceLang, targetLang)
+    val result = repository.fetchTranslation(searchResult, sourceLang, targetLang)
 
     assertNotNull(result)
-    assertEquals("title", result!!.sourceWord)
+    assertEquals("title", result.sourceWord)
     assertEquals(sourceLang, result.sourceLangCode)
     assertEquals("כותרת", result.translatedWord)
     assertEquals(targetLang, result.targetLangCode)
