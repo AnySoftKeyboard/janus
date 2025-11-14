@@ -15,10 +15,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
+import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -38,6 +45,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
@@ -65,33 +73,84 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally) {
+        // Language selectors with swap button
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically) {
               LanguageSelector(
                   selectedLanguage = sourceLang, onLanguageSelected = { sourceLang = it })
-              Spacer(modifier = Modifier.width(8.dp))
-              OutlinedTextField(
-                  value = text,
-                  onValueChange = { text = it },
-                  label = { Text("Word to translate") },
-                  modifier = Modifier.fillMaxWidth())
-            }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically) {
-              Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Search") }
-              Spacer(modifier = Modifier.width(8.dp))
+              IconButton(
+                  onClick = {
+                    // Swap languages
+                    val temp = sourceLang
+                    sourceLang = targetLang
+                    targetLang = temp
+                    // If translation is shown, put target word in input, else clear
+                    text =
+                        if (pageState is TranslateViewState.Translated) {
+                          val translated = pageState as TranslateViewState.Translated
+                          when (val translationState = translated.translation) {
+                            is TranslationState.Translated ->
+                                translationState.translation.translatedWord
+                            else -> ""
+                          }
+                        } else {
+                          ""
+                        }
+                    // Clear results
+                    viewModel.searchArticles("", "")
+                  }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "Swap languages")
+                  }
               LanguageSelector(
                   selectedLanguage = targetLang, onLanguageSelected = { targetLang = it })
             }
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Text input with search action
+        OutlinedTextField(
+            value = text,
+            onValueChange = { text = it },
+            label = { Text("Word to translate") },
+            leadingIcon = {
+              Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+            },
+            trailingIcon = {
+              if (text.isNotEmpty()) {
+                IconButton(onClick = { text = "" }) {
+                  Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
+                }
+              }
+            },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions =
+                KeyboardActions(onSearch = { viewModel.searchArticles(sourceLang, text) }),
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth())
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         when (pageState) {
-          is TranslateViewState.Empty -> Text(text = "Welcome. What do you want to translate?")
+          is TranslateViewState.Empty -> {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center) {
+                  Icon(
+                      imageVector = Icons.Default.Search,
+                      contentDescription = "Search",
+                      modifier = Modifier.size(48.dp),
+                      tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                  Spacer(modifier = Modifier.height(8.dp))
+                  Text(
+                      text = "Enter a word to translate",
+                      style = MaterialTheme.typography.bodyLarge,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+          }
           is TranslateViewState.FetchingOptions -> CircularProgressIndicator()
           is TranslateViewState.OptionsFetched -> {
             val pageState = (pageState as TranslateViewState.OptionsFetched)
@@ -114,30 +173,58 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 
 @Composable
 fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
-  Text(
-      "${translated.term.title} (${translated.sourceLang})",
-      style = MaterialTheme.typography.headlineSmall)
-  when (translated.translation) {
-    is TranslationState.Translated -> {
-      val translated = translated.translation.translation
-      Text(
-          "${translated.translatedWord} (${translated.targetLangCode})",
-          style = MaterialTheme.typography.headlineSmall)
-      Text(
-          "${translated.targetShortDescription ?: translated.targetSummary ?: "No description"} (${translated.targetLangCode})",
-          style = MaterialTheme.typography.bodySmall)
-    }
+  Column(modifier = Modifier.fillMaxWidth()) {
+    Text(
+        "${translated.term.title} (${translated.sourceLang})",
+        style = MaterialTheme.typography.headlineSmall)
+    Spacer(modifier = Modifier.height(8.dp))
 
-    is TranslationState.MissingTranslation -> {
-      val availableTranslations =
-          translated.translation.availableTranslations.joinToString(", ") { it.targetLangCode }
-      Text(
-          "Could not find a translation for ${translated.targetLang}. But we have for ${availableTranslations}")
-    }
+    when (translated.translation) {
+      is TranslationState.Translated -> {
+        val translationData = translated.translation.translation
+        Text(
+            "${translationData.translatedWord} (${translationData.targetLangCode})",
+            style = MaterialTheme.typography.headlineSmall)
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            "${translationData.targetShortDescription ?: translationData.targetSummary ?: "No description"} (${translationData.targetLangCode})",
+            style = MaterialTheme.typography.bodySmall)
 
-    else -> {
-      Text(
-          "${translated.term.title} (${translated.sourceLang}) -> state type ${translated.translation.javaClass}")
+        // Action buttons
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+          IconButton(onClick = { /* TODO: Implement bookmark */ }) {
+            Icon(
+                imageVector = Icons.Default.BookmarkBorder,
+                contentDescription = "Bookmark",
+                tint = MaterialTheme.colorScheme.primary)
+          }
+          IconButton(onClick = { /* TODO: Implement copy */ }) {
+            Icon(
+                imageVector = Icons.Default.ContentCopy,
+                contentDescription = "Copy translation",
+                tint = MaterialTheme.colorScheme.primary)
+          }
+          IconButton(onClick = { /* TODO: Implement open */ }) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                contentDescription = "Open article",
+                tint = MaterialTheme.colorScheme.primary)
+          }
+        }
+      }
+
+      is TranslationState.MissingTranslation -> {
+        val availableTranslations =
+            translated.translation.availableTranslations.joinToString(", ") { it.targetLangCode }
+        Text(
+            "Could not find a translation for ${translated.targetLang}. But we have for ${availableTranslations}")
+      }
+
+      else -> {
+        Text(
+            "${translated.term.title} (${translated.sourceLang}) -> state type ${translated.translation.javaClass}")
+      }
     }
   }
 }
