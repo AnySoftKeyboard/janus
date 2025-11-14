@@ -340,6 +340,31 @@ fun AvailableSourceArticles(
     }
   }
 
+  // Show empty state if no results found
+  if (pageState.options.isEmpty()) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center) {
+          Icon(
+              imageVector = Icons.Default.Search,
+              contentDescription = "No results",
+              modifier = Modifier.size(48.dp),
+              tint = MaterialTheme.colorScheme.onSurfaceVariant)
+          Spacer(modifier = Modifier.height(16.dp))
+          Text(
+              text = "No results found",
+              style = MaterialTheme.typography.titleMedium,
+              color = MaterialTheme.colorScheme.onSurface)
+          Spacer(modifier = Modifier.height(8.dp))
+          Text(
+              text = "For the term \"${pageState.searchTerm}\" there were no results in Wikipedia",
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    return
+  }
+
   LazyColumn {
     items(translatedArticles) { item ->
       val translationState = pageState.translations[item]

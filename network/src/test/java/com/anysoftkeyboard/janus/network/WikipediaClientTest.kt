@@ -90,4 +90,3 @@ class WikipediaClientTest {
     assertEquals("Monster Summer", response.query!!.search?.get(1)?.title)
   }
 }
-
