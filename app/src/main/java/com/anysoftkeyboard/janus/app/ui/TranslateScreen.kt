@@ -32,6 +32,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -175,20 +176,34 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
   Column(modifier = Modifier.fillMaxWidth()) {
     Text(
-        "${translated.term.title} (${translated.sourceLang})",
-        style = MaterialTheme.typography.headlineSmall)
-    Spacer(modifier = Modifier.height(8.dp))
+        text = translated.term.title,
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Text(
+        text = translated.sourceLang.uppercase(),
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Spacer(modifier = Modifier.height(16.dp))
 
     when (translated.translation) {
       is TranslationState.Translated -> {
         val translationData = translated.translation.translation
         Text(
-            "${translationData.translatedWord} (${translationData.targetLangCode})",
-            style = MaterialTheme.typography.headlineSmall)
-        Spacer(modifier = Modifier.height(4.dp))
+            text = translationData.translatedWord,
+            style = MaterialTheme.typography.displaySmall,
+            color = MaterialTheme.colorScheme.primary)
         Text(
-            "${translationData.targetShortDescription ?: translationData.targetSummary ?: "No description"} (${translationData.targetLangCode})",
-            style = MaterialTheme.typography.bodySmall)
+            text = translationData.targetLangCode.uppercase(),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text =
+                translationData.targetShortDescription
+                    ?: translationData.targetSummary
+                    ?: "No description",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface)
 
         // Action buttons
         Spacer(modifier = Modifier.height(16.dp))
@@ -216,14 +231,25 @@ fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
 
       is TranslationState.MissingTranslation -> {
         val availableTranslations =
-            translated.translation.availableTranslations.joinToString(", ") { it.targetLangCode }
+            translated.translation.availableTranslations.joinToString(", ") {
+              it.targetLangCode.uppercase()
+            }
         Text(
-            "Could not find a translation for ${translated.targetLang}. But we have for ${availableTranslations}")
+            text = "Translation not available for ${translated.targetLang.uppercase()}",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.error)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "Available translations: $availableTranslations",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
       }
 
       else -> {
         Text(
-            "${translated.term.title} (${translated.sourceLang}) -> state type ${translated.translation.javaClass}")
+            text =
+                "${translated.term.title} (${translated.sourceLang}) -> state type ${translated.translation.javaClass}",
+            style = MaterialTheme.typography.bodyMedium)
       }
     }
   }
@@ -252,13 +278,21 @@ fun AvailableSourceArticles(
 
     if (translatedArticles.isNotEmpty() && untranslatedArticles.isNotEmpty()) {
       item {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-            horizontalArrangement = Arrangement.Center) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally) {
+              HorizontalDivider(
+                  modifier = Modifier.fillMaxWidth(0.3f),
+                  color = MaterialTheme.colorScheme.outlineVariant)
+              Spacer(modifier = Modifier.height(8.dp))
               Text(
-                  text = "──── Untranslated Articles ────",
-                  style = MaterialTheme.typography.labelMedium,
+                  text = "Untranslated Articles".uppercase(),
+                  style = MaterialTheme.typography.labelSmall,
                   color = MaterialTheme.colorScheme.onSurfaceVariant)
+              Spacer(modifier = Modifier.height(8.dp))
+              HorizontalDivider(
+                  modifier = Modifier.fillMaxWidth(0.3f),
+                  color = MaterialTheme.colorScheme.outlineVariant)
             }
       }
     }
@@ -285,35 +319,38 @@ fun SearchResultItem(
     onClick: () -> Unit
 ) {
   Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
-    Row(
-        modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 0.dp, top = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-          Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
+    Column(modifier = Modifier.padding(16.dp)) {
+      Text(text = result.title, style = MaterialTheme.typography.titleLarge)
+      Spacer(modifier = Modifier.height(4.dp))
+      if (isLoading) {
+        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+      } else if (isError) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+          Icon(
+              imageVector = Icons.Default.Warning,
+              contentDescription = "Error",
+              tint = MaterialTheme.colorScheme.error,
+              modifier = Modifier.size(20.dp))
+          Spacer(modifier = Modifier.size(4.dp))
+          Text(
+              text = "Error loading translation",
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.error)
         }
-    Row(
-        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-          if (isLoading) {
-            CircularProgressIndicator(modifier = Modifier.size(24.dp))
-          } else if (isError) {
-            Icon(
-                imageVector = Icons.Default.Warning,
-                contentDescription = "Error",
-                tint = MaterialTheme.colorScheme.error,
-                modifier = Modifier.size(24.dp))
-          } else if (showAvailableLanguages) {
-            Text(
-                text = "Available: ${result.availableLanguages.joinToString(", ")}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-          } else {
-            AndroidView(
-                factory = { context ->
-                  TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
-                },
-                update = { setHtmlToText(it, result.snippet) })
-          }
-        }
+      } else if (showAvailableLanguages) {
+        Text(
+            text =
+                "Available in: ${result.availableLanguages.joinToString(", ") { it.uppercase() }}",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
+      } else {
+        AndroidView(
+            factory = { context ->
+              TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+            },
+            update = { setHtmlToText(it, result.snippet) })
+      }
+    }
   }
 }
 
