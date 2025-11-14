@@ -215,16 +215,58 @@ class TranslateViewModelTest {
   }
 
   @Test
-  fun `searchArticles error sets error state`() = runTest {
-    fakeRepository.nextSearchResults = emptyList()
+  fun `searchArticles error sets error state with details`() = runTest {
+    val testException = IllegalStateException("Network error")
+    fakeRepository.searchException = testException
 
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      // Trigger an error by having the repository throw an exception
-      // Note: FakeTranslationRepository doesn't throw errors, so we'd need to enhance it
-      // For now, this test documents the expected behavior
-      // In a real scenario, we'd mock the repository to throw an exception
+      viewModel.searchArticles("en", "test")
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      advanceUntilIdle()
+
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+      val error = errorState as TranslateViewState.Error
+      assertEquals("IllegalStateException", error.errorType)
+      assertEquals("Network error", error.errorMessage)
+    }
+  }
+
+  @Test
+  fun `fetchTranslation error stores error in translations map`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Summer",
+            snippet = "hottest season",
+            availableLanguages = listOf("he"))
+    val testException = RuntimeException("Failed to fetch translation")
+    fakeRepository.fetchException = testException
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      val optionsFetched = TranslateViewState.OptionsFetched(listOf(searchTerm), emptyMap())
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+
+      // First update: Translating state
+      val translatingState = awaitItem()
+      assertTrue(translatingState is TranslateViewState.OptionsFetched)
+      val translating = translatingState as TranslateViewState.OptionsFetched
+      assertTrue(translating.translations[searchTerm] is TranslationState.Translating)
+
+      advanceUntilIdle()
+
+      // Second update: Error state in translations map
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.OptionsFetched)
+      val withError = errorState as TranslateViewState.OptionsFetched
+      val errorTranslation = withError.translations[searchTerm]
+      assertTrue(errorTranslation is TranslationState.Error)
+      val error = errorTranslation as TranslationState.Error
+      assertEquals("Failed to fetch translation", error.errorMessage)
     }
   }
 }

@@ -110,8 +110,80 @@ class TranslationRepositoryTest {
     assertEquals(sourceLang, result[0].sourceLangCode)
     assertEquals("כותרת", result[0].translatedWord)
     assertEquals(targetLang, result[0].targetLangCode)
+    // Verify URLs are constructed correctly
+    assertEquals("https://en.wikipedia.org/?curid=1", result[0].sourceArticleUrl)
+    assertEquals("https://he.wikipedia.org/wiki/כותרת", result[0].targetArticleUrl)
     verify(translationDao).insertTranslation(any())
   }
+
+  @Test
+  fun `test fetchTranslations constructs correct Wikipedia URLs for different languages`() =
+      runTest {
+        val pageId = 42L
+        val sourceLang = "fr"
+        val targetLang = "de"
+        val targetTitle = "Sommer"
+        val langLink = LangLink(lang = targetLang, title = targetTitle)
+        val pageLangLinks =
+            PageLangLinks(
+                pageid = pageId,
+                ns = 0,
+                title = "Été",
+                langLinks = listOf(langLink),
+                pageProps = null,
+                links = null)
+        val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
+        val langLinksResponse = LangLinksResponse(query = langLinksQuery)
+        val optionalSourceTerm =
+            OptionalSourceTerm(
+                pageid = pageId,
+                title = "Été",
+                snippet = "snippet",
+                availableLanguages = listOf(targetLang))
+
+        whenever(wikipediaApi.getAllInfo(pageId.toString())).thenReturn(langLinksResponse)
+
+        val result = repository.fetchTranslations(optionalSourceTerm, sourceLang)
+
+        // Verify source URL uses curid format
+        assertEquals("https://fr.wikipedia.org/?curid=42", result[0].sourceArticleUrl)
+        // Verify target URL uses wiki/title format
+        assertEquals("https://de.wikipedia.org/wiki/Sommer", result[0].targetArticleUrl)
+      }
+
+  @Test
+  fun `test fetchTranslations constructs correct URLs with special characters in title`() =
+      runTest {
+        val pageId = 123L
+        val sourceLang = "en"
+        val targetLang = "es"
+        val targetTitle = "Año nuevo"
+        val langLink = LangLink(lang = targetLang, title = targetTitle)
+        val pageLangLinks =
+            PageLangLinks(
+                pageid = pageId,
+                ns = 0,
+                title = "New Year",
+                langLinks = listOf(langLink),
+                pageProps = null,
+                links = null)
+        val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
+        val langLinksResponse = LangLinksResponse(query = langLinksQuery)
+        val optionalSourceTerm =
+            OptionalSourceTerm(
+                pageid = pageId,
+                title = "New Year",
+                snippet = "snippet",
+                availableLanguages = listOf(targetLang))
+
+        whenever(wikipediaApi.getAllInfo(pageId.toString())).thenReturn(langLinksResponse)
+
+        val result = repository.fetchTranslations(optionalSourceTerm, sourceLang)
+
+        // Verify URLs are constructed with the title as provided (Wikipedia handles encoding)
+        assertEquals("https://en.wikipedia.org/?curid=123", result[0].sourceArticleUrl)
+        assertEquals("https://es.wikipedia.org/wiki/Año nuevo", result[0].targetArticleUrl)
+      }
 
   @Test
   fun `test searchArticles with no available translations`() = runTest {

@@ -1,5 +1,7 @@
 package com.anysoftkeyboard.janus.app.ui
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
@@ -42,6 +44,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +53,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -58,7 +62,6 @@ import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
-import kotlinx.coroutines.launch
 
 private fun setHtmlToText(view: TextView, snippet: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -170,11 +173,31 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
               ShowTranslatedArticle(translated)
             }
             is TranslateViewState.Error -> {
-              Icon(
-                  imageVector = Icons.Default.Warning,
-                  contentDescription = "Error",
-                  tint = MaterialTheme.colorScheme.error,
-                  modifier = Modifier.size(24.dp))
+              val error = pageState as TranslateViewState.Error
+              // Show snackbar immediately when error occurs
+              LaunchedEffect(error) {
+                snackbarHostState.showSnackbar("${error.errorType}: ${error.errorMessage}")
+              }
+              Column(
+                  modifier = Modifier.fillMaxWidth(),
+                  horizontalAlignment = Alignment.CenterHorizontally,
+                  verticalArrangement = Arrangement.Center) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(48.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = error.errorType,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.error)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = error.errorMessage,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                  }
             }
           }
         }
@@ -183,28 +206,66 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 
 @Composable
 fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
+  val context = LocalContext.current
   Column(modifier = Modifier.fillMaxWidth()) {
-    Text(
-        text = translated.term.title,
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onSurfaceVariant)
-    Text(
-        text = translated.sourceLang.uppercase(),
-        style = MaterialTheme.typography.labelMedium,
-        color = MaterialTheme.colorScheme.onSurfaceVariant)
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically) {
+          Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = translated.term.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                text = translated.sourceLang.uppercase(),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+          }
+          IconButton(
+              onClick = {
+                val url =
+                    "https://${translated.sourceLang}.wikipedia.org/?curid=${translated.term.pageid}"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+              }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                    contentDescription = "Open source article",
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant)
+              }
+        }
     Spacer(modifier = Modifier.height(16.dp))
 
     when (translated.translation) {
       is TranslationState.Translated -> {
         val translationData = translated.translation.translation
-        Text(
-            text = translationData.translatedWord,
-            style = MaterialTheme.typography.displaySmall,
-            color = MaterialTheme.colorScheme.primary)
-        Text(
-            text = translationData.targetLangCode.uppercase(),
-            style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.colorScheme.primary)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically) {
+              Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = translationData.translatedWord,
+                    style = MaterialTheme.typography.displaySmall,
+                    color = MaterialTheme.colorScheme.primary)
+                Text(
+                    text = translationData.targetLangCode.uppercase(),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary)
+              }
+              IconButton(
+                  onClick = {
+                    val intent =
+                        Intent(Intent.ACTION_VIEW, Uri.parse(translationData.targetArticleUrl))
+                    context.startActivity(intent)
+                  }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                        contentDescription = "Open target article",
+                        tint = MaterialTheme.colorScheme.primary)
+                  }
+            }
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text =
@@ -227,12 +288,6 @@ fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
             Icon(
                 imageVector = Icons.Default.ContentCopy,
                 contentDescription = "Copy translation",
-                tint = MaterialTheme.colorScheme.primary)
-          }
-          IconButton(onClick = { /* TODO: Implement open */ }) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-                contentDescription = "Open article",
                 tint = MaterialTheme.colorScheme.primary)
           }
         }
@@ -276,6 +331,15 @@ fun AvailableSourceArticles(
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
   val coroutineScope = rememberCoroutineScope()
 
+  // Show snackbar immediately when translation errors occur
+  LaunchedEffect(pageState.translations) {
+    pageState.translations.values.forEach { translationState ->
+      if (translationState is TranslationState.Error) {
+        snackbarHostState.showSnackbar(translationState.errorMessage)
+      }
+    }
+  }
+
   LazyColumn {
     items(translatedArticles) { item ->
       val translationState = pageState.translations[item]
@@ -283,14 +347,13 @@ fun AvailableSourceArticles(
           if (translationState is TranslationState.Error) translationState.errorMessage else null
       SearchResultItem(
           result = item,
+          sourceLang = sourceLang,
           targetLang = targetLang,
           showAvailableLanguages = false,
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
           onClick = {
-            if (errorMessage != null) {
-              coroutineScope.launch { snackbarHostState.showSnackbar(errorMessage) }
-            } else {
+            if (errorMessage == null) {
               viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
             }
           })
@@ -323,14 +386,13 @@ fun AvailableSourceArticles(
           if (translationState is TranslationState.Error) translationState.errorMessage else null
       SearchResultItem(
           result = item,
+          sourceLang = sourceLang,
           targetLang = targetLang,
           showAvailableLanguages = true,
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
           onClick = {
-            if (errorMessage != null) {
-              coroutineScope.launch { snackbarHostState.showSnackbar(errorMessage) }
-            } else {
+            if (errorMessage == null) {
               viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
             }
           })
@@ -341,15 +403,36 @@ fun AvailableSourceArticles(
 @Composable
 fun SearchResultItem(
     result: OptionalSourceTerm,
+    sourceLang: String,
     targetLang: String,
     showAvailableLanguages: Boolean,
     isLoading: Boolean,
     errorMessage: String?,
     onClick: () -> Unit
 ) {
+  val context = LocalContext.current
   Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
     Column(modifier = Modifier.padding(16.dp)) {
-      Text(text = result.title, style = MaterialTheme.typography.titleLarge)
+      Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = result.title,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.weight(1f))
+            IconButton(
+                onClick = {
+                  val url = "https://${sourceLang}.wikipedia.org/?curid=${result.pageid}"
+                  val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                  context.startActivity(intent)
+                }) {
+                  Icon(
+                      imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+                      contentDescription = "Open in Wikipedia",
+                      tint = MaterialTheme.colorScheme.primary)
+                }
+          }
       Spacer(modifier = Modifier.height(4.dp))
       if (isLoading) {
         CircularProgressIndicator(modifier = Modifier.size(24.dp))
