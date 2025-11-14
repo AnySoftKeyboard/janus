@@ -7,7 +7,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import retrofit2.Retrofit
@@ -79,9 +78,6 @@ class WikipediaClientTest {
 
     val response = wikipediaApi.search("summer")
 
-    assertEquals("", response.batchcomplete)
-    assertEquals(10, response.continueData?.sroffset)
-    // assertEquals("-|||", response.continueData?.continueVal)
     assertEquals(901620, response.query.searchinfo?.totalhits)
     assertEquals("somer", response.query.searchinfo?.suggestion)
     assertEquals("somer", response.query.searchinfo?.suggestionsnippet)
@@ -92,8 +88,5 @@ class WikipediaClientTest {
         "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
         response.query.search?.get(0)?.snippet)
     assertEquals("Monster Summer", response.query.search?.get(1)?.title)
-    assertNull(response.query.search?.get(1)?.size)
-    assertNull(response.query.search?.get(1)?.wordcount)
-    assertNull(response.query.search?.get(1)?.timestamp)
   }
 }

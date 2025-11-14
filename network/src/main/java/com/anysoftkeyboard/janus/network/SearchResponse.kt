@@ -4,17 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SearchResponse(
-    @Json(name = "batchcomplete") val batchcomplete: String?,
-    @Json(name = "continue") val continueData: ContinueData?,
-    @Json(name = "query") val query: Query
-)
-
-@JsonClass(generateAdapter = true)
-data class ContinueData(
-    @Json(name = "sroffset") val sroffset: Int,
-    @Json(name = "continue") val continueVal: String
-)
+data class SearchResponse(@Json(name = "query") val query: Query)
 
 @JsonClass(generateAdapter = true)
 data class Query(
@@ -31,13 +21,9 @@ data class SearchInfo(
 
 @JsonClass(generateAdapter = true)
 data class SearchResult(
-    @Json(name = "ns") val ns: Int,
     @Json(name = "title") val title: String,
     @Json(name = "pageid") val pageid: Long,
-    @Json(name = "size") val size: Int?,
-    @Json(name = "wordcount") val wordcount: Int?,
     @Json(name = "snippet") val snippet: String,
-    @Json(name = "timestamp") val timestamp: String?
 )
 
 @JsonClass(generateAdapter = true)
@@ -51,8 +37,18 @@ data class PageLangLinks(
     @Json(name = "pageid") val pageid: Long,
     @Json(name = "ns") val ns: Int,
     @Json(name = "title") val title: String,
-    @Json(name = "langlinks") val langlinks: List<LangLink>?
+    @Json(name = "langlinks") val langLinks: List<LangLink>?,
+    @Json(name = "pageprops") val pageProps: PageProps?,
+    @Json(name = "links") val links: List<Link>?
 )
+
+@JsonClass(generateAdapter = true) data class Link(@Json(name = "title") val title: String)
 
 @JsonClass(generateAdapter = true)
 data class LangLink(@Json(name = "lang") val lang: String, @Json(name = "*") val title: String)
+
+@JsonClass(generateAdapter = true)
+data class PageProps(
+    @Json(name = "disambiguation") val disambiguation: String?,
+    @Json(name = "wikibase-shortdesc") val wikibaseShortdesc: String?
+)

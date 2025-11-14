@@ -24,15 +24,15 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-  private const val BASE_URL = "https://en.wikipedia.org/w/"
+  private const val URL_LANG_PLACEHOLDER = "[LANG]"
+  private const val BASE_URL = "https://${URL_LANG_PLACEHOLDER}.wikipedia.org/w/"
   private const val CACHE_SIZE = 10 * 1024 * 1024L // 10 MB
 
   @Provides
   @Singleton
   fun provideTranslationRepository(
       translationDao: TranslationDao,
-      wikipediaApi: WikipediaApi
+      wikipediaApi: LangWikipediaFactory
   ): TranslationRepository {
     return TranslationRepository(translationDao, wikipediaApi)
   }
@@ -78,17 +78,33 @@ object AppModule {
 
   @Provides
   @Singleton
-  fun provideRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
-    return Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(okHttpClient)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
+  fun provideRetrofitFactor(okHttpClient: OkHttpClient, moshi: Moshi): LangRetrofitFactory {
+    return object : LangRetrofitFactory {
+      override fun createRetrofit(sourceLang: String): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL.replace(URL_LANG_PLACEHOLDER, sourceLang))
+            .client(okHttpClient)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .build()
+      }
+    }
   }
 
   @Provides
   @Singleton
-  fun provideWikipediaApi(retrofit: Retrofit): WikipediaApi {
-    return retrofit.create(WikipediaApi::class.java)
+  fun provideWikipediaApi(retrofit: LangRetrofitFactory): LangWikipediaFactory {
+    return object : LangWikipediaFactory {
+      override fun createWikipediaApi(sourceLang: String): WikipediaApi {
+        return retrofit.createRetrofit(sourceLang).create(WikipediaApi::class.java)
+      }
+    }
   }
+}
+
+interface LangRetrofitFactory {
+  fun createRetrofit(sourceLang: String): Retrofit
+}
+
+interface LangWikipediaFactory {
+  fun createWikipediaApi(sourceLang: String): WikipediaApi
 }
