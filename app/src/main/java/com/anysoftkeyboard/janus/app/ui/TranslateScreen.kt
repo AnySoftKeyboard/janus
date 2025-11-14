@@ -40,11 +40,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
-import com.anysoftkeyboard.janus.network.SearchResult
 
 private fun setHtmlToText(view: TextView, snippet: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -65,46 +65,41 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   Column(
       modifier = Modifier.fillMaxSize().padding(16.dp),
       horizontalAlignment = Alignment.CenterHorizontally) {
-        OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
-            label = { Text("Word to translate") },
-            modifier = Modifier.fillMaxWidth())
-        Spacer(modifier = Modifier.height(8.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically) {
               LanguageSelector(
                   selectedLanguage = sourceLang, onLanguageSelected = { sourceLang = it })
-              Text("to")
+              Spacer(modifier = Modifier.width(8.dp))
+              OutlinedTextField(
+                  value = text,
+                  onValueChange = { text = it },
+                  label = { Text("Word to translate") },
+                  modifier = Modifier.fillMaxWidth())
+            }
+        Spacer(modifier = Modifier.height(8.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically) {
+              Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Search") }
+              Spacer(modifier = Modifier.width(8.dp))
               LanguageSelector(
                   selectedLanguage = targetLang, onLanguageSelected = { targetLang = it })
             }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { viewModel.searchArticles(sourceLang, text) }) { Text("Translate") }
         Spacer(modifier = Modifier.height(16.dp))
 
         when (pageState) {
           is TranslateViewState.Empty -> Text(text = "Welcome. What do you want to translate?")
           is TranslateViewState.FetchingOptions -> CircularProgressIndicator()
           is TranslateViewState.OptionsFetched -> {
-            val translations = (pageState as TranslateViewState.OptionsFetched).translations
-            LazyColumn {
-              items((pageState as TranslateViewState.OptionsFetched).options) { item ->
-                SearchResultItem(
-                    result = item,
-                    isLoading = translations[item] is TranslationState.Translating,
-                    isError = translations[item] is TranslationState.Error,
-                    onClick = {
-                      viewModel.fetchTranslation(
-                          (pageState as TranslateViewState.OptionsFetched),
-                          item,
-                          sourceLang,
-                          targetLang)
-                    })
-              }
-            }
+            val pageState = (pageState as TranslateViewState.OptionsFetched)
+            AvailableSourceArticles(pageState, viewModel, sourceLang, targetLang)
+          }
+          is TranslateViewState.Translated -> {
+            val translated = (pageState as TranslateViewState.Translated)
+            ShowTranslatedArticle(translated)
           }
           is TranslateViewState.Error -> {
             Icon(
@@ -118,32 +113,120 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 }
 
 @Composable
+fun ShowTranslatedArticle(translated: TranslateViewState.Translated) {
+  Text(
+      "${translated.term.title} (${translated.sourceLang})",
+      style = MaterialTheme.typography.headlineSmall)
+  when (translated.translation) {
+    is TranslationState.Translated -> {
+      val translated = translated.translation.translation
+      Text(
+          "${translated.translatedWord} (${translated.targetLangCode})",
+          style = MaterialTheme.typography.headlineSmall)
+      Text(
+          "${translated.targetShortDescription ?: translated.targetSummary ?: "No description"} (${translated.targetLangCode})",
+          style = MaterialTheme.typography.bodySmall)
+    }
+
+    is TranslationState.MissingTranslation -> {
+      val availableTranslations =
+          translated.translation.availableTranslations.joinToString(", ") { it.targetLangCode }
+      Text(
+          "Could not find a translation for ${translated.targetLang}. But we have for ${availableTranslations}")
+    }
+
+    else -> {
+      Text(
+          "${translated.term.title} (${translated.sourceLang}) -> state type ${translated.translation.javaClass}")
+    }
+  }
+}
+
+@Composable
+fun AvailableSourceArticles(
+    pageState: TranslateViewState.OptionsFetched,
+    viewModel: TranslateViewModel,
+    sourceLang: String,
+    targetLang: String
+) {
+  val translatedArticles = pageState.options.filter { targetLang in it.availableLanguages }
+  val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
+
+  LazyColumn {
+    items(translatedArticles) { item ->
+      SearchResultItem(
+          result = item,
+          targetLang = targetLang,
+          showAvailableLanguages = false,
+          isLoading = pageState.translations[item] is TranslationState.Translating,
+          isError = pageState.translations[item] is TranslationState.Error,
+          onClick = { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) })
+    }
+
+    if (translatedArticles.isNotEmpty() && untranslatedArticles.isNotEmpty()) {
+      item {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+            horizontalArrangement = Arrangement.Center) {
+              Text(
+                  text = "──── Untranslated Articles ────",
+                  style = MaterialTheme.typography.labelMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+      }
+    }
+
+    items(untranslatedArticles) { item ->
+      SearchResultItem(
+          result = item,
+          targetLang = targetLang,
+          showAvailableLanguages = true,
+          isLoading = pageState.translations[item] is TranslationState.Translating,
+          isError = pageState.translations[item] is TranslationState.Error,
+          onClick = { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) })
+    }
+  }
+}
+
+@Composable
 fun SearchResultItem(
-    result: SearchResult,
+    result: OptionalSourceTerm,
+    targetLang: String,
+    showAvailableLanguages: Boolean,
     isLoading: Boolean,
     isError: Boolean,
     onClick: () -> Unit
 ) {
   Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
-    Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-      Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
-      Spacer(modifier = Modifier.width(8.dp))
-      if (isLoading) {
-        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-      } else if (isError) {
-        Icon(
-            imageVector = Icons.Default.Warning,
-            contentDescription = "Error",
-            tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(24.dp))
-      } else {
-        AndroidView(
-            factory = { context ->
-              TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
-            },
-            update = { setHtmlToText(it, result.snippet) })
-      }
-    }
+    Row(
+        modifier = Modifier.padding(start = 8.dp, end = 8.dp, bottom = 0.dp, top = 8.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+          Text(text = result.title, style = MaterialTheme.typography.headlineSmall)
+        }
+    Row(
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+          if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.size(24.dp))
+          } else if (isError) {
+            Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = "Error",
+                tint = MaterialTheme.colorScheme.error,
+                modifier = Modifier.size(24.dp))
+          } else if (showAvailableLanguages) {
+            Text(
+                text = "Available: ${result.availableLanguages.joinToString(", ")}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+          } else {
+            AndroidView(
+                factory = { context ->
+                  TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
+                },
+                update = { setHtmlToText(it, result.snippet) })
+          }
+        }
   }
 }
 

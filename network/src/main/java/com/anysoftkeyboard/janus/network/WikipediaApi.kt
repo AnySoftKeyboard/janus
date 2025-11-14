@@ -11,6 +11,12 @@ interface WikipediaApi {
       @Query("srprop") properties: String = "snippet"
   ): SearchResponse
 
-  @GET("api.php?action=query&prop=langlinks&format=json&lllimit=500")
-  suspend fun getLangLinks(@Query("pageids") pageId: Long): LangLinksResponse
+  @GET("api.php?action=query&prop=langlinks&format=json&lllimit=max")
+  suspend fun getLangLinksForTitles(@Query("titles") titles: String): LangLinksResponse
+
+  @GET("api.php?action=query&prop=langlinks|pageprops&format=json&lllimit=max")
+  suspend fun getAllInfo(@Query("pageids") pageIds: String): LangLinksResponse
+
+  @GET("api.php?action=query&generator=links&gpllimit=max&prop=pageprops&format=json")
+  suspend fun getLinks(@Query("pageids") pageIds: String): LangLinksResponse
 }
