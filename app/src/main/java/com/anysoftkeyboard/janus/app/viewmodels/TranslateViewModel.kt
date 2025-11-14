@@ -22,7 +22,7 @@ sealed class TranslationState() {
       val availableTranslations: List<Translation>
   ) : TranslationState()
 
-  object Error : TranslationState()
+  data class Error(val errorMessage: String) : TranslationState()
 }
 
 sealed class TranslateViewState() {
@@ -92,12 +92,11 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
             TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
-        // Toast.makeText(context.applicationContext, "Error: ${e.message}",
-        // Toast.LENGTH_SHORT).show()
+        val errorMessage = e.message ?: "Unknown error occurred"
         _state.value =
             TranslateViewState.OptionsFetched(
                 sources.options,
-                sources.translations.plus(Pair(searchPage, TranslationState.Error)))
+                sources.translations.plus(Pair(searchPage, TranslationState.Error(errorMessage))))
       }
     }
   }
