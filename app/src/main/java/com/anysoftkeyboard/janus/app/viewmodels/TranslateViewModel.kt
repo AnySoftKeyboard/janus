@@ -42,7 +42,7 @@ sealed class TranslateViewState() {
       val translation: TranslationState
   ) : TranslateViewState()
 
-  object Error : TranslateViewState()
+  data class Error(val errorType: String, val errorMessage: String) : TranslateViewState()
 }
 
 @HiltViewModel
@@ -60,9 +60,9 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
                 repository.searchArticles(sourceLang, term), emptyMap())
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
-        // Toast.makeText(context.applicationContext, "Error: ${e.message}",
-        // Toast.LENGTH_SHORT).show()
-        _state.value = TranslateViewState.Error
+        val errorType = e.javaClass.simpleName
+        val errorMessage = e.message ?: "Unknown error occurred"
+        _state.value = TranslateViewState.Error(errorType, errorMessage)
       }
     }
   }

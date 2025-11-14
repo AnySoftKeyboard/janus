@@ -44,6 +44,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,7 +62,6 @@ import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
-import kotlinx.coroutines.launch
 
 private fun setHtmlToText(view: TextView, snippet: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -173,11 +173,31 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
               ShowTranslatedArticle(translated)
             }
             is TranslateViewState.Error -> {
-              Icon(
-                  imageVector = Icons.Default.Warning,
-                  contentDescription = "Error",
-                  tint = MaterialTheme.colorScheme.error,
-                  modifier = Modifier.size(24.dp))
+              val error = pageState as TranslateViewState.Error
+              // Show snackbar immediately when error occurs
+              LaunchedEffect(error) {
+                snackbarHostState.showSnackbar("${error.errorType}: ${error.errorMessage}")
+              }
+              Column(
+                  modifier = Modifier.fillMaxWidth(),
+                  horizontalAlignment = Alignment.CenterHorizontally,
+                  verticalArrangement = Arrangement.Center) {
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(48.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = error.errorType,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.error)
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = error.errorMessage,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant)
+                  }
             }
           }
         }
@@ -311,6 +331,15 @@ fun AvailableSourceArticles(
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
   val coroutineScope = rememberCoroutineScope()
 
+  // Show snackbar immediately when translation errors occur
+  LaunchedEffect(pageState.translations) {
+    pageState.translations.values.forEach { translationState ->
+      if (translationState is TranslationState.Error) {
+        snackbarHostState.showSnackbar(translationState.errorMessage)
+      }
+    }
+  }
+
   LazyColumn {
     items(translatedArticles) { item ->
       val translationState = pageState.translations[item]
@@ -324,9 +353,7 @@ fun AvailableSourceArticles(
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
           onClick = {
-            if (errorMessage != null) {
-              coroutineScope.launch { snackbarHostState.showSnackbar(errorMessage) }
-            } else {
+            if (errorMessage == null) {
               viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
             }
           })
@@ -365,9 +392,7 @@ fun AvailableSourceArticles(
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
           onClick = {
-            if (errorMessage != null) {
-              coroutineScope.launch { snackbarHostState.showSnackbar(errorMessage) }
-            } else {
+            if (errorMessage == null) {
               viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
             }
           })
