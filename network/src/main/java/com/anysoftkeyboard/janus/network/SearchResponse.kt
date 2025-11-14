@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class SearchResponse(@Json(name = "query") val query: Query)
+data class SearchResponse(@Json(name = "query") val query: Query?)
 
 @JsonClass(generateAdapter = true)
 data class Query(

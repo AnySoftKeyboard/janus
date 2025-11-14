@@ -331,6 +331,35 @@ class TranslationRepositoryTest {
   }
 
   @Test
+  fun `test searchArticles with null query returns empty list`() = runTest {
+    val term = "nonexistentterm"
+    val lang = "en"
+    // Wikipedia returns a response with null query when no results found
+    val searchResponse = SearchResponse(query = null)
+
+    whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+
+    val result = repository.searchArticles(lang, term)
+
+    assertEquals(0, result.size)
+  }
+
+  @Test
+  fun `test searchArticles with null search in query returns empty list`() = runTest {
+    val term = "test"
+    val lang = "en"
+    // Wikipedia returns a query with null search when no results found
+    val query = Query(searchinfo = null, search = null)
+    val searchResponse = SearchResponse(query = query)
+
+    whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+
+    val result = repository.searchArticles(lang, term)
+
+    assertEquals(0, result.size)
+  }
+
+  @Test
   fun `test searchArticles disambiguation path with langlinks`() = runTest {
     val term = "test"
     val lang = "en"
