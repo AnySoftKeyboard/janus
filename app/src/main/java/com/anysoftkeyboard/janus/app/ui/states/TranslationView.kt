@@ -4,18 +4,21 @@ import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.ui.components.BookmarkButton
@@ -72,7 +75,10 @@ private fun SourceArticleSection(
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.horizontalScroll(rememberScrollState()))
             Text(
                 text = language.uppercase(),
                 style = MaterialTheme.typography.labelMedium,
@@ -149,8 +155,11 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
           Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = translationData.translatedWord,
-                style = MaterialTheme.typography.displaySmall,
-                color = MaterialTheme.colorScheme.primary)
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.horizontalScroll(rememberScrollState()))
             Text(
                 text = translationData.targetLangCode.uppercase(),
                 style = MaterialTheme.typography.labelLarge,
