@@ -549,4 +549,163 @@ class TranslationRepositoryTest {
     // Should return empty list without calling getLangLinksForTitles with empty string
     assertEquals(0, result.size)
   }
+
+  @Test
+  fun `test searchArticles with mixed disambiguation and regular articles should return both`() =
+      runTest {
+        val term = "test"
+        val lang = "en"
+
+        // Search returns MIXED results: regular article + disambiguation page + another regular
+        // article
+        val searchResult1 = SearchResult(title = "Cat", pageid = 1, snippet = "snippet1")
+        val searchResult2 =
+            SearchResult(title = "Test (disambiguation)", pageid = 100, snippet = "")
+        val searchResult3 = SearchResult(title = "Dog", pageid = 2, snippet = "snippet2")
+
+        val query =
+            Query(
+                searchinfo = SearchInfo(3, null, null),
+                search = listOf(searchResult1, searchResult2, searchResult3))
+        val searchResponse = SearchResponse(query = query)
+
+        // getAllInfo returns all three pages: two regular + one disambiguation
+        val catPage =
+            PageLangLinks(
+                pageid = 1,
+                ns = 0,
+                title = "Cat",
+                langLinks = listOf(LangLink(lang = "he", title = "חתול")),
+                pageProps = null, // NOT a disambiguation page
+                links = null,
+                extract = null)
+        val disambPage =
+            PageLangLinks(
+                pageid = 100,
+                ns = 0,
+                title = "Test (disambiguation)",
+                langLinks = null,
+                pageProps = PageProps(disambiguation = "", wikibaseShortdesc = null),
+                links = null,
+                extract = null)
+        val dogPage =
+            PageLangLinks(
+                pageid = 2,
+                ns = 0,
+                title = "Dog",
+                langLinks = listOf(LangLink(lang = "fr", title = "Chien")),
+                pageProps = null, // NOT a disambiguation page
+                links = null,
+                extract = null)
+
+        val getAllInfoResponse =
+            LangLinksResponse(
+                query =
+                    LangLinksQuery(
+                        pages = mapOf("1" to catPage, "100" to disambPage, "2" to dogPage)))
+
+        // getLinks returns linked articles from disambiguation page
+        val linkedPage =
+            PageLangLinks(
+                pageid = 101,
+                ns = 0,
+                title = "Test Article",
+                langLinks = null,
+                pageProps = null,
+                links = listOf(Link(title = "Test Article")),
+                extract = null)
+        val linksResponse =
+            LangLinksResponse(query = LangLinksQuery(pages = mapOf("101" to linkedPage)))
+
+        // getLangLinksForTitles returns the linked article with translations
+        val linkedArticleWithLangs =
+            PageLangLinks(
+                pageid = 201,
+                ns = 0,
+                title = "Test Article",
+                langLinks = listOf(LangLink(lang = "es", title = "Artículo de prueba")),
+                pageProps = null,
+                links = null,
+                extract = null)
+        val finalResponse =
+            LangLinksResponse(
+                query = LangLinksQuery(pages = mapOf("201" to linkedArticleWithLangs)))
+
+        whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+        whenever(wikipediaApi.getAllInfo("1|100|2")).thenReturn(getAllInfoResponse)
+        whenever(wikipediaApi.getLinks("100")).thenReturn(linksResponse)
+        whenever(wikipediaApi.getLangLinksForTitles("Test Article")).thenReturn(finalResponse)
+
+        val result = repository.searchArticles(lang, term)
+
+        // BUG: Currently only returns disambiguation links (1 result)
+        // SHOULD return: Cat, Dog, AND Test Article (3 results)
+        // This test will FAIL until we fix the logic
+        assertEquals(3, result.size)
+        // Should contain both regular articles
+        assert(result.any { it.title == "Cat" })
+        assert(result.any { it.title == "Dog" })
+        // Should contain disambiguation link
+        assert(result.any { it.title == "Test Article" })
+      }
+
+  @Test
+  fun `test searchArticles with disambiguation no links but other valid articles should return valid articles`() =
+      runTest {
+        val term = "test"
+        val lang = "en"
+
+        // Search returns: regular article + disambiguation with no links
+        val searchResult1 = SearchResult(title = "Cat", pageid = 1, snippet = "snippet1")
+        val searchResult2 = SearchResult(title = "Empty Disambiguation", pageid = 100, snippet = "")
+
+        val query =
+            Query(
+                searchinfo = SearchInfo(2, null, null),
+                search = listOf(searchResult1, searchResult2))
+        val searchResponse = SearchResponse(query = query)
+
+        // getAllInfo returns both pages
+        val catPage =
+            PageLangLinks(
+                pageid = 1,
+                ns = 0,
+                title = "Cat",
+                langLinks = listOf(LangLink(lang = "he", title = "חתול")),
+                pageProps = null,
+                links = null,
+                extract = null)
+        val disambPage =
+            PageLangLinks(
+                pageid = 100,
+                ns = 0,
+                title = "Empty Disambiguation",
+                langLinks = null,
+                pageProps = PageProps(disambiguation = "", wikibaseShortdesc = null),
+                links = emptyList(), // NO LINKS
+                extract = null)
+
+        val getAllInfoResponse =
+            LangLinksResponse(
+                query = LangLinksQuery(pages = mapOf("1" to catPage, "100" to disambPage)))
+
+        // getLinks returns empty links
+        val linksResponse =
+            LangLinksResponse(
+                query =
+                    LangLinksQuery(pages = mapOf("100" to disambPage.copy(links = emptyList()))))
+
+        whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+        whenever(wikipediaApi.getAllInfo("1|100")).thenReturn(getAllInfoResponse)
+        whenever(wikipediaApi.getLinks("100")).thenReturn(linksResponse)
+
+        val result = repository.searchArticles(lang, term)
+
+        // BUG: Currently returns empty list
+        // SHOULD return: Cat (1 result)
+        // This test will FAIL until we fix the logic
+        assertEquals(1, result.size)
+        assertEquals("Cat", result[0].title)
+        assertEquals(listOf("he"), result[0].availableLanguages)
+      }
 }

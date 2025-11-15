@@ -248,11 +248,11 @@ val translationState = if (langTranslation == null) {
 
 Displays Snackbar: "Translation to {targetLang} not found. Available translations: {langCodes}"
 
-## Flow 4: Disambiguation Pages
+## Flow 4: Disambiguation Pages (Additive Handling)
 
 ### Example
-**Input**: User searches for "Test"
-**Output**: Wikipedia returns disambiguation page, we fetch linked articles instead
+**Input**: User searches for "Test" which returns mixed results: regular articles + disambiguation page
+**Output**: Returns BOTH regular articles AND links from disambiguation page (additive, not exclusive)
 
 ```mermaid
 sequenceDiagram
@@ -263,12 +263,16 @@ sequenceDiagram
     User->>Repo: searchArticles("en", "Test")
 
     Repo->>API: search(searchTerm="Test")
-    API-->>Repo: SearchResponse [pageid: 100, title: "Test (disambiguation)"]
+    API-->>Repo: SearchResponse [Cat, Test (disambiguation), Dog]
 
-    Repo->>API: getAllInfo(pageids="100")
-    API-->>Repo: PageLangLinks [pageProps.disambiguation: "", langLinks: [...]]
+    Repo->>API: getAllInfo(pageids="1|100|2")
+    API-->>Repo: PageLangLinks for all 3 pages
 
-    Note over Repo: Detected disambiguation page<br/>Fetch linked articles
+    Note over Repo: Separate regular articles<br/>from disambiguation pages
+
+    Note over Repo: Process regular articles<br/>(Cat, Dog)
+
+    Note over Repo: Process disambiguation page<br/>Fetch linked articles
 
     Repo->>API: getLinks(pageids="100")
     API-->>Repo: Links: ["Test Article 1", "Test Article 2"]
@@ -276,35 +280,87 @@ sequenceDiagram
     Repo->>API: getLangLinksForTitles(titles="Test Article 1|Test Article 2")
     API-->>Repo: LangLinksResponse for both articles
 
-    Repo-->>User: List<OptionalSourceTerm> [linked articles with translations]
+    Note over Repo: Combine regular articles<br/>+ disambiguation links
+
+    Repo-->>User: [Cat, Dog, Test Article 1, Test Article 2]
 ```
 
-### Code Logic
+### Code Logic (Fixed)
 **File**: `app/src/main/java/com/anysoftkeyboard/janus/app/repository/TranslationRepository.kt`
 
 ```kotlin
-val disambArticles = articlesLinks.query?.pages?.values
-    ?.filter { p -> p.pageProps?.disambiguation != null } ?: emptyList()
+// Separate disambiguation and regular articles
+val disambArticles = allPages.filter { p -> p.pageProps?.disambiguation != null }
+val regularArticles = allPages.filter { p -> p.pageProps?.disambiguation == null }
 
-if (disambArticles.isNotEmpty()) {
-  // Fetch links from disambiguation page
-  val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
-  val titlesOfLinks = links.query?.pages?.values?.map { p -> p.links?.map { l -> l.title } ?: listOf() } ?: emptyList()
-  val flattenedTitles = titlesOfLinks.flatten()
-
-  if (flattenedTitles.isEmpty()) {
-    return emptyList()  // No links found
+// Process regular articles
+val regularResults = searchResults.mapNotNull { searchResult ->
+  val pageData = articlesLinks.query?.pages?.get(searchResult.pageid.toString())
+  if (pageData?.pageProps?.disambiguation == null) {
+    OptionalSourceTerm(
+      pageid = searchResult.pageid,
+      title = searchResult.title,
+      snippet = searchResult.snippet,
+      availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList()
+    )
+  } else {
+    null
   }
-
-  val fullLinks = api.getLangLinksForTitles(flattenedTitles.joinToString("|"))
-  // Return linked articles as search results
 }
+
+// Process disambiguation articles to get their links
+val disambResults = if (disambArticles.isNotEmpty()) {
+  val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
+  val flattenedTitles = /* extract all linked titles */
+
+  if (flattenedTitles.isNotEmpty()) {
+    val fullLinks = api.getLangLinksForTitles(flattenedTitles.joinToString("|"))
+    // Map to OptionalSourceTerm objects
+  } else {
+    emptyList()
+  }
+} else {
+  emptyList()
+}
+
+// Combine both regular articles and disambiguation links (ADDITIVE)
+regularResults + disambResults
 ```
 
-### Special Case: Disambiguation with No Links
-**Example**: "What's up" disambiguation page has no links
+### Key Changes from Previous Behavior
 
-**Behavior**: Returns empty list without calling `getLangLinksForTitles` with empty string
+**Previous (Buggy) Behavior**:
+- If ANY disambiguation page existed in results, ALL regular articles were discarded
+- If disambiguation page had no links, returned empty list even if valid articles existed
+- **Example Bug**: Search returns "Cat" + "Test (disambiguation)" + "Dog"
+  - Old: Returns only disambiguation links (or empty if no links)
+  - **Problem**: "Cat" and "Dog" are lost!
+
+**New (Fixed) Behavior**:
+- Regular articles are ALWAYS included in results
+- Disambiguation links are ADDED to the results (not replacing them)
+- If disambiguation has no links, regular articles are still returned
+- **Example Fix**: Search returns "Cat" + "Test (disambiguation)" + "Dog"
+  - New: Returns "Cat", "Dog", AND any links from "Test (disambiguation)"
+  - **Benefit**: No valid results are lost
+
+### Special Cases
+
+#### Case 1: Only Disambiguation Page (No Links)
+**Example**: "What's up" returns only disambiguation page with no links
+**Behavior**: Returns empty list (no regular articles, no disambiguation links)
+
+#### Case 2: Regular Articles + Disambiguation with No Links
+**Example**: Search returns "Cat" + empty disambiguation page
+**Behavior**: Returns "Cat" (regular article preserved even though disambiguation has no links)
+
+#### Case 3: Only Regular Articles (No Disambiguation)
+**Example**: Search returns "Cat" + "Dog"
+**Behavior**: Returns "Cat" and "Dog" (same as before, no change)
+
+#### Case 4: Mixed Results (Regular + Disambiguation with Links)
+**Example**: Search returns "Cat" + "Test (disambiguation)" with links ["Test 1", "Test 2"]
+**Behavior**: Returns "Cat", "Test 1", "Test 2" (combined results)
 
 ## Flow 5: Network Error
 
