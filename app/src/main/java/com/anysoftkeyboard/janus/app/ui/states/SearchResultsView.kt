@@ -86,11 +86,13 @@ fun SearchResultsView(
           showAvailableLanguages = false,
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
-          onClick = {
-            if (errorMessage == null) {
-              viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
-            }
-          })
+          onClick =
+              if (errorMessage != null) {
+                // No onClick handler for articles with errors
+                null
+              } else {
+                { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) }
+              })
     }
 
     // Divider between sections
@@ -111,13 +113,17 @@ fun SearchResultsView(
           showAvailableLanguages = true,
           isLoading = translationState is TranslationState.Translating,
           errorMessage = errorMessage,
-          onClick = {
-            if (errorMessage == null) {
-              // Show language picker dialog for untranslated articles
-              selectedArticleForPicker = item
-              showLanguagePickerDialog = true
-            }
-          })
+          onClick =
+              if (item.availableLanguages.isEmpty() || errorMessage != null) {
+                // No onClick handler for articles with no translations or errors
+                null
+              } else {
+                {
+                  // Show language picker dialog for untranslated articles
+                  selectedArticleForPicker = item
+                  showLanguagePickerDialog = true
+                }
+              })
     }
   }
 

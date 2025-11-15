@@ -269,4 +269,152 @@ class TranslateViewModelTest {
       assertEquals("Failed to fetch translation", error.errorMessage)
     }
   }
+
+  @Test
+  fun `backToSearchResults navigates from Translated to OptionsFetched state`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Summer",
+            snippet = "hottest season",
+            availableLanguages = listOf("he"))
+    val translation =
+        Translation(
+            sourceWord = "Summer",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "קיץ",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he")
+    fakeRepository.nextTranslations = listOf(translation)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+
+      // Skip to translated state
+      skipItems(1) // Translating state
+      advanceUntilIdle()
+      val translatedState = awaitItem()
+      assertTrue(translatedState is TranslateViewState.Translated)
+
+      // Navigate back to search results
+      viewModel.backToSearchResults()
+      val backState = awaitItem()
+      assertTrue(backState is TranslateViewState.OptionsFetched)
+      val backToOptions = backState as TranslateViewState.OptionsFetched
+      assertEquals("test", backToOptions.searchTerm)
+      assertEquals(1, backToOptions.options.size)
+    }
+  }
+
+  @Test
+  fun `backToSearchResults with no previous results returns to Empty state`() = runTest {
+    // Initial state is Empty
+    assertEquals(TranslateViewState.Empty, viewModel.pageState.value)
+
+    // Call backToSearchResults without any previous search
+    viewModel.backToSearchResults()
+
+    // State should remain Empty (StateFlow doesn't emit if value doesn't change)
+    assertEquals(TranslateViewState.Empty, viewModel.pageState.value)
+  }
+
+  @Test
+  fun `clearSearch navigates from OptionsFetched to Empty state`() = runTest {
+    val searchResults =
+        listOf(
+            OptionalSourceTerm(
+                pageid = 1,
+                title = "Summer",
+                snippet = "hottest season",
+                availableLanguages = listOf("he")))
+    fakeRepository.nextSearchResults = searchResults
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "season")
+      skipItems(1) // FetchingOptions state
+      advanceUntilIdle()
+      val optionsFetched = awaitItem()
+      assertTrue(optionsFetched is TranslateViewState.OptionsFetched)
+
+      // Clear search
+      viewModel.clearSearch()
+      val clearedState = awaitItem()
+      assertTrue(clearedState is TranslateViewState.Empty)
+    }
+  }
+
+  @Test
+  fun `clearSearch navigates from Error to Empty state`() = runTest {
+    val testException = IllegalStateException("Network error")
+    fakeRepository.searchException = testException
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "test")
+      skipItems(1) // FetchingOptions state
+      advanceUntilIdle()
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+
+      // Clear search from error state
+      viewModel.clearSearch()
+      val clearedState = awaitItem()
+      assertTrue(clearedState is TranslateViewState.Empty)
+    }
+  }
+
+  @Test
+  fun `clearSearch also clears saved search results`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Summer",
+            snippet = "hottest season",
+            availableLanguages = listOf("he"))
+    val translation =
+        Translation(
+            sourceWord = "Summer",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "קיץ",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he")
+    fakeRepository.nextTranslations = listOf(translation)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+
+      skipItems(1) // Translating state
+      advanceUntilIdle()
+      skipItems(1) // Translated state
+
+      // Clear search (which clears saved results)
+      viewModel.clearSearch()
+      val clearedState = awaitItem()
+      assertTrue(clearedState is TranslateViewState.Empty)
+
+      // Try to go back - should stay Empty since saved results were cleared
+      // No need to await since Empty -> Empty doesn't emit
+      viewModel.backToSearchResults()
+      assertEquals(TranslateViewState.Empty, viewModel.pageState.value)
+    }
+  }
 }
