@@ -360,6 +360,23 @@ class TranslationRepositoryTest {
   }
 
   @Test
+  fun `test searchArticles with empty search list returns empty list`() = runTest {
+    val term = "test"
+    val lang = "en"
+    // Wikipedia returns a query with empty search list (no results)
+    // This happens when search term exists but has no actual results
+    val query = Query(searchinfo = SearchInfo(0, null, null), search = emptyList())
+    val searchResponse = SearchResponse(query = query)
+
+    whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+
+    val result = repository.searchArticles(lang, term)
+
+    // Should return empty list without calling getAllInfo (which would fail with empty pageids)
+    assertEquals(0, result.size)
+  }
+
+  @Test
   fun `test searchArticles disambiguation path with langlinks`() = runTest {
     val term = "test"
     val lang = "en"
