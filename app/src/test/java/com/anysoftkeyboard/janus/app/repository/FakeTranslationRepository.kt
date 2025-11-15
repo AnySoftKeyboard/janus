@@ -33,7 +33,8 @@ constructor(
 
   override suspend fun fetchTranslations(
       searchPage: OptionalSourceTerm,
-      sourceLang: String
+      sourceLang: String,
+      targetLang: String
   ): List<Translation> {
     fetchException?.let { throw it }
     return nextTranslations

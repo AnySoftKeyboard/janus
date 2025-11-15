@@ -4,7 +4,6 @@ import android.util.Log
 import com.anysoftkeyboard.janus.app.di.LangWikipediaFactory
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
-import com.anysoftkeyboard.janus.network.PageLangLinks
 import kotlinx.coroutines.flow.Flow
 
 data class OptionalSourceTerm(
@@ -74,7 +73,8 @@ open class TranslationRepository(
 
   open suspend fun fetchTranslations(
       searchPage: OptionalSourceTerm,
-      sourceLang: String
+      sourceLang: String,
+      targetLang: String
   ): List<Translation> {
     val langLinksResponse =
         wikipediaApi.createWikipediaApi(sourceLang).getAllInfo(searchPage.pageid.toString())
@@ -83,23 +83,36 @@ open class TranslationRepository(
     val langLinks = page.langLinks ?: throw Exception("langLinks not found")
     Log.i("TranslationRepository", "langLinks: ${langLinks.size}")
 
-    // Fetch target article details for all target languages
-    // Group by language to make separate API calls per language
-    val translationsByLang = langLinks.groupBy { it.lang }
-    val targetArticleDetails = mutableMapOf<Pair<String, String>, PageLangLinks>()
-
-    for ((targetLang, links) in translationsByLang) {
-      val titles = links.joinToString("|") { it.title }
-      val targetApi = wikipediaApi.createWikipediaApi(targetLang)
-      val detailsResponse = targetApi.getArticleDetails(titles)
-      detailsResponse.query?.pages?.values?.forEach { targetPage ->
-        targetArticleDetails[Pair(targetLang, targetPage.title)] = targetPage
+    // Filter to only the target language the user requested
+    val targetLangLinks = langLinks.filter { it.lang == targetLang }
+    if (targetLangLinks.isEmpty()) {
+      // Target language not available, return all available translations for error handling
+      return langLinks.map { link ->
+        Translation(
+            sourceWord = page.title,
+            sourceLangCode = sourceLang,
+            sourceArticleUrl = "https://${sourceLang}.wikipedia.org/?curid=${page.pageid}",
+            sourceShortDescription = page.pageProps?.wikibaseShortdesc,
+            sourceSummary = searchPage.snippet,
+            translatedWord = link.title,
+            targetLangCode = link.lang,
+            targetArticleUrl = "https://${link.lang}.wikipedia.org/wiki/${link.title}",
+            targetShortDescription = null,
+            targetSummary = null,
+        )
       }
     }
 
-    return langLinks
+    // Fetch target article details for only the requested target language
+    val titles = targetLangLinks.joinToString("|") { it.title }
+    val targetApi = wikipediaApi.createWikipediaApi(targetLang)
+    val detailsResponse = targetApi.getArticleDetails(titles)
+    val targetArticleDetails =
+        detailsResponse.query?.pages?.values?.associateBy { it.title } ?: emptyMap()
+
+    return targetLangLinks
         .map { link ->
-          val targetDetails = targetArticleDetails[Pair(link.lang, link.title)]
+          val targetDetails = targetArticleDetails[link.title]
           Translation(
               sourceWord = page.title,
               sourceLangCode = sourceLang,
