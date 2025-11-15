@@ -63,7 +63,7 @@ class TranslationRepositoryTest {
                 listOf(
                     LangLink(lang = "he", title = "כותרת"), LangLink(lang = "fr", title = "titre")),
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val langLinksResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("1" to pageLangLinks)))
 
@@ -90,7 +90,8 @@ class TranslationRepositoryTest {
             title = "title",
             langLinks = listOf(langLink),
             pageProps = PageProps(disambiguation = null, wikibaseShortdesc = "short description"),
-            links = null)
+            links = null,
+            extract = null)
     val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
     val langLinksResponse = LangLinksResponse(query = langLinksQuery)
     val optionalSourceTerm =
@@ -100,7 +101,21 @@ class TranslationRepositoryTest {
             snippet = "snippet",
             availableLanguages = listOf(targetLang))
 
+    // Mock target article details
+    val targetArticlePage =
+        PageLangLinks(
+            pageid = 2L,
+            ns = 0,
+            title = "כותרת",
+            langLinks = null,
+            pageProps = PageProps(disambiguation = null, wikibaseShortdesc = "target description"),
+            links = null,
+            extract = "Target article extract")
+    val targetDetailsResponse =
+        LangLinksResponse(query = LangLinksQuery(pages = mapOf("2" to targetArticlePage)))
+
     whenever(wikipediaApi.getAllInfo(pageId.toString())).thenReturn(langLinksResponse)
+    whenever(wikipediaApi.getArticleDetails("כותרת")).thenReturn(targetDetailsResponse)
 
     val result = repository.fetchTranslations(optionalSourceTerm, sourceLang)
 
@@ -113,6 +128,9 @@ class TranslationRepositoryTest {
     // Verify URLs are constructed correctly
     assertEquals("https://en.wikipedia.org/?curid=1", result[0].sourceArticleUrl)
     assertEquals("https://he.wikipedia.org/wiki/כותרת", result[0].targetArticleUrl)
+    // Verify target article details are populated
+    assertEquals("target description", result[0].targetShortDescription)
+    assertEquals("Target article extract", result[0].targetSummary)
     verify(translationDao).insertTranslation(any())
   }
 
@@ -131,7 +149,8 @@ class TranslationRepositoryTest {
                 title = "Été",
                 langLinks = listOf(langLink),
                 pageProps = null,
-                links = null)
+                links = null,
+                extract = null)
         val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
         val langLinksResponse = LangLinksResponse(query = langLinksQuery)
         val optionalSourceTerm =
@@ -141,7 +160,21 @@ class TranslationRepositoryTest {
                 snippet = "snippet",
                 availableLanguages = listOf(targetLang))
 
+        // Mock target article details
+        val targetArticlePage =
+            PageLangLinks(
+                pageid = 43L,
+                ns = 0,
+                title = targetTitle,
+                langLinks = null,
+                pageProps = null,
+                links = null,
+                extract = null)
+        val targetDetailsResponse =
+            LangLinksResponse(query = LangLinksQuery(pages = mapOf("43" to targetArticlePage)))
+
         whenever(wikipediaApi.getAllInfo(pageId.toString())).thenReturn(langLinksResponse)
+        whenever(wikipediaApi.getArticleDetails(targetTitle)).thenReturn(targetDetailsResponse)
 
         val result = repository.fetchTranslations(optionalSourceTerm, sourceLang)
 
@@ -166,7 +199,7 @@ class TranslationRepositoryTest {
                 title = "New Year",
                 langLinks = listOf(langLink),
                 pageProps = null,
-                links = null)
+                links = null, extract = null)
         val langLinksQuery = LangLinksQuery(pages = mapOf(pageId.toString() to pageLangLinks))
         val langLinksResponse = LangLinksResponse(query = langLinksQuery)
         val optionalSourceTerm =
@@ -176,7 +209,21 @@ class TranslationRepositoryTest {
                 snippet = "snippet",
                 availableLanguages = listOf(targetLang))
 
+        // Mock target article details
+        val targetArticlePage =
+            PageLangLinks(
+                pageid = 124L,
+                ns = 0,
+                title = targetTitle,
+                langLinks = null,
+                pageProps = null,
+                links = null,
+                extract = null)
+        val targetDetailsResponse =
+            LangLinksResponse(query = LangLinksQuery(pages = mapOf("124" to targetArticlePage)))
+
         whenever(wikipediaApi.getAllInfo(pageId.toString())).thenReturn(langLinksResponse)
+        whenever(wikipediaApi.getArticleDetails(targetTitle)).thenReturn(targetDetailsResponse)
 
         val result = repository.fetchTranslations(optionalSourceTerm, sourceLang)
 
@@ -202,7 +249,7 @@ class TranslationRepositoryTest {
             title = "Rare Article",
             langLinks = emptyList(), // No translations available
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val langLinksResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("1" to pageLangLinks)))
 
@@ -233,7 +280,7 @@ class TranslationRepositoryTest {
             title = "Test Article",
             langLinks = null, // null langLinks
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val langLinksResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("1" to pageLangLinks)))
 
@@ -269,7 +316,7 @@ class TranslationRepositoryTest {
                     LangLink(lang = "he", title = "מאמר 1"),
                     LangLink(lang = "fr", title = "Article 1")),
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val pageLangLinks2 =
         PageLangLinks(
             pageid = 2,
@@ -277,7 +324,7 @@ class TranslationRepositoryTest {
             title = "Article 2",
             langLinks = emptyList(), // No translations
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val pageLangLinks3 =
         PageLangLinks(
             pageid = 3,
@@ -285,7 +332,7 @@ class TranslationRepositoryTest {
             title = "Article 3",
             langLinks = listOf(LangLink(lang = "es", title = "Artículo 3")),
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val langLinksResponse =
         LangLinksResponse(
             query =
@@ -398,7 +445,7 @@ class TranslationRepositoryTest {
             langLinks = listOf(LangLink(lang = "he", title = "מבחן (פירושונים)")),
             pageProps =
                 PageProps(disambiguation = "", wikibaseShortdesc = null), // disambiguation marker
-            links = null)
+            links = null, extract = null)
     val disambResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("100" to disambPage)))
 
@@ -410,7 +457,8 @@ class TranslationRepositoryTest {
             title = "Test Article 1",
             langLinks = null,
             pageProps = null,
-            links = listOf(Link(title = "Test Article 1"), Link(title = "Test Article 2")))
+            links = listOf(Link(title = "Test Article 1"), Link(title = "Test Article 2")),
+            extract = null)
     val linksResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("101" to linkedPage1)))
 
@@ -425,7 +473,7 @@ class TranslationRepositoryTest {
                     LangLink(lang = "he", title = "מאמר מבחן 1"),
                     LangLink(lang = "fr", title = "Article de test 1")),
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val finalArticle2 =
         PageLangLinks(
             pageid = 202,
@@ -433,7 +481,7 @@ class TranslationRepositoryTest {
             title = "Test Article 2",
             langLinks = listOf(LangLink(lang = "es", title = "Artículo de prueba 2")),
             pageProps = null,
-            links = null)
+            links = null, extract = null)
     val finalResponse =
         LangLinksResponse(
             query = LangLinksQuery(pages = mapOf("201" to finalArticle1, "202" to finalArticle2)))
@@ -472,7 +520,7 @@ class TranslationRepositoryTest {
             title = "What's up",
             langLinks = null,
             pageProps = PageProps(disambiguation = "", wikibaseShortdesc = null),
-            links = null)
+            links = null, extract = null)
     val disambResponse =
         LangLinksResponse(query = LangLinksQuery(pages = mapOf("100" to disambPage)))
 

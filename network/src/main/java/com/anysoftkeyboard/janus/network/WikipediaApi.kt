@@ -19,4 +19,8 @@ interface WikipediaApi {
 
   @GET("api.php?action=query&generator=links&gpllimit=max&prop=pageprops&format=json")
   suspend fun getLinks(@Query("pageids") pageIds: String): LangLinksResponse
+
+  @GET(
+      "api.php?action=query&prop=extracts|pageprops&format=json&exintro=true&explaintext=true&exsentences=2")
+  suspend fun getArticleDetails(@Query("titles") titles: String): LangLinksResponse
 }

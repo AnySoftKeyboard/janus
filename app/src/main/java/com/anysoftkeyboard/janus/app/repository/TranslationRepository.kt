@@ -4,6 +4,7 @@ import android.util.Log
 import com.anysoftkeyboard.janus.app.di.LangWikipediaFactory
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.network.PageLangLinks
 import kotlinx.coroutines.flow.Flow
 
 data class OptionalSourceTerm(
@@ -81,22 +82,35 @@ open class TranslationRepository(
         langLinksResponse.query?.pages?.values?.firstOrNull() ?: throw Exception("Page not found")
     val langLinks = page.langLinks ?: throw Exception("langLinks not found")
     Log.i("TranslationRepository", "langLinks: ${langLinks.size}")
-    for (link in langLinks) {
-      Log.i("TranslationRepository", "langLink: ${link.lang} -> ${link.title} ")
+
+    // Fetch target article details for all target languages
+    // Group by language to make separate API calls per language
+    val translationsByLang = langLinks.groupBy { it.lang }
+    val targetArticleDetails = mutableMapOf<Pair<String, String>, PageLangLinks>()
+
+    for ((targetLang, links) in translationsByLang) {
+      val titles = links.joinToString("|") { it.title }
+      val targetApi = wikipediaApi.createWikipediaApi(targetLang)
+      val detailsResponse = targetApi.getArticleDetails(titles)
+      detailsResponse.query?.pages?.values?.forEach { targetPage ->
+        targetArticleDetails[Pair(targetLang, targetPage.title)] = targetPage
+      }
     }
+
     return langLinks
-        .map {
+        .map { link ->
+          val targetDetails = targetArticleDetails[Pair(link.lang, link.title)]
           Translation(
               sourceWord = page.title,
               sourceLangCode = sourceLang,
               sourceArticleUrl = "https://${sourceLang}.wikipedia.org/?curid=${page.pageid}",
               sourceShortDescription = page.pageProps?.wikibaseShortdesc,
               sourceSummary = searchPage.snippet,
-              translatedWord = it.title,
-              targetLangCode = it.lang,
-              targetArticleUrl = "https://${it.lang}.wikipedia.org/wiki/${it.title}",
-              targetShortDescription = null,
-              targetSummary = null,
+              translatedWord = link.title,
+              targetLangCode = link.lang,
+              targetArticleUrl = "https://${link.lang}.wikipedia.org/wiki/${link.title}",
+              targetShortDescription = targetDetails?.pageProps?.wikibaseShortdesc,
+              targetSummary = targetDetails?.extract,
           )
         }
         .also { it.forEach { t -> translationDao.insertTranslation(t) } }
