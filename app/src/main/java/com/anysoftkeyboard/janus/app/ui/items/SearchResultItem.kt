@@ -39,7 +39,7 @@ import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
  * @param showAvailableLanguages Whether to show list of available translations
  * @param isLoading Whether translation is currently loading
  * @param errorMessage Error message to display if translation failed
- * @param onClick Callback when the card is clicked
+ * @param onClick Callback when the card is clicked, or null to disable clicking
  */
 @Composable
 fun SearchResultItem(
@@ -49,9 +49,14 @@ fun SearchResultItem(
     showAvailableLanguages: Boolean,
     isLoading: Boolean,
     errorMessage: String?,
-    onClick: () -> Unit
+    onClick: (() -> Unit)?
 ) {
-  Card(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable(onClick = onClick)) {
+  val modifier =
+      Modifier.fillMaxWidth().padding(vertical = 4.dp).let {
+        if (onClick != null) it.clickable(onClick = onClick) else it
+      }
+
+  Card(modifier = modifier) {
     Column(modifier = Modifier.padding(16.dp)) {
       // Title row with Wikipedia link button
       Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
@@ -109,11 +114,18 @@ private fun ErrorContent(errorMessage: String) {
   }
 }
 
-/** Displays list of available translation languages. */
+/** Displays list of available translation languages or a message if none available. */
 @Composable
 private fun AvailableLanguagesText(availableLanguages: List<String>) {
+  val text =
+      if (availableLanguages.isEmpty()) {
+        "No translations available"
+      } else {
+        "Available in: ${availableLanguages.joinToString(", ") { it.uppercase() }}"
+      }
+
   Text(
-      text = "Available in: ${availableLanguages.joinToString(", ") { it.uppercase() }}",
+      text = text,
       style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
