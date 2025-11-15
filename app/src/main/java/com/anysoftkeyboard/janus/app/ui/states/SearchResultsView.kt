@@ -13,9 +13,15 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
+import com.anysoftkeyboard.janus.app.ui.components.LanguagePickerDialog
 import com.anysoftkeyboard.janus.app.ui.items.SearchResultItem
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -46,6 +52,10 @@ fun SearchResultsView(
 ) {
   val translatedArticles = pageState.options.filter { targetLang in it.availableLanguages }
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
+
+  // State for language picker dialog
+  var showLanguagePickerDialog by remember { mutableStateOf(false) }
+  var selectedArticleForPicker by remember { mutableStateOf<OptionalSourceTerm?>(null) }
 
   // Show snackbar immediately when translation errors occur
   LaunchedEffect(pageState.translations) {
@@ -103,10 +113,29 @@ fun SearchResultsView(
           errorMessage = errorMessage,
           onClick = {
             if (errorMessage == null) {
-              viewModel.fetchTranslation(pageState, item, sourceLang, targetLang)
+              // Show language picker dialog for untranslated articles
+              selectedArticleForPicker = item
+              showLanguagePickerDialog = true
             }
           })
     }
+  }
+
+  // Language picker dialog for untranslated articles
+  if (showLanguagePickerDialog && selectedArticleForPicker != null) {
+    LanguagePickerDialog(
+        availableLanguages = selectedArticleForPicker!!.availableLanguages,
+        onLanguageSelected = { selectedLanguage ->
+          // Fetch translation with the selected language
+          viewModel.fetchTranslation(
+              pageState, selectedArticleForPicker!!, sourceLang, selectedLanguage)
+          showLanguagePickerDialog = false
+          selectedArticleForPicker = null
+        },
+        onDismiss = {
+          showLanguagePickerDialog = false
+          selectedArticleForPicker = null
+        })
   }
 }
 
