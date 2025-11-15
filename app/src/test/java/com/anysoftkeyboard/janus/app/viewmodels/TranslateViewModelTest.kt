@@ -131,7 +131,7 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched(listOf(searchTerm), emptyMap())
+      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
       viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
 
       // First update: Translating state
@@ -192,7 +192,7 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched(listOf(searchTerm), emptyMap())
+      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
       viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
 
       // First update: Translating state
@@ -248,7 +248,7 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched(listOf(searchTerm), emptyMap())
+      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
       viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
 
       // First update: Translating state

@@ -28,7 +28,11 @@ open class TranslationRepository(
     val api = wikipediaApi.createWikipediaApi(sourceLang)
     val searchResponse = api.search(searchTerm = term)
     // From here, we want to only get the Disambiguation pages (unless there are none.
-    return searchResponse.query.search?.let {
+    return searchResponse.query?.search?.let {
+      // If search returned empty list, return empty list immediately
+      if (it.isEmpty()) {
+        return emptyList()
+      }
       val articlesLinks = api.getAllInfo(it.map { p -> p.pageid }.joinToString("|"))
       val disambArticles =
           articlesLinks.query.pages.values.filter { p -> p.pageProps?.disambiguation != null }
@@ -57,7 +61,7 @@ open class TranslationRepository(
               availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
         }
       }
-    } ?: throw Exception("Search failed")
+    } ?: emptyList() // Return empty list when no results found
   }
 
   open suspend fun fetchTranslations(

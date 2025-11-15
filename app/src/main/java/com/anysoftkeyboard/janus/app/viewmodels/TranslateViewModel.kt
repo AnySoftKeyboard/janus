@@ -31,6 +31,7 @@ sealed class TranslateViewState() {
   object FetchingOptions : TranslateViewState()
 
   data class OptionsFetched(
+      val searchTerm: String,
       val options: List<OptionalSourceTerm>,
       val translations: Map<OptionalSourceTerm, TranslationState>
   ) : TranslateViewState()
@@ -57,7 +58,7 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
       try {
         _state.value =
             TranslateViewState.OptionsFetched(
-                repository.searchArticles(sourceLang, term), emptyMap())
+                term, repository.searchArticles(sourceLang, term), emptyMap())
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
         val errorType = e.javaClass.simpleName
@@ -75,6 +76,7 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
   ) {
     _state.value =
         TranslateViewState.OptionsFetched(
+            sources.searchTerm,
             sources.options,
             sources.translations.plus(Pair(searchPage, TranslationState.Translating)))
     viewModelScope.launch {
@@ -95,6 +97,7 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
         val errorMessage = e.message ?: "Unknown error occurred"
         _state.value =
             TranslateViewState.OptionsFetched(
+                sources.searchTerm,
                 sources.options,
                 sources.translations.plus(Pair(searchPage, TranslationState.Error(errorMessage))))
       }

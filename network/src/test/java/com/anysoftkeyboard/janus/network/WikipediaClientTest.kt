@@ -78,15 +78,15 @@ class WikipediaClientTest {
 
     val response = wikipediaApi.search("summer")
 
-    assertEquals(901620, response.query.searchinfo?.totalhits)
-    assertEquals("somer", response.query.searchinfo?.suggestion)
-    assertEquals("somer", response.query.searchinfo?.suggestionsnippet)
-    assertEquals(2, response.query.search?.size)
-    assertEquals("Summer", response.query.search?.get(0)?.title)
-    assertEquals(29392L, response.query.search?.get(0)?.pageid)
+    assertEquals(901620, response.query!!.searchinfo?.totalhits)
+    assertEquals("somer", response.query!!.searchinfo?.suggestion)
+    assertEquals("somer", response.query!!.searchinfo?.suggestionsnippet)
+    assertEquals(2, response.query!!.search?.size)
+    assertEquals("Summer", response.query!!.search?.get(0)?.title)
+    assertEquals(29392L, response.query!!.search?.get(0)?.pageid)
     assertEquals(
         "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
-        response.query.search?.get(0)?.snippet)
-    assertEquals("Monster Summer", response.query.search?.get(1)?.title)
+        response.query!!.search?.get(0)?.snippet)
+    assertEquals("Monster Summer", response.query!!.search?.get(1)?.title)
   }
 }
