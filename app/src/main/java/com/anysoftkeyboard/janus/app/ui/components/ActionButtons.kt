@@ -1,5 +1,8 @@
 package com.anysoftkeyboard.janus.app.ui.components
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.material.icons.Icons
@@ -54,9 +57,12 @@ fun CopyToClipboardButton(
     tint: Color = MaterialTheme.colorScheme.primary,
     onClick: (() -> Unit)? = null
 ) {
+  val context = LocalContext.current
   IconButton(
       onClick = {
-        // TODO: Implement clipboard copy
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("article_title", text)
+        clipboard.setPrimaryClip(clip)
         onClick?.invoke()
       }) {
         Icon(

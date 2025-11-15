@@ -63,7 +63,7 @@ private fun SourceArticleSection(
     translation: TranslationState
 ) {
   Column(modifier = Modifier.fillMaxWidth()) {
-    // Header with title and Wikipedia link
+    // Header with title and action buttons
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -78,10 +78,19 @@ private fun SourceArticleSection(
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant)
           }
-          WikipediaLinkButton(
-              url = "https://${language}.wikipedia.org/?curid=${pageId}",
-              contentDescription = "Open source article",
-              tint = MaterialTheme.colorScheme.onSurfaceVariant)
+          Row {
+            CopyToClipboardButton(
+                text = title,
+                contentDescription = "Copy source title",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            BookmarkButton(
+                contentDescription = "Bookmark source article",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            WikipediaLinkButton(
+                url = "https://${language}.wikipedia.org/?curid=${pageId}",
+                contentDescription = "Open source article",
+                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+          }
         }
 
     // Show short description and snippet if available
@@ -132,7 +141,7 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
   val translationData = translation.translation
 
   Column(modifier = Modifier.fillMaxWidth()) {
-    // Target article header with title and Wikipedia link
+    // Target article header with title and action buttons
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -147,8 +156,13 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
                 style = MaterialTheme.typography.labelLarge,
                 color = MaterialTheme.colorScheme.primary)
           }
-          WikipediaLinkButton(
-              url = translationData.targetArticleUrl, contentDescription = "Open target article")
+          Row {
+            CopyToClipboardButton(
+                text = translationData.translatedWord, contentDescription = "Copy translated title")
+            BookmarkButton(contentDescription = "Bookmark translation")
+            WikipediaLinkButton(
+                url = translationData.targetArticleUrl, contentDescription = "Open target article")
+          }
         }
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -168,13 +182,6 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
           text = summary,
           style = MaterialTheme.typography.bodySmall,
           color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-
-    // Action buttons
-    Spacer(modifier = Modifier.height(16.dp))
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-      BookmarkButton()
-      CopyToClipboardButton(text = translationData.translatedWord)
     }
   }
 }
