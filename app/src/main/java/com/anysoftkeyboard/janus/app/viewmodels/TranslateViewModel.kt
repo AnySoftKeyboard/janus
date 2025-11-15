@@ -52,6 +52,9 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
 
+  // Track previous state for back navigation
+  private var previousSearchResults: TranslateViewState.OptionsFetched? = null
+
   fun searchArticles(sourceLang: String, term: String) {
     _state.value = TranslateViewState.FetchingOptions
     viewModelScope.launch {
@@ -74,11 +77,12 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
       sourceLang: String,
       targetLang: String
   ) {
-    _state.value =
+    val updatedSources =
         TranslateViewState.OptionsFetched(
             sources.searchTerm,
             sources.options,
             sources.translations.plus(Pair(searchPage, TranslationState.Translating)))
+    _state.value = updatedSources
     viewModelScope.launch {
       try {
         val translations = repository.fetchTranslations(searchPage, sourceLang, targetLang)
@@ -90,7 +94,13 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
             } else {
               TranslationState.Translated(langTranslation)
             }
-        sources.translations.plus(Pair(searchPage, translationState))
+        val finalSources =
+            TranslateViewState.OptionsFetched(
+                updatedSources.searchTerm,
+                updatedSources.options,
+                updatedSources.translations.plus(Pair(searchPage, translationState)))
+        // Save search results before transitioning to Translated state for back navigation
+        previousSearchResults = finalSources
         _state.value =
             TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
       } catch (e: Exception) {
@@ -103,5 +113,20 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
                 sources.translations.plus(Pair(searchPage, TranslationState.Error(errorMessage))))
       }
     }
+  }
+
+  /**
+   * Navigate back from Translated state to the previous search results. If no previous results
+   * exist, clears to Empty state.
+   */
+  fun backToSearchResults() {
+    previousSearchResults?.let { _state.value = it }
+        ?: run { _state.value = TranslateViewState.Empty }
+  }
+
+  /** Clear search and return to Empty state. Also clears saved search results. */
+  fun clearSearch() {
+    _state.value = TranslateViewState.Empty
+    previousSearchResults = null
   }
 }

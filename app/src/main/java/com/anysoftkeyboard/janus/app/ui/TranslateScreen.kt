@@ -4,6 +4,7 @@ import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,6 +57,21 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var targetLang by remember { mutableStateOf("he") }
   val pageState by viewModel.pageState.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
+
+  // Handle back button navigation within translation flow
+  BackHandler(enabled = pageState !is TranslateViewState.Empty) {
+    when (pageState) {
+      is TranslateViewState.Translated -> viewModel.backToSearchResults()
+      is TranslateViewState.OptionsFetched -> viewModel.clearSearch()
+      is TranslateViewState.Error -> viewModel.clearSearch()
+      is TranslateViewState.FetchingOptions -> {
+        // Let system handle back during loading
+      }
+      else -> {
+        // Empty state - let system back work normally
+      }
+    }
+  }
 
   Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
     Column(

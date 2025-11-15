@@ -55,7 +55,12 @@ fun JanusApp() {
                 onClick = {
                   selectedTab = screen
                   navController.navigate(screen.route) {
-                    popUpTo(navController.graph.startDestinationId) { saveState = true }
+                    // Build back stack by only popping up to start destination
+                    // This allows back button to navigate through tab history
+                    popUpTo(TabScreen.Translate.route) {
+                      inclusive = false
+                      saveState = true
+                    }
                     launchSingleTop = true
                     restoreState = true
                   }
