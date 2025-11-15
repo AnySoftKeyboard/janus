@@ -27,69 +27,118 @@ open class TranslationRepository(
   ): List<OptionalSourceTerm> {
     val api = wikipediaApi.createWikipediaApi(sourceLang)
     val searchResponse = api.search(searchTerm = term)
-    // From here, we want to only get the Disambiguation pages (unless there are none.
-    return searchResponse.query?.search?.let {
+    return searchResponse.query?.search?.let { searchResults ->
       // If search returned empty list, return empty list immediately
-      if (it.isEmpty()) {
+      if (searchResults.isEmpty()) {
         return emptyList()
       }
-      val articlesLinks = api.getAllInfo(it.map { p -> p.pageid }.joinToString("|"))
-      val disambArticles =
-          articlesLinks.query.pages.values.filter { p -> p.pageProps?.disambiguation != null }
-      if (disambArticles.isNotEmpty()) {
-        // since we have disambiguation articles, we want to return their links
-        val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
-        val titlesOfLinks =
-            links.query.pages.values.map { p -> p.links?.map { l -> l.title } ?: listOf() }
-        val fullLinks = api.getLangLinksForTitles(titlesOfLinks.flatten().joinToString("|"))
-        // return the links as search results
-        fullLinks.query.pages.values.map { p ->
-          OptionalSourceTerm(
-              pageid = p.pageid,
-              title = p.title,
-              snippet = "",
-              availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
-        }
-      } else {
-        // I guess this is what it is.
-        it.map { searchResponse ->
-          val pageData = articlesLinks.query.pages[searchResponse.pageid.toString()]
-          OptionalSourceTerm(
-              pageid = searchResponse.pageid,
-              title = searchResponse.title,
-              snippet = searchResponse.snippet,
-              availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
-        }
-      }
+
+      val articlesLinks = api.getAllInfo(searchResults.map { p -> p.pageid }.joinToString("|"))
+      val allPages = articlesLinks.query?.pages?.values ?: emptyList()
+
+      // Separate disambiguation and regular articles
+      val disambArticles = allPages.filter { p -> p.pageProps?.disambiguation != null }
+      val regularArticles = allPages.filter { p -> p.pageProps?.disambiguation == null }
+
+      // Process regular articles
+      val regularResults =
+          searchResults.mapNotNull { searchResult ->
+            val pageData = articlesLinks.query?.pages?.get(searchResult.pageid.toString())
+            // Only include if it's not a disambiguation page
+            if (pageData?.pageProps?.disambiguation == null) {
+              OptionalSourceTerm(
+                  pageid = searchResult.pageid,
+                  title = searchResult.title,
+                  snippet = searchResult.snippet,
+                  availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
+            } else {
+              null
+            }
+          }
+
+      // Process disambiguation articles to get their links
+      val disambResults =
+          if (disambArticles.isNotEmpty()) {
+            val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
+            val titlesOfLinks =
+                links.query?.pages?.values?.map { p -> p.links?.map { l -> l.title } ?: listOf() }
+                    ?: emptyList()
+            val flattenedTitles = titlesOfLinks.flatten()
+
+            if (flattenedTitles.isNotEmpty()) {
+              val fullLinks = api.getLangLinksForTitles(flattenedTitles.joinToString("|"))
+              fullLinks.query?.pages?.values?.map { p ->
+                OptionalSourceTerm(
+                    pageid = p.pageid,
+                    title = p.title,
+                    snippet = "",
+                    availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
+              } ?: emptyList()
+            } else {
+              emptyList()
+            }
+          } else {
+            emptyList()
+          }
+
+      // Combine both regular articles and disambiguation links
+      regularResults + disambResults
     } ?: emptyList() // Return empty list when no results found
   }
 
   open suspend fun fetchTranslations(
       searchPage: OptionalSourceTerm,
-      sourceLang: String
+      sourceLang: String,
+      targetLang: String
   ): List<Translation> {
     val langLinksResponse =
         wikipediaApi.createWikipediaApi(sourceLang).getAllInfo(searchPage.pageid.toString())
     val page =
-        langLinksResponse.query.pages.values.firstOrNull() ?: throw Exception("Page not found")
+        langLinksResponse.query?.pages?.values?.firstOrNull() ?: throw Exception("Page not found")
     val langLinks = page.langLinks ?: throw Exception("langLinks not found")
     Log.i("TranslationRepository", "langLinks: ${langLinks.size}")
-    for (link in langLinks) {
-      Log.i("TranslationRepository", "langLink: ${link.lang} -> ${link.title} ")
+
+    // Filter to only the target language the user requested
+    val targetLangLinks = langLinks.filter { it.lang == targetLang }
+    if (targetLangLinks.isEmpty()) {
+      // Target language not available, return all available translations for error handling
+      return langLinks.map { link ->
+        Translation(
+            sourceWord = page.title,
+            sourceLangCode = sourceLang,
+            sourceArticleUrl = "https://${sourceLang}.wikipedia.org/?curid=${page.pageid}",
+            sourceShortDescription = page.pageProps?.wikibaseShortdesc,
+            sourceSummary = searchPage.snippet,
+            translatedWord = link.title,
+            targetLangCode = link.lang,
+            targetArticleUrl = "https://${link.lang}.wikipedia.org/wiki/${link.title}",
+            targetShortDescription = null,
+            targetSummary = null,
+        )
+      }
     }
-    return langLinks
-        .map {
+
+    // Fetch target article details for only the requested target language
+    val titles = targetLangLinks.joinToString("|") { it.title }
+    val targetApi = wikipediaApi.createWikipediaApi(targetLang)
+    val detailsResponse = targetApi.getArticleDetails(titles)
+    val targetArticleDetails =
+        detailsResponse.query?.pages?.values?.associateBy { it.title } ?: emptyMap()
+
+    return targetLangLinks
+        .map { link ->
+          val targetDetails = targetArticleDetails[link.title]
           Translation(
               sourceWord = page.title,
               sourceLangCode = sourceLang,
               sourceArticleUrl = "https://${sourceLang}.wikipedia.org/?curid=${page.pageid}",
               sourceShortDescription = page.pageProps?.wikibaseShortdesc,
               sourceSummary = searchPage.snippet,
-              translatedWord = it.title,
-              targetLangCode = it.lang,
-              targetArticleUrl = "https://${it.lang}.wikipedia.org/wiki/${it.title}",
-              targetShortDescription = null,
-              targetSummary = null,
+              translatedWord = link.title,
+              targetLangCode = link.lang,
+              targetArticleUrl = "https://${link.lang}.wikipedia.org/wiki/${link.title}",
+              targetShortDescription = targetDetails?.pageProps?.wikibaseShortdesc,
+              targetSummary = targetDetails?.extract,
           )
         }
         .also { it.forEach { t -> translationDao.insertTranslation(t) } }

@@ -81,10 +81,11 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
             sources.translations.plus(Pair(searchPage, TranslationState.Translating)))
     viewModelScope.launch {
       try {
-        val translations = repository.fetchTranslations(searchPage, sourceLang)
+        val translations = repository.fetchTranslations(searchPage, sourceLang, targetLang)
         val langTranslation = translations.find { it.targetLangCode == targetLang }
         val translationState =
             if (langTranslation == null) {
+              // Target language not available, translations contains all available translations
               TranslationState.MissingTranslation(targetLang, translations)
             } else {
               TranslationState.Translated(langTranslation)
