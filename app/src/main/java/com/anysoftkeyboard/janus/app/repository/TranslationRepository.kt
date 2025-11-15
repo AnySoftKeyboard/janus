@@ -35,25 +35,32 @@ open class TranslationRepository(
       }
       val articlesLinks = api.getAllInfo(it.map { p -> p.pageid }.joinToString("|"))
       val disambArticles =
-          articlesLinks.query.pages.values.filter { p -> p.pageProps?.disambiguation != null }
+          articlesLinks.query?.pages?.values?.filter { p -> p.pageProps?.disambiguation != null }
+              ?: emptyList()
       if (disambArticles.isNotEmpty()) {
         // since we have disambiguation articles, we want to return their links
         val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
         val titlesOfLinks =
-            links.query.pages.values.map { p -> p.links?.map { l -> l.title } ?: listOf() }
-        val fullLinks = api.getLangLinksForTitles(titlesOfLinks.flatten().joinToString("|"))
+            links.query?.pages?.values?.map { p -> p.links?.map { l -> l.title } ?: listOf() }
+                ?: emptyList()
+        val flattenedTitles = titlesOfLinks.flatten()
+        // If no titles found, return empty list to avoid API call with empty titles parameter
+        if (flattenedTitles.isEmpty()) {
+          return emptyList()
+        }
+        val fullLinks = api.getLangLinksForTitles(flattenedTitles.joinToString("|"))
         // return the links as search results
-        fullLinks.query.pages.values.map { p ->
+        fullLinks.query?.pages?.values?.map { p ->
           OptionalSourceTerm(
               pageid = p.pageid,
               title = p.title,
               snippet = "",
               availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
-        }
+        } ?: emptyList()
       } else {
         // I guess this is what it is.
         it.map { searchResponse ->
-          val pageData = articlesLinks.query.pages[searchResponse.pageid.toString()]
+          val pageData = articlesLinks.query?.pages?.get(searchResponse.pageid.toString())
           OptionalSourceTerm(
               pageid = searchResponse.pageid,
               title = searchResponse.title,
@@ -71,7 +78,7 @@ open class TranslationRepository(
     val langLinksResponse =
         wikipediaApi.createWikipediaApi(sourceLang).getAllInfo(searchPage.pageid.toString())
     val page =
-        langLinksResponse.query.pages.values.firstOrNull() ?: throw Exception("Page not found")
+        langLinksResponse.query?.pages?.values?.firstOrNull() ?: throw Exception("Page not found")
     val langLinks = page.langLinks ?: throw Exception("langLinks not found")
     Log.i("TranslationRepository", "langLinks: ${langLinks.size}")
     for (link in langLinks) {

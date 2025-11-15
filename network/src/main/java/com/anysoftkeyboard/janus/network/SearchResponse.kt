@@ -27,7 +27,7 @@ data class SearchResult(
 )
 
 @JsonClass(generateAdapter = true)
-data class LangLinksResponse(@Json(name = "query") val query: LangLinksQuery)
+data class LangLinksResponse(@Json(name = "query") val query: LangLinksQuery?)
 
 @JsonClass(generateAdapter = true)
 data class LangLinksQuery(@Json(name = "pages") val pages: Map<String, PageLangLinks>)

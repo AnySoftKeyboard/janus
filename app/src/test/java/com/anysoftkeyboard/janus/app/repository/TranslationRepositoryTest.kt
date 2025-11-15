@@ -453,4 +453,41 @@ class TranslationRepositoryTest {
     assertEquals("Test Article 2", result[1].title)
     assertEquals(listOf("es"), result[1].availableLanguages)
   }
+
+  @Test
+  fun `test searchArticles with disambiguation page but no links returns empty list`() = runTest {
+    val term = "what's up"
+    val lang = "en"
+
+    // Search returns a disambiguation page
+    val searchResult = SearchResult(title = "What's up", pageid = 100, snippet = "")
+    val query = Query(searchinfo = SearchInfo(1, null, null), search = listOf(searchResult))
+    val searchResponse = SearchResponse(query = query)
+
+    // getAllInfo returns the disambiguation page
+    val disambPage =
+        PageLangLinks(
+            pageid = 100,
+            ns = 0,
+            title = "What's up",
+            langLinks = null,
+            pageProps = PageProps(disambiguation = "", wikibaseShortdesc = null),
+            links = null)
+    val disambResponse =
+        LangLinksResponse(query = LangLinksQuery(pages = mapOf("100" to disambPage)))
+
+    // getLinks returns no links (empty pages map or pages with no links)
+    val linksResponse =
+        LangLinksResponse(
+            query = LangLinksQuery(pages = mapOf("100" to disambPage.copy(links = emptyList()))))
+
+    whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+    whenever(wikipediaApi.getAllInfo("100")).thenReturn(disambResponse)
+    whenever(wikipediaApi.getLinks("100")).thenReturn(linksResponse)
+
+    val result = repository.searchArticles(lang, term)
+
+    // Should return empty list without calling getLangLinksForTitles with empty string
+    assertEquals(0, result.size)
+  }
 }
