@@ -22,6 +22,7 @@
     <string name="empty_state_initial">הזנת מילה לתרגום</string>
     <string name="empty_state_no_results_title">לא נמצאו תוצאות</string>
     <string name="empty_state_no_results_message">עבור המונח \"%1$s\" לא נמצאו תוצאות בוויקיפדיה</string>
+    <string name="under_construction">בבנייה</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">מאמרים לא מתורגמים</string>

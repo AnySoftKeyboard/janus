@@ -22,6 +22,7 @@
     <string name="empty_state_initial">Saisir un mot à traduire</string>
     <string name="empty_state_no_results_title">Aucun résultat trouvé</string>
     <string name="empty_state_no_results_message">Pour le terme \"%1$s\" aucun résultat n\'a été trouvé dans Wikipédia</string>
+    <string name="under_construction">En construction</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Articles non traduits</string>

@@ -22,6 +22,7 @@
     <string name="empty_state_initial">Введите слово для перевода</string>
     <string name="empty_state_no_results_title">Результаты не найдены</string>
     <string name="empty_state_no_results_message">Для термина \"%1$s\" не найдено результатов в Википедии</string>
+    <string name="under_construction">В разработке</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Непереведённые статьи</string>

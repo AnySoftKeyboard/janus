@@ -22,6 +22,7 @@
     <string name="empty_state_initial">إدخال كلمة للترجمة</string>
     <string name="empty_state_no_results_title">لم يتم العثور على نتائج</string>
     <string name="empty_state_no_results_message">للمصطلح \"%1$s\" لم يتم العثور على نتائج في ويكيبيديا</string>
+    <string name="under_construction">قيد الإنشاء</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">مقالات غير مترجمة</string>
