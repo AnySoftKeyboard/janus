@@ -8,6 +8,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 
 class FakeTranslationRepository
 @Inject
@@ -25,6 +26,15 @@ constructor(
   var fetchException: Exception? = null
 
   override fun getHistory(): Flow<List<Translation>> = _history.asStateFlow()
+
+  override fun searchHistory(query: String): Flow<List<Translation>> {
+    return _history.map { history ->
+      history.filter { translation ->
+        translation.sourceWord.contains(query, ignoreCase = true) ||
+            translation.translatedWord.contains(query, ignoreCase = true)
+      }
+    }
+  }
 
   override fun getBookmarks(): Flow<List<Translation>> = _bookmarks.asStateFlow()
 
