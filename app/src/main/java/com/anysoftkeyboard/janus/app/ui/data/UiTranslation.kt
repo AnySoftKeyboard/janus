@@ -6,10 +6,13 @@ data class UiTranslation(
     val sourceWord: String,
     val sourceLang: String,
     val sourceArticleUrl: String,
+    val sourceShortDescription: String?,
+    val sourceSummary: String?,
     val targetWord: String,
     val targetLang: String,
     val targetArticleUrl: String,
-    val shortDescription: String?,
+    val targetShortDescription: String?,
+    val targetSummary: String?,
     val isFavorite: Boolean,
 ) {
   companion object {
@@ -18,10 +21,13 @@ data class UiTranslation(
           sourceWord = translation.sourceWord,
           sourceLang = translation.sourceLangCode,
           sourceArticleUrl = translation.sourceArticleUrl,
+          sourceShortDescription = translation.sourceShortDescription,
+          sourceSummary = translation.sourceSummary,
           targetWord = translation.translatedWord,
           targetLang = translation.targetLangCode,
           targetArticleUrl = translation.targetArticleUrl,
-          shortDescription = translation.sourceShortDescription,
+          targetShortDescription = translation.targetShortDescription,
+          targetSummary = translation.targetSummary,
           isFavorite = translation.isFavorite)
     }
   }
