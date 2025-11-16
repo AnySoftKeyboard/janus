@@ -1,6 +1,7 @@
 package com.anysoftkeyboard.janus.app.repository
 
 import com.anysoftkeyboard.janus.app.di.LangWikipediaFactory
+import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
 import javax.inject.Inject
@@ -12,8 +13,9 @@ class FakeTranslationRepository
 @Inject
 constructor(
     private val translationDao: TranslationDao,
-    private val wikipediaApi: LangWikipediaFactory
-) : TranslationRepository(translationDao, wikipediaApi) {
+    private val wikipediaApi: LangWikipediaFactory,
+    private val stringProvider: StringProvider
+) : TranslationRepository(translationDao, wikipediaApi, stringProvider) {
 
   private val _history = MutableStateFlow(emptyList<Translation>())
   private val _bookmarks = MutableStateFlow(emptyList<Translation>())

@@ -12,7 +12,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import com.anysoftkeyboard.janus.app.R
 
 /**
  * Search text input field with search and clear actions.
@@ -31,12 +33,18 @@ fun SearchInputField(text: String, onTextChange: (String) -> Unit, onSearch: () 
   OutlinedTextField(
       value = text,
       onValueChange = onTextChange,
-      label = { Text("Word to translate") },
-      leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "Search") },
+      label = { Text(stringResource(R.string.search_input_label)) },
+      leadingIcon = {
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = stringResource(R.string.content_description_search))
+      },
       trailingIcon = {
         if (text.isNotEmpty()) {
           IconButton(onClick = { onTextChange("") }) {
-            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
+            Icon(
+                imageVector = Icons.Default.Clear,
+                contentDescription = stringResource(R.string.content_description_clear))
           }
         }
       },

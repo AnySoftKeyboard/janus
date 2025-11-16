@@ -3,11 +3,14 @@ package com.anysoftkeyboard.janus.app.di
 import android.content.Context
 import androidx.room.Room
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
+import com.anysoftkeyboard.janus.app.util.AndroidStringProvider
+import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.database.AppDatabase
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.network.WikipediaApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,9 +35,10 @@ object AppModule {
   @Singleton
   fun provideTranslationRepository(
       translationDao: TranslationDao,
-      wikipediaApi: LangWikipediaFactory
+      wikipediaApi: LangWikipediaFactory,
+      stringProvider: StringProvider
   ): TranslationRepository {
-    return TranslationRepository(translationDao, wikipediaApi)
+    return TranslationRepository(translationDao, wikipediaApi, stringProvider)
   }
 
   @Provides
@@ -107,4 +111,10 @@ interface LangRetrofitFactory {
 
 interface LangWikipediaFactory {
   fun createWikipediaApi(sourceLang: String): WikipediaApi
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class StringProviderModule {
+  @Binds @Singleton abstract fun bindStringProvider(impl: AndroidStringProvider): StringProvider
 }

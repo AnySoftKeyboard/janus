@@ -1,0 +1,52 @@
+<resources>
+    <!-- App name -->
+    <string name="app_name">Janus</string>
+
+    <!-- Main navigation tabs -->
+    <string name="tab_translate">Traducción</string>
+    <string name="tab_history">Historial</string>
+    <string name="tab_bookmarks">Favoritos</string>
+
+    <!-- Search input -->
+    <string name="search_input_label">Palabra a traducir</string>
+
+    <!-- Language picker dialog -->
+    <string name="language_picker_title">Selección del idioma de traducción</string>
+    <string name="button_cancel">Cancelar</string>
+
+    <!-- Empty states -->
+    <string name="empty_state_initial">Ingresar una palabra a traducir</string>
+    <string name="empty_state_no_results_title">No se encontraron resultados</string>
+    <string name="empty_state_no_results_message">Para el término \"%1$s\" no se encontraron resultados en Wikipedia</string>
+
+    <!-- Search results -->
+    <string name="search_results_untranslated_section">Artículos sin traducir</string>
+
+    <!-- Translation view -->
+    <string name="translation_not_available">Traducción no disponible para %1$s</string>
+    <string name="available_translations">Traducciones disponibles: %1$s</string>
+    <string name="translation_source_from">de %1$s</string>
+    <string name="translation_target_in">en %1$s</string>
+
+    <!-- Search result item -->
+    <string name="error_unknown">Ocurrió un error desconocido</string>
+    <string name="no_translations_available">No hay traducciones disponibles</string>
+    <string name="available_in_languages">Disponible en: %1$s</string>
+
+    <!-- Repository errors -->
+    <string name="error_page_not_found">Página no encontrada</string>
+    <string name="error_langlinks_not_found">Enlaces de traducción no encontrados</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_search">Buscar</string>
+    <string name="content_description_clear">Limpiar</string>
+    <string name="content_description_swap_languages">Intercambiar idiomas</string>
+    <string name="content_description_favorite">Favoritos</string>
+    <string name="content_description_copy">Copiar al portapapeles</string>
+    <string name="content_description_open_wikipedia">Abrir en Wikipedia</string>
+    <string name="content_description_bookmark">Favorito</string>
+    <string name="content_description_error">Error</string>
+    <string name="content_description_copy_source">Copiar título origen</string>
+    <string name="content_description_bookmark_source">Guardar artículo origen</string>
+    <string name="content_description_open_source">Abrir artículo origen en Wikipedia</string>
+</resources>

@@ -22,8 +22,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
 
@@ -102,7 +104,7 @@ private fun ErrorContent(errorMessage: String) {
           modifier = Modifier.size(20.dp))
       Spacer(modifier = Modifier.size(4.dp))
       Text(
-          text = "Unknown error occurred",
+          text = stringResource(R.string.error_unknown),
           style = MaterialTheme.typography.bodyMedium,
           color = MaterialTheme.colorScheme.error)
     }
@@ -119,9 +121,11 @@ private fun ErrorContent(errorMessage: String) {
 private fun AvailableLanguagesText(availableLanguages: List<String>) {
   val text =
       if (availableLanguages.isEmpty()) {
-        "No translations available"
+        stringResource(R.string.no_translations_available)
       } else {
-        "Available in: ${availableLanguages.joinToString(", ") { it.uppercase() }}"
+        stringResource(
+            R.string.available_in_languages,
+            availableLanguages.joinToString(", ") { it.uppercase() })
       }
 
   Text(

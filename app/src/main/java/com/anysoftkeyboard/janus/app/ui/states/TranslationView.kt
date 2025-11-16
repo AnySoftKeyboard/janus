@@ -18,9 +18,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.BookmarkButton
 import com.anysoftkeyboard.janus.app.ui.components.CopyToClipboardButton
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
@@ -205,12 +207,12 @@ private fun MissingTranslationContent(
       missingTranslation.availableTranslations.joinToString(", ") { it.targetLangCode.uppercase() }
 
   Text(
-      text = "Translation not available for ${targetLang.uppercase()}",
+      text = stringResource(R.string.translation_not_available, targetLang.uppercase()),
       style = MaterialTheme.typography.titleMedium,
       color = MaterialTheme.colorScheme.error)
   Spacer(modifier = Modifier.height(8.dp))
   Text(
-      text = "Available translations: $availableTranslations",
+      text = stringResource(R.string.available_translations, availableTranslations),
       style = MaterialTheme.typography.bodyMedium,
       color = MaterialTheme.colorScheme.onSurfaceVariant)
 }
