@@ -39,30 +39,47 @@ open class TranslationRepository(
       val articlesLinks = api.getAllInfo(searchResults.map { p -> p.pageid }.joinToString("|"))
       val allPages = articlesLinks.query?.pages?.values ?: emptyList()
 
+      // Filter out invalid pages (those with null or negative pageids)
+      val validPages =
+          allPages.filter { p ->
+            val pageId = p.pageid
+            pageId != null && pageId > 0
+          }
+
       // Separate disambiguation and regular articles
-      val disambArticles = allPages.filter { p -> p.pageProps?.disambiguation != null }
-      val regularArticles = allPages.filter { p -> p.pageProps?.disambiguation == null }
+      val disambArticles = validPages.filter { p -> p.pageProps?.disambiguation != null }
+      val regularArticles = validPages.filter { p -> p.pageProps?.disambiguation == null }
 
       // Process regular articles
       val regularResults =
           searchResults.mapNotNull { searchResult ->
             val pageData = articlesLinks.query?.pages?.get(searchResult.pageid.toString())
-            // Only include if it's not a disambiguation page
-            if (pageData?.pageProps?.disambiguation == null) {
-              OptionalSourceTerm(
-                  pageid = searchResult.pageid,
-                  title = searchResult.title,
-                  snippet = searchResult.snippet,
-                  availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
-            } else {
-              null
+
+            // If pageData exists, verify it has a valid pageid
+            if (pageData != null) {
+              val pageId = pageData.pageid
+              // Filter out pages with invalid pageids
+              if (pageId == null || pageId <= 0) {
+                return@mapNotNull null
+              }
+              // Filter out disambiguation pages
+              if (pageData.pageProps?.disambiguation != null) {
+                return@mapNotNull null
+              }
             }
+
+            // Include the result (either pageData is null or it's valid)
+            OptionalSourceTerm(
+                pageid = searchResult.pageid,
+                title = searchResult.title,
+                snippet = searchResult.snippet,
+                availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
           }
 
       // Process disambiguation articles to get their links
       val disambResults =
           if (disambArticles.isNotEmpty()) {
-            val links = api.getLinks(disambArticles.map { p -> p.pageid }.joinToString("|"))
+            val links = api.getLinks(disambArticles.map { p -> p.pageid!! }.joinToString("|"))
             val titlesOfLinks =
                 links.query?.pages?.values?.map { p -> p.links?.map { l -> l.title } ?: listOf() }
                     ?: emptyList()
@@ -70,12 +87,18 @@ open class TranslationRepository(
 
             if (flattenedTitles.isNotEmpty()) {
               val fullLinks = api.getLangLinksForTitles(flattenedTitles.joinToString("|"))
-              fullLinks.query?.pages?.values?.map { p ->
-                OptionalSourceTerm(
-                    pageid = p.pageid,
-                    title = p.title,
-                    snippet = "",
-                    availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
+              fullLinks.query?.pages?.values?.mapNotNull { p ->
+                // Filter out pages with invalid pageids
+                val pageId = p.pageid
+                if (pageId != null && pageId > 0) {
+                  OptionalSourceTerm(
+                      pageid = pageId,
+                      title = p.title,
+                      snippet = "",
+                      availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
+                } else {
+                  null
+                }
               } ?: emptyList()
             } else {
               emptyList()
@@ -99,6 +122,11 @@ open class TranslationRepository(
     val page =
         langLinksResponse.query?.pages?.values?.firstOrNull()
             ?: throw Exception(stringProvider.getString(R.string.error_page_not_found))
+    // Verify the page has a valid pageid
+    val pageId = page.pageid
+    if (pageId == null || pageId <= 0) {
+      throw Exception(stringProvider.getString(R.string.error_page_not_found))
+    }
     val langLinks =
         page.langLinks
             ?: throw Exception(stringProvider.getString(R.string.error_langlinks_not_found))
