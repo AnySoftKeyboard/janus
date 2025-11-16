@@ -10,6 +10,9 @@
     <!-- Search input -->
     <string name="search_input_label">Word to translate</string>
 
+    <!-- History search -->
+    <string name="no_history_results">No results for "%1$s"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">Select Translation Language</string>
     <string name="button_cancel">Cancel</string>
