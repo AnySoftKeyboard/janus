@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
-import com.anysoftkeyboard.janus.app.ui.components.BookmarkButton
 import com.anysoftkeyboard.janus.app.ui.components.CopyToClipboardButton
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -90,9 +89,6 @@ private fun SourceArticleSection(
             CopyToClipboardButton(
                 text = title,
                 contentDescription = "Copy source title",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            BookmarkButton(
-                contentDescription = "Bookmark source article",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant)
             WikipediaLinkButton(
                 url = "https://${language}.wikipedia.org/?curid=${pageId}",
@@ -170,7 +166,6 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
           Row {
             CopyToClipboardButton(
                 text = translationData.translatedWord, contentDescription = "Copy translated title")
-            BookmarkButton(contentDescription = "Bookmark translation")
             WikipediaLinkButton(
                 url = translationData.targetArticleUrl, contentDescription = "Open target article")
           }
