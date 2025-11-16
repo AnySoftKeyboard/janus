@@ -10,6 +10,10 @@
     <!-- Search input -->
     <string name="search_input_label">Wort zum Übersetzen</string>
 
+    <!-- History search -->
+    <string name="search_history_label">Verlauf filtern</string>
+    <string name="no_history_results">Keine Ergebnisse für \"%1$s\"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">Übersetzungssprache auswählen</string>
     <string name="button_cancel">Abbrechen</string>

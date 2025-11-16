@@ -10,6 +10,10 @@
     <!-- Search input -->
     <string name="search_input_label">Слово для перевода</string>
 
+    <!-- History search -->
+    <string name="search_history_label">Фильтр истории</string>
+    <string name="no_history_results">Нет результатов для \"%1$s\"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">Выбор языка перевода</string>
     <string name="button_cancel">Отмена</string>
