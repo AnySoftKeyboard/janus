@@ -11,6 +11,7 @@
     <string name="search_input_label">Word to translate</string>
 
     <!-- History search -->
+    <string name="search_history_label">Filter history</string>
     <string name="no_history_results">No results for "%1$s"</string>
 
     <!-- Language picker dialog -->

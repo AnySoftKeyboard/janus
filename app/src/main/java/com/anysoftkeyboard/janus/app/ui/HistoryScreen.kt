@@ -34,7 +34,8 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
     SearchInputField(
         text = searchQuery,
         onTextChange = { viewModel.updateSearchQuery(it) },
-        onSearch = { /* No-op for history search, filtering is real-time */ })
+        onSearch = { /* No-op for history search, filtering is real-time */ },
+        label = stringResource(R.string.search_history_label))
 
     // Results or empty state
     if (history.isEmpty() && searchQuery.isNotBlank()) {
