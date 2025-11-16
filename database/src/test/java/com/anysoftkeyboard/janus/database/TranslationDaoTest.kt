@@ -219,4 +219,110 @@ class TranslationDaoTest {
     translationDao.deleteTranslationsByIds(listOf(1, 2))
     assertNull(translationDao.findTranslation("a", "en", "es"))
   }
+
+  @Test
+  fun `test searchHistory finds matches in sourceWord`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es")
+    val t2 = createTranslation(sourceWord = "Dog", sourceLang = "en", targetLang = "es")
+    translationDao.insertTranslation(t1)
+    translationDao.insertTranslation(t2)
+
+    translationDao.searchHistory("Cat").test {
+      val list = awaitItem()
+      assertEquals(1, list.size)
+      assertEquals("Cat", list[0].sourceWord)
+    }
+  }
+
+  @Test
+  fun `test searchHistory finds matches in translatedWord`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "he")
+    val t2 = createTranslation(sourceWord = "Dog", sourceLang = "en", targetLang = "he")
+    translationDao.insertTranslation(t1)
+    translationDao.insertTranslation(t2)
+
+    translationDao.searchHistory("Dog translated").test {
+      val list = awaitItem()
+      assertEquals(1, list.size)
+      assertEquals("Dog", list[0].sourceWord)
+    }
+  }
+
+  @Test
+  fun `test searchHistory is case insensitive`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es")
+    translationDao.insertTranslation(t1)
+
+    translationDao.searchHistory("cat").test {
+      val list = awaitItem()
+      assertEquals(1, list.size)
+      assertEquals("Cat", list[0].sourceWord)
+    }
+
+    translationDao.searchHistory("CAT").test {
+      val list = awaitItem()
+      assertEquals(1, list.size)
+      assertEquals("Cat", list[0].sourceWord)
+    }
+  }
+
+  @Test
+  fun `test searchHistory partial match`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Butterfly", sourceLang = "en", targetLang = "es")
+    val t2 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es")
+    translationDao.insertTranslation(t1)
+    translationDao.insertTranslation(t2)
+
+    translationDao.searchHistory("butter").test {
+      val list = awaitItem()
+      assertEquals(1, list.size)
+      assertEquals("Butterfly", list[0].sourceWord)
+    }
+  }
+
+  @Test
+  fun `test searchHistory returns empty when no match`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es")
+    translationDao.insertTranslation(t1)
+
+    translationDao.searchHistory("xyz").test {
+      val list = awaitItem()
+      assertEquals(0, list.size)
+    }
+  }
+
+  @Test
+  fun `test searchHistory returns multiple matches`() = runBlocking {
+    val t1 = createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es")
+    val t2 = createTranslation(sourceWord = "Category", sourceLang = "en", targetLang = "es")
+    val t3 = createTranslation(sourceWord = "Dog", sourceLang = "en", targetLang = "es")
+    translationDao.insertTranslation(t1)
+    translationDao.insertTranslation(t2)
+    translationDao.insertTranslation(t3)
+
+    translationDao.searchHistory("Cat").test {
+      val list = awaitItem()
+      assertEquals(2, list.size)
+      assertTrue(list.any { it.sourceWord == "Cat" })
+      assertTrue(list.any { it.sourceWord == "Category" })
+    }
+  }
+
+  @Test
+  fun `test searchHistory ordered by timestamp desc`() = runBlocking {
+    val t1 =
+        createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es", timestamp = 1)
+    val t2 =
+        createTranslation(
+            sourceWord = "Category", sourceLang = "en", targetLang = "es", timestamp = 2)
+    translationDao.insertTranslation(t1)
+    translationDao.insertTranslation(t2)
+
+    translationDao.searchHistory("Cat").test {
+      val list = awaitItem()
+      assertEquals(2, list.size)
+      assertEquals("Category", list[0].sourceWord)
+      assertEquals("Cat", list[1].sourceWord)
+    }
+  }
 }

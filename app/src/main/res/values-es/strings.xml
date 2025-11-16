@@ -10,6 +10,10 @@
     <!-- Search input -->
     <string name="search_input_label">Palabra a traducir</string>
 
+    <!-- History search -->
+    <string name="search_history_label">Filtrar historial</string>
+    <string name="no_history_results">No hay resultados para \"%1$s\"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">Selección del idioma de traducción</string>
     <string name="button_cancel">Cancelar</string>

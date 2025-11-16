@@ -10,6 +10,10 @@
     <!-- Search input -->
     <string name="search_input_label">מילה לתרגום</string>
 
+    <!-- History search -->
+    <string name="search_history_label">סינון היסטוריה</string>
+    <string name="no_history_results">אין תוצאות עבור \"%1$s\"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">בחירת שפת תרגום</string>
     <string name="button_cancel">ביטול</string>

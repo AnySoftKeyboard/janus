@@ -22,6 +22,9 @@ open class TranslationRepository(
 ) {
   open fun getHistory(): Flow<List<Translation>> = translationDao.getFullHistory()
 
+  open fun searchHistory(query: String): Flow<List<Translation>> =
+      translationDao.searchHistory(query)
+
   open fun getBookmarks(): Flow<List<Translation>> = translationDao.getBookmarks()
 
   open suspend fun searchArticles(

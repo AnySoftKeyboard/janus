@@ -10,6 +10,10 @@
     <!-- Search input -->
     <string name="search_input_label">كلمة للترجمة</string>
 
+    <!-- History search -->
+    <string name="search_history_label">تصفية السجل</string>
+    <string name="no_history_results">لا توجد نتائج لـ \"%1$s\"</string>
+
     <!-- Language picker dialog -->
     <string name="language_picker_title">اختيار لغة الترجمة</string>
     <string name="button_cancel">إلغاء</string>

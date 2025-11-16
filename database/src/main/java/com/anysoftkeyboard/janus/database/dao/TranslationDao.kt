@@ -27,6 +27,10 @@ interface TranslationDao {
   @Query("SELECT * FROM translation_history ORDER BY timestamp DESC")
   fun getFullHistory(): Flow<List<Translation>>
 
+  @Query(
+      "SELECT * FROM translation_history WHERE sourceWord LIKE '%' || :query || '%' OR translatedWord LIKE '%' || :query || '%' ORDER BY timestamp DESC")
+  fun searchHistory(query: String): Flow<List<Translation>>
+
   @Query("SELECT * FROM translation_history WHERE isFavorite = 1 ORDER BY timestamp DESC")
   fun getBookmarks(): Flow<List<Translation>>
 

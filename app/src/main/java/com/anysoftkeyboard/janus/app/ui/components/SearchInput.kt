@@ -27,13 +27,19 @@ import com.anysoftkeyboard.janus.app.R
  * @param text Current search text value
  * @param onTextChange Callback when text changes
  * @param onSearch Callback when search action is triggered
+ * @param label Label text for the input field
  */
 @Composable
-fun SearchInputField(text: String, onTextChange: (String) -> Unit, onSearch: () -> Unit) {
+fun SearchInputField(
+    text: String,
+    onTextChange: (String) -> Unit,
+    onSearch: () -> Unit,
+    label: String = stringResource(R.string.search_input_label)
+) {
   OutlinedTextField(
       value = text,
       onValueChange = onTextChange,
-      label = { Text(stringResource(R.string.search_input_label)) },
+      label = { Text(label) },
       leadingIcon = {
         Icon(
             imageVector = Icons.Default.Search,
