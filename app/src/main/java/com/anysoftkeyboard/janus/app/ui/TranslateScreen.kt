@@ -2,6 +2,7 @@ package com.anysoftkeyboard.janus.app.ui
 
 import android.os.Build
 import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.LanguageSelectionRow
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
@@ -165,18 +167,12 @@ fun TranslationCard(translation: UiTranslation) {
       // Source description and summary
       translation.sourceShortDescription?.let { description ->
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface)
+        HtmlTextView(html = description, color = MaterialTheme.colorScheme.onSurface)
       }
 
       translation.sourceSummary?.let { summary ->
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = summary,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HtmlTextView(html = summary, color = MaterialTheme.colorScheme.onSurfaceVariant)
       }
 
       Spacer(modifier = Modifier.height(16.dp))
@@ -211,21 +207,35 @@ fun TranslationCard(translation: UiTranslation) {
       // Target description and summary
       translation.targetShortDescription?.let { description ->
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface)
+        HtmlTextView(html = description, color = MaterialTheme.colorScheme.onSurface)
       }
 
       translation.targetSummary?.let { summary ->
         Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = summary,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        HtmlTextView(html = summary, color = MaterialTheme.colorScheme.onSurfaceVariant)
       }
     }
   }
+}
+
+/** Helper composable to display HTML text in history cards. */
+@Composable
+private fun HtmlTextView(html: String, color: androidx.compose.ui.graphics.Color) {
+  AndroidView(
+      factory = { context ->
+        TextView(context).apply {
+          movementMethod = LinkMovementMethod.getInstance()
+          // Convert Compose Color to Android Color int
+          val androidColor =
+              android.graphics.Color.argb(
+                  (color.alpha * 255).toInt(),
+                  (color.red * 255).toInt(),
+                  (color.green * 255).toInt(),
+                  (color.blue * 255).toInt())
+          setTextColor(androidColor)
+        }
+      },
+      update = { textView -> setHtmlToText(textView, html) })
 }
 
 /** Helper function to set HTML content to TextView with proper API level handling. */
