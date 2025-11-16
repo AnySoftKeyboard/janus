@@ -651,6 +651,90 @@ class TranslationRepositoryTest {
       }
 
   @Test
+  fun `test searchArticles with invalid pageid in response should filter out invalid pages`() =
+      runTest {
+        val term = "summer"
+        val lang = "en"
+        val searchResult1 = SearchResult(title = "Summer", pageid = 1, snippet = "snippet1")
+        val searchResult2 =
+            SearchResult(title = "Summer (season)", pageid = 2, snippet = "snippet2")
+        val query =
+            Query(
+                searchinfo = SearchInfo(totalhits = 2, suggestion = null, suggestionsnippet = null),
+                search = listOf(searchResult1, searchResult2))
+        val searchResponse = SearchResponse(query = query)
+
+        // getAllInfo returns one valid page and one invalid page (with null pageid)
+        val validPage =
+            PageLangLinks(
+                pageid = 2,
+                ns = 0,
+                title = "Summer (season)",
+                langLinks = listOf(LangLink(lang = "he", title = "קיץ")),
+                pageProps = null,
+                links = null,
+                extract = null)
+        // This simulates the Wikipedia API returning a page with missing pageid
+        // The key "1" maps to an invalid page (null pageid)
+        val invalidPage =
+            PageLangLinks(
+                pageid = null, // null pageid
+                ns = 0,
+                title = "Summer",
+                langLinks = null,
+                pageProps = null,
+                links = null,
+                extract = null)
+        val langLinksResponse =
+            LangLinksResponse(
+                query = LangLinksQuery(pages = mapOf("1" to invalidPage, "2" to validPage)))
+
+        whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+        whenever(wikipediaApi.getAllInfo(any())).thenReturn(langLinksResponse)
+
+        val result = repository.searchArticles(lang, term)
+
+        // Should only return the valid page, filtering out the invalid one
+        assertEquals(1, result.size)
+        assertEquals("Summer (season)", result[0].title)
+        assertEquals(listOf("he"), result[0].availableLanguages)
+      }
+
+  @Test
+  fun `test searchArticles with negative pageid in response should filter out invalid pages`() =
+      runTest {
+        val term = "test"
+        val lang = "en"
+        val searchResult = SearchResult(title = "Test", pageid = 1, snippet = "snippet")
+        val query =
+            Query(
+                searchinfo = SearchInfo(totalhits = 1, suggestion = null, suggestionsnippet = null),
+                search = listOf(searchResult))
+        val searchResponse = SearchResponse(query = query)
+
+        // getAllInfo returns a page with negative pageid mapped to the search result's pageid
+        val invalidPage =
+            PageLangLinks(
+                pageid = -1, // negative pageid
+                ns = 0,
+                title = "Test",
+                langLinks = null,
+                pageProps = null,
+                links = null,
+                extract = null)
+        val langLinksResponse =
+            LangLinksResponse(query = LangLinksQuery(pages = mapOf("1" to invalidPage)))
+
+        whenever(wikipediaApi.search(searchTerm = term)).thenReturn(searchResponse)
+        whenever(wikipediaApi.getAllInfo(any())).thenReturn(langLinksResponse)
+
+        val result = repository.searchArticles(lang, term)
+
+        // Should return empty list since the only page is invalid
+        assertEquals(0, result.size)
+      }
+
+  @Test
   fun `test searchArticles with disambiguation no links but other valid articles should return valid articles`() =
       runTest {
         val term = "test"

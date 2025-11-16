@@ -34,7 +34,7 @@ data class LangLinksQuery(@Json(name = "pages") val pages: Map<String, PageLangL
 
 @JsonClass(generateAdapter = true)
 data class PageLangLinks(
-    @Json(name = "pageid") val pageid: Long,
+    @Json(name = "pageid") val pageid: Long?,
     @Json(name = "ns") val ns: Int,
     @Json(name = "title") val title: String,
     @Json(name = "langlinks") val langLinks: List<LangLink>?,
