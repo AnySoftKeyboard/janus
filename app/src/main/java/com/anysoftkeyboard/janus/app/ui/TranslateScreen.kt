@@ -27,8 +27,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.LanguageSelectionRow
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
@@ -133,10 +135,14 @@ fun TranslationCard(translation: UiTranslation) {
   Card(modifier = Modifier.fillMaxWidth()) {
     Column(modifier = Modifier.padding(16.dp)) {
       Text(text = translation.sourceWord, style = MaterialTheme.typography.headlineSmall)
-      Text(text = "from ${translation.sourceLang}", style = MaterialTheme.typography.bodySmall)
+      Text(
+          text = stringResource(R.string.translation_source_from, translation.sourceLang),
+          style = MaterialTheme.typography.bodySmall)
       Spacer(modifier = Modifier.height(8.dp))
       Text(text = translation.targetWord, style = MaterialTheme.typography.headlineMedium)
-      Text(text = "in ${translation.targetLang}", style = MaterialTheme.typography.bodySmall)
+      Text(
+          text = stringResource(R.string.translation_target_in, translation.targetLang),
+          style = MaterialTheme.typography.bodySmall)
       Spacer(modifier = Modifier.height(8.dp))
       AndroidView(
           factory = { context ->

@@ -13,7 +13,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.anysoftkeyboard.janus.app.R
 
 /**
  * Dialog for selecting a language from a list of available translations.
@@ -34,7 +36,9 @@ fun LanguagePickerDialog(
   AlertDialog(
       onDismissRequest = onDismiss,
       title = {
-        Text(text = "Select Translation Language", style = MaterialTheme.typography.titleLarge)
+        Text(
+            text = stringResource(R.string.language_picker_title),
+            style = MaterialTheme.typography.titleLarge)
       },
       text = {
         LazyColumn {
@@ -58,5 +62,7 @@ fun LanguagePickerDialog(
         }
       },
       confirmButton = {},
-      dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") } })
+      dismissButton = {
+        TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_cancel)) }
+      })
 }

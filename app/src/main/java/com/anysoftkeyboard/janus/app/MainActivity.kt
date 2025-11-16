@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -50,7 +52,7 @@ fun JanusApp() {
           TabScreen.entries.forEach { screen ->
             NavigationBarItem(
                 icon = { Icon(screen.icon, contentDescription = null) },
-                label = { Text(screen.title) },
+                label = { Text(stringResource(screen.titleRes)) },
                 selected = selectedTab == screen,
                 onClick = {
                   selectedTab = screen
@@ -81,12 +83,12 @@ fun JanusApp() {
 
 enum class TabScreen(
     val route: String,
-    val title: String,
+    @StringRes val titleRes: Int,
     val icon: ImageVector,
 ) {
-  Translate("translate", "Translate", Icons.Default.Translate),
-  History("history", "History", Icons.Default.History),
-  Bookmarks("bookmarks", "Bookmarks", Icons.Default.Favorite)
+  Translate("translate", R.string.tab_translate, Icons.Default.Translate),
+  History("history", R.string.tab_history, Icons.Default.History),
+  Bookmarks("bookmarks", R.string.tab_bookmarks, Icons.Default.Favorite)
 }
 
 @Preview(showBackground = true)

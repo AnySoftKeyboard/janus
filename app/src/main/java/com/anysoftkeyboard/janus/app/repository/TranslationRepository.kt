@@ -1,7 +1,9 @@
 package com.anysoftkeyboard.janus.app.repository
 
 import android.util.Log
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.di.LangWikipediaFactory
+import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +18,7 @@ data class OptionalSourceTerm(
 open class TranslationRepository(
     private val translationDao: TranslationDao,
     private val wikipediaApi: LangWikipediaFactory,
+    private val stringProvider: StringProvider,
 ) {
   open fun getHistory(): Flow<List<Translation>> = translationDao.getFullHistory()
 
@@ -94,8 +97,11 @@ open class TranslationRepository(
     val langLinksResponse =
         wikipediaApi.createWikipediaApi(sourceLang).getAllInfo(searchPage.pageid.toString())
     val page =
-        langLinksResponse.query?.pages?.values?.firstOrNull() ?: throw Exception("Page not found")
-    val langLinks = page.langLinks ?: throw Exception("langLinks not found")
+        langLinksResponse.query?.pages?.values?.firstOrNull()
+            ?: throw Exception(stringProvider.getString(R.string.error_page_not_found))
+    val langLinks =
+        page.langLinks
+            ?: throw Exception(stringProvider.getString(R.string.error_langlinks_not_found))
     Log.i("TranslationRepository", "langLinks: ${langLinks.size}")
 
     // Filter to only the target language the user requested

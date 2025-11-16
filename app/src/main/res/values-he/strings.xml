@@ -1,0 +1,52 @@
+<resources>
+    <!-- App name -->
+    <string name="app_name">Janus</string>
+
+    <!-- Main navigation tabs -->
+    <string name="tab_translate">תרגום</string>
+    <string name="tab_history">היסטוריה</string>
+    <string name="tab_bookmarks">סימניות</string>
+
+    <!-- Search input -->
+    <string name="search_input_label">מילה לתרגום</string>
+
+    <!-- Language picker dialog -->
+    <string name="language_picker_title">בחירת שפת תרגום</string>
+    <string name="button_cancel">ביטול</string>
+
+    <!-- Empty states -->
+    <string name="empty_state_initial">הזנת מילה לתרגום</string>
+    <string name="empty_state_no_results_title">לא נמצאו תוצאות</string>
+    <string name="empty_state_no_results_message">עבור המונח \"%1$s\" לא נמצאו תוצאות בוויקיפדיה</string>
+
+    <!-- Search results -->
+    <string name="search_results_untranslated_section">מאמרים לא מתורגמים</string>
+
+    <!-- Translation view -->
+    <string name="translation_not_available">תרגום לא זמין עבור %1$s</string>
+    <string name="available_translations">תרגומים זמינים: %1$s</string>
+    <string name="translation_source_from">מ־%1$s</string>
+    <string name="translation_target_in">ב־%1$s</string>
+
+    <!-- Search result item -->
+    <string name="error_unknown">אירעה שגיאה לא ידועה</string>
+    <string name="no_translations_available">אין תרגומים זמינים</string>
+    <string name="available_in_languages">זמין ב־: %1$s</string>
+
+    <!-- Repository errors -->
+    <string name="error_page_not_found">הדף לא נמצא</string>
+    <string name="error_langlinks_not_found">קישורי תרגום לא נמצאו</string>
+
+    <!-- Content descriptions for accessibility -->
+    <string name="content_description_search">חיפוש</string>
+    <string name="content_description_clear">ניקוי</string>
+    <string name="content_description_swap_languages">החלפת שפות</string>
+    <string name="content_description_favorite">מועדפים</string>
+    <string name="content_description_copy">העתקה ללוח</string>
+    <string name="content_description_open_wikipedia">פתיחה בוויקיפדיה</string>
+    <string name="content_description_bookmark">סימנייה</string>
+    <string name="content_description_error">שגיאה</string>
+    <string name="content_description_copy_source">העתקת כותרת מקור</string>
+    <string name="content_description_bookmark_source">שמירת מאמר מקור</string>
+    <string name="content_description_open_source">פתיחת מאמר מקור בוויקיפדיה</string>
+</resources>

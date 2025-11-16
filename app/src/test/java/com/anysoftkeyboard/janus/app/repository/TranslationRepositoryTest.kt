@@ -1,6 +1,7 @@
 package com.anysoftkeyboard.janus.app.repository
 
 import com.anysoftkeyboard.janus.app.di.LangWikipediaFactory
+import com.anysoftkeyboard.janus.app.util.FakeStringProvider
 import com.anysoftkeyboard.janus.database.dao.TranslationDao
 import com.anysoftkeyboard.janus.network.LangLink
 import com.anysoftkeyboard.janus.network.LangLinksQuery
@@ -41,7 +42,7 @@ class TranslationRepositoryTest {
     wikipediaApi = mock()
     wikipediaApiFactory = mock()
     whenever(wikipediaApiFactory.createWikipediaApi(any())).thenReturn(wikipediaApi)
-    repository = TranslationRepository(translationDao, wikipediaApiFactory)
+    repository = TranslationRepository(translationDao, wikipediaApiFactory, FakeStringProvider())
   }
 
   @Test

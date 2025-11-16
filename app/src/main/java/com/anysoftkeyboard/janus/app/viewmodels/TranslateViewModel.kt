@@ -3,8 +3,10 @@ package com.anysoftkeyboard.janus.app.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
+import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -47,8 +49,12 @@ sealed class TranslateViewState() {
 }
 
 @HiltViewModel
-class TranslateViewModel @Inject constructor(private val repository: TranslationRepository) :
-    ViewModel() {
+class TranslateViewModel
+@Inject
+constructor(
+    private val repository: TranslationRepository,
+    private val stringProvider: StringProvider
+) : ViewModel() {
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
 
@@ -65,7 +71,7 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
         val errorType = e.javaClass.simpleName
-        val errorMessage = e.message ?: "Unknown error occurred"
+        val errorMessage = e.message ?: stringProvider.getString(R.string.error_unknown)
         _state.value = TranslateViewState.Error(errorType, errorMessage)
       }
     }
@@ -105,7 +111,7 @@ class TranslateViewModel @Inject constructor(private val repository: Translation
             TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
-        val errorMessage = e.message ?: "Unknown error occurred"
+        val errorMessage = e.message ?: stringProvider.getString(R.string.error_unknown)
         _state.value =
             TranslateViewState.OptionsFetched(
                 sources.searchTerm,

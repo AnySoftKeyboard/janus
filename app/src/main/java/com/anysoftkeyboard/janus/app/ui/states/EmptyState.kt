@@ -21,7 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 
 /**
@@ -61,7 +63,10 @@ fun EmptyStateMessage(
 /** Initial empty state shown when the app starts. */
 @Composable
 fun InitialEmptyState() {
-  EmptyStateMessage(icon = Icons.Default.Search, title = "Enter a word to translate", message = "")
+  EmptyStateMessage(
+      icon = Icons.Default.Search,
+      title = stringResource(R.string.empty_state_initial),
+      message = "")
 }
 
 /** Loading state with a progress indicator. */
@@ -84,8 +89,8 @@ fun LoadingState() {
 fun NoResultsState(searchTerm: String) {
   EmptyStateMessage(
       icon = Icons.Default.Search,
-      title = "No results found",
-      message = "For the term \"$searchTerm\" there were no results in Wikipedia")
+      title = stringResource(R.string.empty_state_no_results_title),
+      message = stringResource(R.string.empty_state_no_results_message, searchTerm))
 }
 
 /**
@@ -109,7 +114,7 @@ fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: Snackb
       verticalArrangement = Arrangement.Center) {
         Icon(
             imageVector = Icons.Default.Warning,
-            contentDescription = "Error",
+            contentDescription = stringResource(R.string.content_description_error),
             tint = MaterialTheme.colorScheme.error,
             modifier = Modifier.size(48.dp))
         Spacer(modifier = Modifier.height(8.dp))

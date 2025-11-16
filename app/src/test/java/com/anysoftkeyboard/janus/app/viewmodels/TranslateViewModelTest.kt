@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app.viewmodels
 import app.cash.turbine.test
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
+import com.anysoftkeyboard.janus.app.util.FakeStringProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,8 +33,8 @@ class TranslateViewModelTest {
   @Before
   fun setup() {
     Dispatchers.setMain(testDispatcher)
-    fakeRepository = FakeTranslationRepository(mock(), mock())
-    viewModel = TranslateViewModel(fakeRepository)
+    fakeRepository = FakeTranslationRepository(mock(), mock(), FakeStringProvider())
+    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider())
   }
 
   @After
