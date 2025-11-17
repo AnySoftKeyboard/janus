@@ -22,6 +22,7 @@
     <string name="empty_state_initial">Enter a word to translate</string>
     <string name="empty_state_no_results_title">No results found</string>
     <string name="empty_state_no_results_message">For the term \"%1$s\" there were no results in Wikipedia</string>
+    <string name="under_construction">Under construction</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Untranslated Articles</string>

@@ -22,6 +22,7 @@
     <string name="empty_state_initial">Wort zum Übersetzen eingeben</string>
     <string name="empty_state_no_results_title">Keine Ergebnisse gefunden</string>
     <string name="empty_state_no_results_message">Für den Begriff \"%1$s\" wurden keine Ergebnisse in Wikipedia gefunden</string>
+    <string name="under_construction">In Arbeit</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Nicht übersetzte Artikel</string>
