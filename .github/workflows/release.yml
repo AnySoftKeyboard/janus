@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'janus_release_v.+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    container: ghcr.io/menny/android:1.21.2
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Checkout Secrets
+        uses: actions/checkout@v4.2.2
+        with:
+          repository: AnySoftKeyboard/secrets
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
+          path: secrets_repo
+
+      - name: Build and Sign
+        run: ./gradlew assembleRelease bundleRelease
+        env:
+          KEYSTORE_FILE: ${{ github.workspace }}/secrets_repo/anysoftkeyboard.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.ANYSOFTKEYBOARD_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.JANUS_RELEASE_KEYSTORE_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.JANUS_RELEASE_KEYSTORE_KEY_PASSWORD }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
