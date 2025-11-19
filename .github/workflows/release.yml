@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'janus_release_v.+'
+      - 'janus_release_v*'
 
 jobs:
   release:
