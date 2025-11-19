@@ -50,7 +50,7 @@ Builds:
       - apt-get install -y openjdk-17-jdk-headless
     gradle:
       - yes
-    output: app/build/outputs/apk/release/app-release-unsigned.apk
+    output: build/outputs/apk/release/app-release-unsigned.apk
 
 AutoUpdateMode: Version janus_release_v%v
 UpdateCheckMode: Tags
