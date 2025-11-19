@@ -17,7 +17,7 @@ You need to create a new file in your forked `fdroiddata` repository.
 
 ```yaml
 Categories:
-  - Development
+  - translation
 License: Apache-2.0
 SourceCode: https://github.com/AnySoftKeyboard/janus
 IssueTracker: https://github.com/AnySoftKeyboard/janus/issues
@@ -51,9 +51,8 @@ Builds:
     gradle:
       - yes
     output: app/build/outputs/apk/release/app-release-unsigned.apk
-    ndk: r25c
 
-AutoUpdateMode: Version v%v
+AutoUpdateMode: Version janus_release_v%v
 UpdateCheckMode: Tags
 CurrentVersion: 1.0
 CurrentVersionCode: 1
