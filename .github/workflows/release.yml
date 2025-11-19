@@ -35,5 +35,32 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
+
+  increment-version:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4.2.2
+        with:
+          ref: main
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
+
+      - name: Increment Version Code
+        run: |
+          VERSION_CODE=$(grep "versionCode =" app/build.gradle.kts | grep -o "[0-9]*")
+          NEW_VERSION_CODE=$((VERSION_CODE + 1))
+          echo "Incrementing version code from $VERSION_CODE to $NEW_VERSION_CODE"
+          echo "NEW_VERSION_CODE=$NEW_VERSION_CODE" >> $GITHUB_ENV
+          sed -i "s/versionCode = $VERSION_CODE/versionCode = $NEW_VERSION_CODE/" app/build.gradle.kts
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Polyglot"
+          git config --global user.email "ask@evendanan.net"
+          git add app/build.gradle.kts
+          git commit -m "Auto-increment version code to ${{ env.NEW_VERSION_CODE }} [skip ci]"
+          git push
