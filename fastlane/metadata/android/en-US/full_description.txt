@@ -1,0 +1,10 @@
+Janus provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia. Instead of literal machine translation, it finds the corresponding Wikipedia article in the target language to offer a more accurate and context-aware translation.
+
+Features:
+* Contextual Translation: Uses Wikipedia article titles for accurate, context-aware translations.
+* Multi-Language Support: Translate from any Wikipedia-supported language to any other.
+* Rich Information: Displays short descriptions and article summaries.
+* Full History & Bookmarks: Keeps a log of translations and allows saving important ones.
+* Searchable History: Quickly find past translations.
+* Quick Actions: Copy translations and open Wikipedia articles.
+* Modern UI: Clean interface supporting light and dark themes.

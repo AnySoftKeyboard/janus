@@ -10,6 +10,12 @@ android {
   namespace = "com.anysoftkeyboard.janus.app"
   compileSdk = 35
 
+  dependenciesInfo {
+    // Reproducible builds
+    includeInApk = false
+    includeInBundle = false
+  }
+
   defaultConfig {
     applicationId = "com.anysoftkeyboard.janus"
     minSdk = 21
