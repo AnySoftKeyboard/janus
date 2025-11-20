@@ -25,3 +25,5 @@ local.properties
 
 # Android Studio
 .idea
+
+.vscode/
