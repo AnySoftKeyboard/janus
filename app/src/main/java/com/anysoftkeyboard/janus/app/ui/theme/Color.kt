@@ -2,10 +2,17 @@ package com.anysoftkeyboard.janus.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
+// Dark Theme Colors
+val DeepSlate = Color(0xFF121212)
+val Charcoal = Color(0xFF242426)
+val IlluminatedGold = Color(0xFFFFD54F)
+val DarkTextOnGold = Color(0xFF1C1C1E)
+val OffWhiteText = Color(0xFFE6E1E5)
 
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+// Light Theme Colors
+val WarmAlabaster = Color(0xFFF9F6F2)
+val PureWhite = Color(0xFFFFFFFF)
+val AntiqueBronze = Color(0xFF785A00)
+val WhiteTextOnBronze = Color(0xFFFFFFFF)
+val DeepInk = Color(0xFF1C1C1E)
+val BeigeTan = Color(0xFFE8E0D5)
