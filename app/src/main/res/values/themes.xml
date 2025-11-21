@@ -2,5 +2,36 @@
     <style name="Theme.Janus" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Janus.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Janus.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Janus.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.Janus.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.Janus.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.Janus.TitleSmall</item>
+    </style>
+
+    <style name="TextAppearance.Janus.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
+    </style>
+    <style name="TextAppearance.Janus.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
+    </style>
+    <style name="TextAppearance.Janus.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
+    </style>
+    <style name="TextAppearance.Janus.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
+    </style>
+    <style name="TextAppearance.Janus.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
+    </style>
+    <style name="TextAppearance.Janus.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/merriweather</item>
+        <item name="android:fontFamily">@font/merriweather</item>
     </style>
 </resources>
