@@ -20,11 +20,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
+import kotlin.random.Random
 
 /**
  * Generic empty state component with icon, title, and message.
@@ -41,12 +45,31 @@ fun EmptyStateMessage(
     message: String,
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
+  EmptyStateMessage(
+      painter = rememberVectorPainter(icon), title = title, message = message, iconTint = iconTint)
+}
+
+/**
+ * Generic empty state component with icon, title, and message.
+ *
+ * @param painter Icon painter to display
+ * @param title Main title text
+ * @param message Detailed message text
+ * @param iconTint Color tint for the icon
+ */
+@Composable
+fun EmptyStateMessage(
+    painter: Painter,
+    title: String,
+    message: String,
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant
+) {
   Column(
       modifier = Modifier.fillMaxWidth().padding(32.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
         Icon(
-            imageVector = icon,
+            painter = painter,
             contentDescription = title,
             modifier = Modifier.size(48.dp),
             tint = iconTint)
@@ -63,10 +86,20 @@ fun EmptyStateMessage(
 /** Initial empty state shown when the app starts. */
 @Composable
 fun InitialEmptyState() {
+  val welcomeMessage =
+      when (Random.nextInt(5)) {
+        0 -> stringResource(R.string.empty_state_initial)
+        1 -> stringResource(R.string.empty_state_initial_1)
+        2 -> stringResource(R.string.empty_state_initial_2)
+        3 -> stringResource(R.string.empty_state_initial_3)
+        else -> stringResource(R.string.empty_state_initial_4)
+      }
+
   EmptyStateMessage(
-      icon = Icons.Default.Search,
-      title = stringResource(R.string.empty_state_initial),
-      message = "")
+      painter = painterResource(R.mipmap.ic_launcher_foreground),
+      title = welcomeMessage,
+      message = "",
+      iconTint = MaterialTheme.colorScheme.primary)
 }
 
 /** Loading state with a progress indicator. */
