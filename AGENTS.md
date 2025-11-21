@@ -48,3 +48,10 @@
     - Replace "whitelist" with "allow-list."
     - Avoid terms like "master," "slave," "insane," and "dumb."
     - Use gender-neutral pronouns.
+
+---
+
+# Documentation
+- **Design & Branding**: [docs/DESIGN.md](docs/DESIGN.md) - UI/UX strategy, branding, typography, and themes.
+- **Initial Design**: [docs/INITIAL-DESIGN.md](docs/INITIAL-DESIGN.md) - Original design manifest.
+- **Translation Flow**: [docs/TRANSLATION_FLOW.md](docs/TRANSLATION_FLOW.md) - Technical flow of translation features.
