@@ -1,3 +1,5 @@
+<img src="fastlane/metadata/android/en-US/images/icon.png" width="96" align="right" />
+
 [![CI](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml)
 
 **Janus** is an open-source Android app that provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia.
