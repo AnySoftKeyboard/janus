@@ -33,9 +33,12 @@ import com.anysoftkeyboard.janus.app.ui.TranslateScreen
 import com.anysoftkeyboard.janus.app.ui.theme.JanusTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
+    installSplashScreen()
     super.onCreate(savedInstanceState)
     setContent { JanusTheme { JanusApp() } }
   }

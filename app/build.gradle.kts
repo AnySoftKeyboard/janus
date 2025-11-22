@@ -55,6 +55,7 @@ android {
 dependencies {
   implementation(project(":database"))
   implementation(project(":network"))
+  implementation(libs.androidx.core.splashscreen)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.com.google.android.material)

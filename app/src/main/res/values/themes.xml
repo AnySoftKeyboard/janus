@@ -10,6 +10,12 @@
         <item name="textAppearanceTitleSmall">@style/TextAppearance.Janus.TitleSmall</item>
     </style>
 
+    <style name="Theme.Janus.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.Janus</item>
+    </style>
+
     <style name="TextAppearance.Janus.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="fontFamily">@font/merriweather</item>
         <item name="android:fontFamily">@font/merriweather</item>
