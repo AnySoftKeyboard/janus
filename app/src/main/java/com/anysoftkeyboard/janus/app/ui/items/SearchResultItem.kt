@@ -28,6 +28,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.TextUnit
+import android.util.TypedValue
 
 /**
  * Card displaying a single search result item.
@@ -85,7 +89,10 @@ fun SearchResultItem(
           AvailableLanguagesText(result.availableLanguages)
         }
         else -> {
-          HtmlSnippet(result.snippet)
+          HtmlSnippet(
+              snippet = result.snippet,
+              textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+              textSize = MaterialTheme.typography.bodyMedium.fontSize)
         }
       }
     }
@@ -136,12 +143,17 @@ private fun AvailableLanguagesText(availableLanguages: List<String>) {
 
 /** Displays HTML snippet using AndroidView with TextView. */
 @Composable
-private fun HtmlSnippet(snippet: String) {
+private fun HtmlSnippet(snippet: String, textColor: Color, textSize: TextUnit) {
+  val textColorInt = textColor.toArgb()
   AndroidView(
       factory = { context ->
         TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
       },
-      update = { textView -> setHtmlToText(textView, snippet) })
+      update = { textView ->
+          textView.setTextColor(textColorInt)
+          textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.value)
+          setHtmlToText(textView, snippet)
+      })
 }
 
 /** Helper function to set HTML content to TextView with proper API level handling. */
@@ -149,6 +161,7 @@ private fun setHtmlToText(view: TextView, snippet: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     view.text = Html.fromHtml(snippet, Html.FROM_HTML_MODE_COMPACT)
   } else {
-    @Suppress("DEPRECATION") view.text = Html.fromHtml(snippet)
+    @Suppress("DEPRECATION")
+    view.text = Html.fromHtml(snippet)
   }
 }
