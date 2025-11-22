@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -19,6 +20,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 
 @ExperimentalCoroutinesApi
@@ -27,6 +29,7 @@ class TranslateViewModelTest {
 
   private lateinit var viewModel: TranslateViewModel
   private lateinit var fakeRepository: FakeTranslationRepository
+  private lateinit var mockWelcomeMessageProvider: com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -34,7 +37,13 @@ class TranslateViewModelTest {
   fun setup() {
     Dispatchers.setMain(testDispatcher)
     fakeRepository = FakeTranslationRepository(mock(), mock(), FakeStringProvider())
-    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider())
+    mockWelcomeMessageProvider = mock()
+    whenever(mockWelcomeMessageProvider.getRandomMessage())
+        .thenReturn(
+            TranslationFlowMessages(
+                com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+                com.anysoftkeyboard.janus.app.R.string.search_instruction_initial))
+    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider(), mockWelcomeMessageProvider)
   }
 
   @After
@@ -45,6 +54,13 @@ class TranslateViewModelTest {
   @Test
   fun `initial state is empty`() = runTest {
     assertEquals(TranslateViewState.Empty, viewModel.pageState.value)
+  }
+
+  @Test
+  fun `initial welcome message is set from provider`() = runTest {
+    val message = viewModel.welcomeMessage.value
+    assertEquals(com.anysoftkeyboard.janus.app.R.string.empty_state_initial, message.welcomeMessageResId)
+    assertEquals(com.anysoftkeyboard.janus.app.R.string.search_instruction_initial, message.searchInstructionResId)
   }
 
   @Test
@@ -416,6 +432,31 @@ class TranslateViewModelTest {
       // No need to await since Empty -> Empty doesn't emit
       viewModel.backToSearchResults()
       assertEquals(TranslateViewState.Empty, viewModel.pageState.value)
+    }
+  }
+
+  @Test
+  fun `clearSearch updates welcome message`() = runTest {
+    // Setup mock to return different messages
+    val message1 = TranslationFlowMessages(
+        com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial)
+    val message2 = TranslationFlowMessages(
+        com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
+        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1)
+
+    whenever(mockWelcomeMessageProvider.getRandomMessage())
+        .thenReturn(message1)
+        .thenReturn(message2)
+
+    // Re-initialize view model to trigger first call
+    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider(), mockWelcomeMessageProvider)
+
+    viewModel.welcomeMessage.test {
+      assertEquals(message1, awaitItem())
+
+      viewModel.clearSearch()
+      assertEquals(message2, awaitItem())
     }
   }
 }

@@ -65,17 +65,17 @@ fun EmptyStateMessage(
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant
 ) {
   Column(
-      modifier = Modifier.fillMaxWidth().padding(32.dp),
+      modifier = Modifier.fillMaxWidth().padding(28.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
         Icon(
             painter = painter,
             contentDescription = title,
-            modifier = Modifier.size(144.dp),
+            modifier = Modifier.size(128.dp),
             tint = iconTint)
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = iconTint)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = message,
             style = MaterialTheme.typography.bodyMedium,
@@ -85,16 +85,7 @@ fun EmptyStateMessage(
 
 /** Initial empty state shown when the app starts. */
 @Composable
-fun InitialEmptyState() {
-  val welcomeMessage =
-      when (Random.nextInt(5)) {
-        0 -> stringResource(R.string.empty_state_initial)
-        1 -> stringResource(R.string.empty_state_initial_1)
-        2 -> stringResource(R.string.empty_state_initial_2)
-        3 -> stringResource(R.string.empty_state_initial_3)
-        else -> stringResource(R.string.empty_state_initial_4)
-      }
-
+fun InitialEmptyState(welcomeMessage: String) {
   EmptyStateMessage(
       painter = painterResource(R.mipmap.ic_launcher_foreground),
       title = welcomeMessage,
@@ -149,7 +140,7 @@ fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: Snackb
             imageVector = Icons.Default.Warning,
             contentDescription = stringResource(R.string.content_description_error),
             tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(144.dp))
+            modifier = Modifier.size(128.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = error.errorType,

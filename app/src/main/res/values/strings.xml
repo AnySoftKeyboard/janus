@@ -24,6 +24,13 @@
     <string name="empty_state_initial_2">Translate a subject</string>
     <string name="empty_state_initial_3">Explore new meanings</string>
     <string name="empty_state_initial_4">Discover languages</string>
+
+    <!-- Search result instructions -->
+    <string name="search_instruction_initial">Select the word you meant (in %1$s)</string>
+    <string name="search_instruction_initial_1">Select the concept you meant (in %1$s)</string>
+    <string name="search_instruction_initial_2">Select the subject you meant (in %1$s)</string>
+    <string name="search_instruction_initial_3">Select the meaning you meant (in %1$s)</string>
+    <string name="search_instruction_initial_4">Select the language you meant (in %1$s)</string>
     <string name="empty_state_no_results_title">No results found</string>
     <string name="empty_state_no_results_message">For the term \"%1$s\" there were no results in Wikipedia</string>
     <string name="under_construction">Under construction</string>

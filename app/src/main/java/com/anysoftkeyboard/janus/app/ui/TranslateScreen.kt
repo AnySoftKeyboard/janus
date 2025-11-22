@@ -59,6 +59,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var sourceLang by remember { mutableStateOf("en") }
   var targetLang by remember { mutableStateOf("he") }
   val pageState by viewModel.pageState.collectAsState()
+  val welcomeMessage by viewModel.welcomeMessage.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
 
   // Handle back button navigation within translation flow
@@ -106,7 +107,8 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
 
           // State-based content display
           when (pageState) {
-            is TranslateViewState.Empty -> InitialEmptyState()
+            is TranslateViewState.Empty ->
+                InitialEmptyState(stringResource(welcomeMessage.welcomeMessageResId))
             is TranslateViewState.FetchingOptions -> LoadingState()
             is TranslateViewState.OptionsFetched ->
                 SearchResultsView(
@@ -114,7 +116,9 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                     viewModel = viewModel,
                     sourceLang = sourceLang,
                     targetLang = targetLang,
-                    snackbarHostState = snackbarHostState)
+                    snackbarHostState = snackbarHostState,
+                    instruction =
+                        stringResource(welcomeMessage.searchInstructionResId, targetLang.uppercase()))
             is TranslateViewState.Translated ->
                 TranslationView(translated = pageState as TranslateViewState.Translated)
             is TranslateViewState.Error ->

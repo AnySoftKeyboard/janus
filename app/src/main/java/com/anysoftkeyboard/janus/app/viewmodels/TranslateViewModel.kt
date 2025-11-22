@@ -8,6 +8,8 @@ import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
+import com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,10 +55,14 @@ class TranslateViewModel
 @Inject
 constructor(
     private val repository: TranslationRepository,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val welcomeMessageProvider: WelcomeMessageProvider
 ) : ViewModel() {
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
+
+  private val _welcomeMessage = MutableStateFlow(welcomeMessageProvider.getRandomMessage())
+  val welcomeMessage: StateFlow<TranslationFlowMessages> = _welcomeMessage
 
   // Track previous state for back navigation
   private var previousSearchResults: TranslateViewState.OptionsFetched? = null
@@ -127,12 +133,13 @@ constructor(
    */
   fun backToSearchResults() {
     previousSearchResults?.let { _state.value = it }
-        ?: run { _state.value = TranslateViewState.Empty }
+        ?: run { clearSearch() }
   }
 
   /** Clear search and return to Empty state. Also clears saved search results. */
   fun clearSearch() {
     _state.value = TranslateViewState.Empty
     previousSearchResults = null
+    _welcomeMessage.value = welcomeMessageProvider.getRandomMessage()
   }
 }

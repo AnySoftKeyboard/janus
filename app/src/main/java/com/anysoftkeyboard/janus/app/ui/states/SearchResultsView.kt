@@ -1,13 +1,17 @@
 package com.anysoftkeyboard.janus.app.ui.states
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -50,7 +54,8 @@ fun SearchResultsView(
     viewModel: TranslateViewModel,
     sourceLang: String,
     targetLang: String,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    instruction: String
 ) {
   val translatedArticles = pageState.options.filter { targetLang in it.availableLanguages }
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
@@ -75,6 +80,22 @@ fun SearchResultsView(
   }
 
   LazyColumn {
+    item {
+      androidx.compose.foundation.layout.Row(
+          modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+          verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                painter = androidx.compose.ui.res.painterResource(R.mipmap.ic_launcher_foreground),
+                contentDescription = null,
+                modifier = Modifier.size(32.dp),
+                tint = MaterialTheme.colorScheme.primary)
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = instruction,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+          }
+    }
     // Translated articles section
     items(translatedArticles) { item ->
       val translationState = pageState.translations[item]
