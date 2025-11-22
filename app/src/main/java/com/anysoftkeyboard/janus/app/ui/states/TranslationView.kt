@@ -4,24 +4,41 @@ import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardDoubleArrowDown
+import androidx.compose.material3.Icon
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.CopyToClipboardButton
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
@@ -49,11 +66,32 @@ fun TranslationView(translated: TranslateViewState.Translated) {
         snippet = translated.term.snippet,
         translation = translated.translation)
 
-    Spacer(modifier = Modifier.height(24.dp))
-    HorizontalDivider()
-    Spacer(modifier = Modifier.height(24.dp))
+    PivotConnector()
 
     TranslationContent(translation = translated.translation, targetLang = translated.targetLang)
+  }
+}
+
+/** Visual connector between Source and Target cards. */
+@Composable
+private fun PivotConnector() {
+  Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
+    HorizontalDivider(color = MaterialTheme.colorScheme.primary)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      Image(
+          painter = painterResource(R.mipmap.ic_launcher_foreground),
+          contentDescription = null,
+          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+          modifier =
+              Modifier.size(48.dp)
+                  .clip(CircleShape)
+                  .background(MaterialTheme.colorScheme.background))
+      Icon(
+          imageVector = Icons.Default.KeyboardDoubleArrowDown,
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.primary,
+          modifier = Modifier.size(24.dp).background(MaterialTheme.colorScheme.background))
+    }
   }
 }
 
@@ -66,77 +104,89 @@ private fun SourceArticleSection(
     snippet: String,
     translation: TranslationState
 ) {
-  Column(modifier = Modifier.fillMaxWidth()) {
-    // Header with title and action buttons
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
-          Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.horizontalScroll(rememberScrollState()))
-            Text(
-                text = language.uppercase(),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-          }
-          Row {
-            CopyToClipboardButton(
-                text = title,
-                contentDescription = "Copy source title",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            WikipediaLinkButton(
-                url = "https://${language}.wikipedia.org/?curid=${pageId}",
-                contentDescription = "Open source article",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+  Card(
+      colors =
+          CardDefaults.cardColors(
+              containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)),
+      shape = MaterialTheme.shapes.medium) {
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+          // Header with title and action buttons
+          Row(
+              modifier = Modifier.fillMaxWidth(),
+              horizontalArrangement = Arrangement.SpaceBetween,
+              verticalAlignment = Alignment.CenterVertically) {
+                Column(modifier = Modifier.weight(1f)) {
+                  Text(
+                      text = title,
+                      style = MaterialTheme.typography.headlineSmall,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                      maxLines = 1,
+                      overflow = TextOverflow.Ellipsis,
+                      modifier = Modifier.horizontalScroll(rememberScrollState()))
+                  Text(
+                      text = language.uppercase(),
+                      style = MaterialTheme.typography.labelMedium,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+                Row {
+                  CopyToClipboardButton(
+                      text = title,
+                      contentDescription = "Copy source title",
+                      tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                  WikipediaLinkButton(
+                      url = "https://${language}.wikipedia.org/?curid=${pageId}",
+                      contentDescription = "Open source article",
+                      tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+              }
+
+          // Show short description and snippet if available
+          if (translation is TranslationState.Translated) {
+            val translationData = translation.translation
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Short description
+            translationData.sourceShortDescription?.let { description ->
+              Text(
+                  text = description,
+                  style = MaterialTheme.typography.bodyMedium,
+                  color = MaterialTheme.colorScheme.onSurface)
+              Spacer(modifier = Modifier.height(4.dp))
+            }
+
+            // Snippet (HTML)
+            if (snippet.isNotEmpty()) {
+              HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+          } else if (snippet.isNotEmpty()) {
+            // If no translation yet, still show snippet
+            Spacer(modifier = Modifier.height(8.dp))
+            HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
           }
         }
-
-    // Show short description and snippet if available
-    if (translation is TranslationState.Translated) {
-      val translationData = translation.translation
-      Spacer(modifier = Modifier.height(8.dp))
-
-      // Short description
-      translationData.sourceShortDescription?.let { description ->
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface)
-        Spacer(modifier = Modifier.height(4.dp))
       }
-
-      // Snippet (HTML)
-      if (snippet.isNotEmpty()) {
-        HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
-      }
-    } else if (snippet.isNotEmpty()) {
-      // If no translation yet, still show snippet
-      Spacer(modifier = Modifier.height(8.dp))
-      HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-  }
 }
 
 /** Content area displaying the translation result based on state. */
 @Composable
 private fun TranslationContent(translation: TranslationState, targetLang: String) {
-  when (translation) {
-    is TranslationState.Translated -> {
-      TranslatedContent(translation)
-    }
-    is TranslationState.MissingTranslation -> {
-      MissingTranslationContent(targetLang, translation)
-    }
-    else -> {
-      UnknownStateContent(translation)
-    }
-  }
+  Card(
+      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+      shape = MaterialTheme.shapes.medium) {
+        Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+          when (translation) {
+            is TranslationState.Translated -> {
+              TranslatedContent(translation)
+            }
+            is TranslationState.MissingTranslation -> {
+              MissingTranslationContent(targetLang, translation)
+            }
+            else -> {
+              UnknownStateContent(translation)
+            }
+          }
+        }
+      }
 }
 
 /** Displays successfully translated content with target article and actions. */
@@ -153,7 +203,7 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
           Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = translationData.translatedWord,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.primary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -165,9 +215,13 @@ private fun TranslatedContent(translation: TranslationState.Translated) {
           }
           Row {
             CopyToClipboardButton(
-                text = translationData.translatedWord, contentDescription = "Copy translated title")
+                text = translationData.translatedWord,
+                contentDescription = "Copy translated title",
+                tint = MaterialTheme.colorScheme.primary)
             WikipediaLinkButton(
-                url = translationData.targetArticleUrl, contentDescription = "Open target article")
+                url = translationData.targetArticleUrl,
+                contentDescription = "Open target article",
+                tint = MaterialTheme.colorScheme.primary)
           }
         }
 
@@ -245,6 +299,7 @@ private fun setHtmlToText(view: TextView, html: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     view.text = Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
   } else {
-    @Suppress("DEPRECATION") view.text = Html.fromHtml(html)
+    @Suppress("DEPRECATION")
+    view.text = Html.fromHtml(html)
   }
 }

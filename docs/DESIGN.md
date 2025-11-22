@@ -58,8 +58,8 @@ Used for day environments. Evokes a clean, warm library book.
 We mix typeface styles to reinforce the "Dictionary" feel without sacrificing screen readability.
 
 ### Headings & Titles
-- **Font Family**: **Merriweather** (or Playfair Display)
-- **Usage**: App Bar titles, Result Card headings, Disambiguation list titles.
+- **Font Family**: **Merriweather** - note: this is not the system default, but a custom font
+- **Usage**: App Bar titles, Result Card headings, Disambiguation list titles. Everywhere we want Serif we will use this font.
 - **Why**: Serif fonts imply authority and distinctiveness.
 
 ### Body & Definitions
