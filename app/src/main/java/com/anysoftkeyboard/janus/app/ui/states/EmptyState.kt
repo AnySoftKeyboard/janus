@@ -71,7 +71,7 @@ fun EmptyStateMessage(
         Icon(
             painter = painter,
             contentDescription = title,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(144.dp),
             tint = iconTint)
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = iconTint)
@@ -149,7 +149,7 @@ fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: Snackb
             imageVector = Icons.Default.Warning,
             contentDescription = stringResource(R.string.content_description_error),
             tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(48.dp))
+            modifier = Modifier.size(144.dp))
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = error.errorType,
