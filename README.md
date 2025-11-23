@@ -25,6 +25,8 @@ This is a standard Gradle project. To build it:
 * Codename: Janus
 * Application ID: `com.anysoftkeyboard.janus`
 * For a detailed breakdown of the technical design and architecture, see the `INITIAL-DESIGN.md` file.
+* For UI/UX strategy and branding, see the `DESIGN.md` file.
+* For the technical flow of translation features, see the `TRANSLATION_FLOW.md` file.
 
 ## License
 This project is licensed under the Apache License 2.0. See the `LICENSE` file for details.

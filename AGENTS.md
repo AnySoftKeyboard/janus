@@ -53,5 +53,6 @@
 
 # Documentation
 - **Design & Branding**: [docs/DESIGN.md](docs/DESIGN.md) - UI/UX strategy, branding, typography, and themes.
-- **Initial Design**: [docs/INITIAL-DESIGN.md](docs/INITIAL-DESIGN.md) - Original design manifest.
+- **Initial Design**: [docs/INITIAL-DESIGN.md](docs/INITIAL-DESIGN.md) - Technical design document and architecture.
 - **Translation Flow**: [docs/TRANSLATION_FLOW.md](docs/TRANSLATION_FLOW.md) - Technical flow of translation features.
+- **F-Droid Submission**: [docs/FDROID_SUBMISSION.md](docs/FDROID_SUBMISSION.md) - Guide for submitting to F-Droid.

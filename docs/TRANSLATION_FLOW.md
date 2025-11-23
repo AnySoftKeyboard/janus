@@ -244,7 +244,7 @@ val translationState = if (langTranslation == null) {
 ```
 
 ### UI Behavior
-**File**: `app/src/main/java/com/anysoftkeyboard/janus/app/ui/states/TranslationContent.kt`
+**File**: `app/src/main/java/com/anysoftkeyboard/janus/app/ui/states/TranslationView.kt`
 
 Displays Snackbar: "Translation to {targetLang} not found. Available translations: {langCodes}"
 
@@ -404,7 +404,7 @@ try {
 ```
 
 ### UI Display
-**File**: `app/src/main/java/com/anysoftkeyboard/janus/app/ui/states/ErrorView.kt`
+**File**: `app/src/main/java/com/anysoftkeyboard/janus/app/ui/states/EmptyState.kt`
 
 Shows error type and message with retry button.
 
