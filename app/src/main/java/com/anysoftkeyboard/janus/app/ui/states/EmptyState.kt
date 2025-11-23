@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,80 +31,67 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 /**
  * Generic empty state component with icon, title, and message.
  *
- * @param icon Icon to display
+ * @param iconContent Icon painter to display
  * @param title Main title text
  * @param message Detailed message text
  * @param iconTint Color tint for the icon
  */
 @Composable
-fun EmptyStateMessage(
-    icon: ImageVector,
+private fun EmptyStateMessage(
     title: String,
     message: String,
-    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant
-) {
-  EmptyStateMessage(
-      painter = rememberVectorPainter(icon), title = title, message = message, iconTint = iconTint)
-}
-
-/**
- * Generic empty state component with icon, title, and message.
- *
- * @param painter Icon painter to display
- * @param title Main title text
- * @param message Detailed message text
- * @param iconTint Color tint for the icon
- */
-@Composable
-fun EmptyStateMessage(
-    painter: Painter,
-    title: String,
-    message: String,
-    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    iconContent: @Composable () -> Unit
 ) {
   Column(
       modifier = Modifier.fillMaxWidth().padding(28.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
-        Icon(
-            painter = painter,
-            contentDescription = title,
-            modifier = Modifier.size(128.dp),
-            tint = iconTint)
+        iconContent()
         Spacer(modifier = Modifier.height(4.dp))
         Text(text = title, style = MaterialTheme.typography.titleMedium, color = iconTint)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (message.isNotEmpty()) {
+          Spacer(modifier = Modifier.height(4.dp))
+          Text(
+              text = message,
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
       }
+}
+
+@Composable
+private fun EmptyStateMessageWithPainter(
+    title: String,
+    message: String,
+    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    painter: Painter
+) {
+  EmptyStateMessage(title, message, iconTint) {
+    Icon(
+        painter = painter,
+        contentDescription = title,
+        modifier = Modifier.size(128.dp),
+        tint = iconTint)
+  }
 }
 
 /** Initial empty state shown when the app starts. */
 @Composable
 fun InitialEmptyState(welcomeMessage: String) {
-  EmptyStateMessage(
-      painter = painterResource(R.mipmap.ic_launcher_foreground),
+  EmptyStateMessageWithPainter(
       title = welcomeMessage,
       message = "",
-      iconTint = MaterialTheme.colorScheme.primary)
+      iconTint = MaterialTheme.colorScheme.primary,
+      painter = painterResource(R.mipmap.ic_launcher_foreground))
 }
 
 /** Loading state with a progress indicator. */
 @Composable
 fun LoadingState(message: String) {
-  Column(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
-        JanusLoader(modifier = Modifier.size(64.dp))
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
-      }
+  EmptyStateMessage(title = message, message = "", iconTint = MaterialTheme.colorScheme.primary) {
+    JanusLoader(modifier = Modifier.size(128.dp))
+  }
 }
 
 /**
@@ -115,10 +101,10 @@ fun LoadingState(message: String) {
  */
 @Composable
 fun NoResultsState(searchTerm: String) {
-  EmptyStateMessage(
-      icon = Icons.Default.Search,
+  EmptyStateMessageWithPainter(
       title = stringResource(R.string.empty_state_no_results_title),
-      message = stringResource(R.string.empty_state_no_results_message, searchTerm))
+      message = stringResource(R.string.empty_state_no_results_message, searchTerm),
+      painter = rememberVectorPainter(image = Icons.Default.Search))
 }
 
 /**
@@ -135,25 +121,8 @@ fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: Snackb
   LaunchedEffect(error) {
     snackbarHostState.showSnackbar("${error.errorType}: ${error.errorMessage}")
   }
-
-  Column(
-      modifier = Modifier.fillMaxWidth(),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
-        Icon(
-            imageVector = Icons.Default.Warning,
-            contentDescription = stringResource(R.string.content_description_error),
-            tint = MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(128.dp))
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = error.errorType,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.error)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = error.errorMessage,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
-      }
+  EmptyStateMessageWithPainter(
+      title = error.errorType,
+      message = error.errorMessage,
+      painter = rememberVectorPainter(image = Icons.Default.Warning))
 }
