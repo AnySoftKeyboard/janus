@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -32,8 +33,6 @@ import com.anysoftkeyboard.janus.app.ui.HistoryScreen
 import com.anysoftkeyboard.janus.app.ui.TranslateScreen
 import com.anysoftkeyboard.janus.app.ui.theme.JanusTheme
 import dagger.hilt.android.AndroidEntryPoint
-
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

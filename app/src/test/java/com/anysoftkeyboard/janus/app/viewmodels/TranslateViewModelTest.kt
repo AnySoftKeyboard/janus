@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.util.FakeStringProvider
+import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,7 +13,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -29,7 +29,8 @@ class TranslateViewModelTest {
 
   private lateinit var viewModel: TranslateViewModel
   private lateinit var fakeRepository: FakeTranslationRepository
-  private lateinit var mockWelcomeMessageProvider: com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
+  private lateinit var mockWelcomeMessageProvider:
+      com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -59,8 +60,11 @@ class TranslateViewModelTest {
   @Test
   fun `initial welcome message is set from provider`() = runTest {
     val message = viewModel.welcomeMessage.value
-    assertEquals(com.anysoftkeyboard.janus.app.R.string.empty_state_initial, message.welcomeMessageResId)
-    assertEquals(com.anysoftkeyboard.janus.app.R.string.search_instruction_initial, message.searchInstructionResId)
+    assertEquals(
+        com.anysoftkeyboard.janus.app.R.string.empty_state_initial, message.welcomeMessageResId)
+    assertEquals(
+        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+        message.searchInstructionResId)
   }
 
   @Test
@@ -438,12 +442,14 @@ class TranslateViewModelTest {
   @Test
   fun `clearSearch updates welcome message`() = runTest {
     // Setup mock to return different messages
-    val message1 = TranslationFlowMessages(
-        com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
-        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial)
-    val message2 = TranslationFlowMessages(
-        com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
-        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1)
+    val message1 =
+        TranslationFlowMessages(
+            com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial)
+    val message2 =
+        TranslationFlowMessages(
+            com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
+            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1)
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(message1)

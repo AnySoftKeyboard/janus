@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app.ui.items
 import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.util.TypedValue
 import android.widget.TextView
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -15,23 +16,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
+import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.unit.TextUnit
-import android.util.TypedValue
 
 /**
  * Card displaying a single search result item.
@@ -80,7 +80,7 @@ fun SearchResultItem(
       // Content area: loading, error, available languages, or snippet
       when {
         isLoading -> {
-          CircularProgressIndicator(modifier = Modifier.size(24.dp))
+          JanusLoader(modifier = Modifier.size(24.dp))
         }
         errorMessage != null -> {
           ErrorContent(errorMessage)
@@ -150,9 +150,9 @@ private fun HtmlSnippet(snippet: String, textColor: Color, textSize: TextUnit) {
         TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
       },
       update = { textView ->
-          textView.setTextColor(textColorInt)
-          textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.value)
-          setHtmlToText(textView, snippet)
+        textView.setTextColor(textColorInt)
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.value)
+        setHtmlToText(textView, snippet)
       })
 }
 
