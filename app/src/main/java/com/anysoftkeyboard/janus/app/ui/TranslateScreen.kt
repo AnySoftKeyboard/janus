@@ -118,7 +118,8 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                     targetLang = targetLang,
                     snackbarHostState = snackbarHostState,
                     instruction =
-                        stringResource(welcomeMessage.searchInstructionResId, targetLang.uppercase()))
+                        stringResource(
+                            welcomeMessage.searchInstructionResId, targetLang.uppercase()))
             is TranslateViewState.Translated ->
                 TranslationView(translated = pageState as TranslateViewState.Translated)
             is TranslateViewState.Error ->

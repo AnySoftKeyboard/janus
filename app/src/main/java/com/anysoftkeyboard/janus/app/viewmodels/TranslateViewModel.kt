@@ -7,9 +7,9 @@ import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.StringProvider
-import com.anysoftkeyboard.janus.database.entities.Translation
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
+import com.anysoftkeyboard.janus.database.entities.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -132,8 +132,7 @@ constructor(
    * exist, clears to Empty state.
    */
   fun backToSearchResults() {
-    previousSearchResults?.let { _state.value = it }
-        ?: run { clearSearch() }
+    previousSearchResults?.let { _state.value = it } ?: run { clearSearch() }
   }
 
   /** Clear search and return to Empty state. Also clears saved search results. */

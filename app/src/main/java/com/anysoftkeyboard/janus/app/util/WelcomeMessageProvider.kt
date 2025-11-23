@@ -20,23 +20,24 @@ data class TranslationFlowMessages(
     @StringRes val searchInstructionResId: Int
 )
 
-/**
- * Provides random welcome messages and their corresponding search instructions.
- */
+/** Provides random welcome messages and their corresponding search instructions. */
 class WelcomeMessageProvider @Inject constructor() {
 
-    private val messages = listOf(
-        TranslationFlowMessages(R.string.empty_state_initial, R.string.search_instruction_initial),
-        TranslationFlowMessages(R.string.empty_state_initial_1, R.string.search_instruction_initial_1),
-        TranslationFlowMessages(R.string.empty_state_initial_2, R.string.search_instruction_initial_2),
-        TranslationFlowMessages(R.string.empty_state_initial_3, R.string.search_instruction_initial_3),
-        TranslationFlowMessages(R.string.empty_state_initial_4, R.string.search_instruction_initial_4)
-    )
+  private val messages =
+      listOf(
+          TranslationFlowMessages(
+              R.string.empty_state_initial, R.string.search_instruction_initial),
+          TranslationFlowMessages(
+              R.string.empty_state_initial_1, R.string.search_instruction_initial_1),
+          TranslationFlowMessages(
+              R.string.empty_state_initial_2, R.string.search_instruction_initial_2),
+          TranslationFlowMessages(
+              R.string.empty_state_initial_3, R.string.search_instruction_initial_3),
+          TranslationFlowMessages(
+              R.string.empty_state_initial_4, R.string.search_instruction_initial_4))
 
-    /**
-     * Returns a random [TranslationFlowMessages] from the predefined list.
-     */
-    fun getRandomMessage(): TranslationFlowMessages {
-        return messages[Random.nextInt(messages.size)]
-    }
+  /** Returns a random [TranslationFlowMessages] from the predefined list. */
+  fun getRandomMessage(): TranslationFlowMessages {
+    return messages[Random.nextInt(messages.size)]
+  }
 }

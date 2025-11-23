@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
@@ -27,8 +26,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
-import kotlin.random.Random
 
 /**
  * Generic empty state component with icon, title, and message.
@@ -100,7 +99,7 @@ fun LoadingState() {
       modifier = Modifier.fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
-        CircularProgressIndicator()
+        JanusLoader(modifier = Modifier.size(64.dp))
       }
 }
 
