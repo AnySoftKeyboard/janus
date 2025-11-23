@@ -26,14 +26,26 @@
     <string name="empty_state_initial_4">Discover languages</string>
 
     <!-- Search result instructions -->
-    <string name="search_instruction_initial">Select the word you meant (in %1$s)</string>
-    <string name="search_instruction_initial_1">Select the concept you meant (in %1$s)</string>
-    <string name="search_instruction_initial_2">Select the subject you meant (in %1$s)</string>
-    <string name="search_instruction_initial_3">Select the meaning you meant (in %1$s)</string>
-    <string name="search_instruction_initial_4">Select the language you meant (in %1$s)</string>
+    <string name="search_instruction_initial">Select the word you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_1">Select the concept you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_2">Select the subject you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_3">Select the meaning you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_4">Select the language you meant to translate to %1$s</string>
     <string name="empty_state_no_results_title">No results found</string>
     <string name="empty_state_no_results_message">For the term \"%1$s\" there were no results in Wikipedia</string>
     <string name="under_construction">Under construction</string>
+
+    <!-- Loading states -->
+    <string name="loading_state_initial">Looking up...</string>
+    <string name="loading_state_initial_1">Searching for concepts...</string>
+    <string name="loading_state_initial_2">Translating subject...</string>
+    <string name="loading_state_initial_3">Exploring meanings...</string>
+    <string name="loading_state_initial_4">Discovering...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">Bridge the gap</string>
+    <string name="loading_state_initial_5">Constructing bridges...</string>
+    <string name="search_instruction_initial_5">Select the bridge you meant to translate to %1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Untranslated Articles</string>

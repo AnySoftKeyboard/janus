@@ -109,7 +109,8 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
           when (pageState) {
             is TranslateViewState.Empty ->
                 InitialEmptyState(stringResource(welcomeMessage.welcomeMessageResId))
-            is TranslateViewState.FetchingOptions -> LoadingState()
+            is TranslateViewState.FetchingOptions ->
+                LoadingState(stringResource(welcomeMessage.loadingMessageResId))
             is TranslateViewState.OptionsFetched ->
                 SearchResultsView(
                     pageState = pageState as TranslateViewState.OptionsFetched,

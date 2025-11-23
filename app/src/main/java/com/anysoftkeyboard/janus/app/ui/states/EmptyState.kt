@@ -94,12 +94,17 @@ fun InitialEmptyState(welcomeMessage: String) {
 
 /** Loading state with a progress indicator. */
 @Composable
-fun LoadingState() {
+fun LoadingState(message: String) {
   Column(
       modifier = Modifier.fillMaxWidth(),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
         JanusLoader(modifier = Modifier.size(64.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
       }
 }
 

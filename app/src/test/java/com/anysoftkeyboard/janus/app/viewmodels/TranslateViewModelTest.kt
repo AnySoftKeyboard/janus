@@ -30,7 +30,7 @@ class TranslateViewModelTest {
   private lateinit var viewModel: TranslateViewModel
   private lateinit var fakeRepository: FakeTranslationRepository
   private lateinit var mockWelcomeMessageProvider:
-      com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
+      com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -43,6 +43,7 @@ class TranslateViewModelTest {
         .thenReturn(
             TranslationFlowMessages(
                 com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+                com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.search_instruction_initial))
     viewModel = TranslateViewModel(fakeRepository, FakeStringProvider(), mockWelcomeMessageProvider)
   }
@@ -445,10 +446,12 @@ class TranslateViewModelTest {
     val message1 =
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial)
     val message2 =
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_initial_1,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1)
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())

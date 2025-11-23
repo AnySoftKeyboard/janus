@@ -8,7 +8,7 @@ import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
-import com.anysoftkeyboard.janus.app.util.WelcomeMessageProvider
+import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -56,7 +56,7 @@ class TranslateViewModel
 constructor(
     private val repository: TranslationRepository,
     private val stringProvider: StringProvider,
-    private val welcomeMessageProvider: WelcomeMessageProvider
+    private val welcomeMessageProvider: TranslationFlowMessagesProvider
 ) : ViewModel() {
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
