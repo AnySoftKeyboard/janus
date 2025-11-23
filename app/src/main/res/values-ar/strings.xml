@@ -18,11 +18,43 @@
     <string name="language_picker_title">اختيار لغة الترجمة</string>
     <string name="button_cancel">إلغاء</string>
 
-    <!-- Empty states -->
-    <string name="empty_state_initial">إدخال كلمة للترجمة</string>
+    <!-- Empty states (Polished) -->
+    <string name="empty_state_initial">أدخل كلمة للترجمة</string>
+    <string name="empty_state_initial_1">ابحث عن مفهوم</string>
+    <string name="empty_state_initial_2">ترجم موضوعًا</string>
+    <string name="empty_state_initial_3">استكشف التعريفات</string>
+    <string name="empty_state_initial_4">اكتشف المفاهيم</string>
+    <string name="empty_state_scholar">أدخل مصطلحًا لوضعه في سياق</string>
+    <string name="empty_state_bridge">اعثر على رابط</string>
+
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">اختر الكلمة التي ترغب في ترجمتها إلى %1$s</string>
+    <string name="search_instruction_initial_1">اختر المفهوم لترجمته إلى %1$s</string>
+    <string name="search_instruction_initial_2">اختر الموضوع لترجمته إلى %1$s</string>
+    <string name="search_instruction_initial_3">اختر المعنى المحدد لـ %1$s</string>
+    <string name="search_instruction_initial_4">اختر الفكرة المقصودة لـ %1$s</string>
+    <string name="search_instruction_scholar">حدد السياق الصحيح للترجمة إلى %1$s</string>
+    <string name="search_instruction_bridge">اختر المعنى للربط بـ %1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">لم يتم العثور على نتائج</string>
-    <string name="empty_state_no_results_message">للمصطلح \"%1$s\" لم يتم العثور على نتائج في ويكيبيديا</string>
+    <string name="empty_state_no_results_message">لم يتم العثور على نتائج في ويكيبيديا لـ \"%1$s\"</string>
     <string name="under_construction">قيد الإنشاء</string>
+
+    <!-- Loading states (Polished) -->
+    <string name="loading_state_initial">جاري البحث...</string>
+    <string name="loading_state_initial_1">جاري البحث عن مفاهيم...</string>
+    <string name="loading_state_initial_2">جاري ترجمة الموضوع...</string>
+    <string name="loading_state_initial_3">جاري استرداد المعاني...</string>
+    <string name="loading_state_initial_4">جاري الاكتشاف...</string>
+    <string name="loading_state_scholar">جاري استشارة المراجع...</string>
+    <string name="loading_state_bridge">جاري تحديد الروابط...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">سد الفجوة</string>
+    <string name="loading_state_initial_5">جاري بناء الجسور...</string>
+    <string name="search_instruction_initial_5">اختر الجسر الذي قصدت ترجمته إلى %1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">مقالات غير مترجمة</string>

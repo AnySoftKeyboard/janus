@@ -18,11 +18,43 @@
     <string name="language_picker_title">Sélection de la langue de traduction</string>
     <string name="button_cancel">Annuler</string>
 
-    <!-- Empty states -->
+    <!-- Empty states (Polished) -->
     <string name="empty_state_initial">Saisir un mot à traduire</string>
+    <string name="empty_state_initial_1">Trouver un concept</string>
+    <string name="empty_state_initial_2">Traduire un sujet</string>
+    <string name="empty_state_initial_3">Explorer les définitions</string>
+    <string name="empty_state_initial_4">Découvrir des concepts</string>
+    <string name="empty_state_scholar">Saisir un terme à contextualiser</string>
+    <string name="empty_state_bridge">Trouver une connexion</string>
+
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">Sélectionnez le mot que vous souhaitez traduire en %1$s</string>
+    <string name="search_instruction_initial_1">Sélectionnez le concept à traduire en %1$s</string>
+    <string name="search_instruction_initial_2">Sélectionnez le sujet à traduire en %1$s</string>
+    <string name="search_instruction_initial_3">Sélectionnez la signification spécifique pour %1$s</string>
+    <string name="search_instruction_initial_4">Sélectionnez l\'idée prévue pour %1$s</string>
+    <string name="search_instruction_scholar">Identifiez le contexte correct pour la traduction en %1$s</string>
+    <string name="search_instruction_bridge">Choisissez la signification pour faire le pont vers %1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">Aucun résultat trouvé</string>
-    <string name="empty_state_no_results_message">Pour le terme \"%1$s\" aucun résultat n\'a été trouvé dans Wikipédia</string>
+    <string name="empty_state_no_results_message">Aucun résultat Wikipédia trouvé pour \"%1$s\"</string>
     <string name="under_construction">En construction</string>
+
+    <!-- Loading states (Polished) -->
+    <string name="loading_state_initial">Recherche en cours...</string>
+    <string name="loading_state_initial_1">Recherche de concepts...</string>
+    <string name="loading_state_initial_2">Traduction du sujet...</string>
+    <string name="loading_state_initial_3">Récupération des significations...</string>
+    <string name="loading_state_initial_4">Découverte...</string>
+    <string name="loading_state_scholar">Consultation des références...</string>
+    <string name="loading_state_bridge">Localisation des connexions...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">Combler le fossé</string>
+    <string name="loading_state_initial_5">Construction de ponts...</string>
+    <string name="search_instruction_initial_5">Sélectionnez le pont que vous vouliez traduire en %1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Articles non traduits</string>

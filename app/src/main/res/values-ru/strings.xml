@@ -18,11 +18,43 @@
     <string name="language_picker_title">Выбор языка перевода</string>
     <string name="button_cancel">Отмена</string>
 
-    <!-- Empty states -->
+    <!-- Empty states (Polished) -->
     <string name="empty_state_initial">Введите слово для перевода</string>
+    <string name="empty_state_initial_1">Найти концепцию</string>
+    <string name="empty_state_initial_2">Перевести тему</string>
+    <string name="empty_state_initial_3">Изучить определения</string>
+    <string name="empty_state_initial_4">Открыть концепции</string>
+    <string name="empty_state_scholar">Введите термин для контекстуализации</string>
+    <string name="empty_state_bridge">Найти связь</string>
+
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">Выберите слово, которое вы хотите перевести на %1$s</string>
+    <string name="search_instruction_initial_1">Выберите концепцию для перевода на %1$s</string>
+    <string name="search_instruction_initial_2">Выберите тему для перевода на %1$s</string>
+    <string name="search_instruction_initial_3">Выберите конкретное значение для %1$s</string>
+    <string name="search_instruction_initial_4">Выберите предполагаемую идею для %1$s</string>
+    <string name="search_instruction_scholar">Определите правильный контекст для перевода на %1$s</string>
+    <string name="search_instruction_bridge">Выберите значение для связи с %1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">Результаты не найдены</string>
-    <string name="empty_state_no_results_message">Для термина \"%1$s\" не найдено результатов в Википедии</string>
+    <string name="empty_state_no_results_message">В Википедии не найдено результатов для \"%1$s\"</string>
     <string name="under_construction">В разработке</string>
+
+    <!-- Loading states (Polished) -->
+    <string name="loading_state_initial">Поиск...</string>
+    <string name="loading_state_initial_1">Поиск концепций...</string>
+    <string name="loading_state_initial_2">Перевод темы...</string>
+    <string name="loading_state_initial_3">Получение значений...</string>
+    <string name="loading_state_initial_4">Открытие...</string>
+    <string name="loading_state_scholar">Консультация с источниками...</string>
+    <string name="loading_state_bridge">Поиск связей...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">Преодолеть разрыв</string>
+    <string name="loading_state_initial_5">Строительство мостов...</string>
+    <string name="search_instruction_initial_5">Выберите мост, который вы хотели перевести на %1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Непереведённые статьи</string>

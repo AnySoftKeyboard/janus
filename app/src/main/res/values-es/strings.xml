@@ -18,11 +18,43 @@
     <string name="language_picker_title">Selección del idioma de traducción</string>
     <string name="button_cancel">Cancelar</string>
 
-    <!-- Empty states -->
-    <string name="empty_state_initial">Ingresar una palabra a traducir</string>
+    <!-- Empty states (Polished) -->
+    <string name="empty_state_initial">Ingresa una palabra para traducir</string>
+    <string name="empty_state_initial_1">Encuentra un concepto</string>
+    <string name="empty_state_initial_2">Traduce un tema</string>
+    <string name="empty_state_initial_3">Explora definiciones</string>
+    <string name="empty_state_initial_4">Descubre conceptos</string>
+    <string name="empty_state_scholar">Ingresa un término para contextualizar</string>
+    <string name="empty_state_bridge">Encuentra una conexión</string>
+
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">Selecciona la palabra que deseas traducir a %1$s</string>
+    <string name="search_instruction_initial_1">Selecciona el concepto para traducir a %1$s</string>
+    <string name="search_instruction_initial_2">Selecciona el tema para traducir a %1$s</string>
+    <string name="search_instruction_initial_3">Selecciona el significado específico para %1$s</string>
+    <string name="search_instruction_initial_4">Selecciona la idea prevista para %1$s</string>
+    <string name="search_instruction_scholar">Identifica el contexto correcto para la traducción a %1$s</string>
+    <string name="search_instruction_bridge">Elige el significado para conectar con %1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No se encontraron resultados</string>
-    <string name="empty_state_no_results_message">Para el término \"%1$s\" no se encontraron resultados en Wikipedia</string>
+    <string name="empty_state_no_results_message">No se encontraron resultados en Wikipedia para \"%1$s\"</string>
     <string name="under_construction">En construcción</string>
+
+    <!-- Loading states (Polished) -->
+    <string name="loading_state_initial">Buscando...</string>
+    <string name="loading_state_initial_1">Encontrando conceptos...</string>
+    <string name="loading_state_initial_2">Traduciendo tema...</string>
+    <string name="loading_state_initial_3">Recuperando significados...</string>
+    <string name="loading_state_initial_4">Descubriendo...</string>
+    <string name="loading_state_scholar">Consultando referencias...</string>
+    <string name="loading_state_bridge">Localizando conexiones...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">Cierra la brecha</string>
+    <string name="loading_state_initial_5">Construyendo puentes...</string>
+    <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir a %1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Artículos sin traducir</string>

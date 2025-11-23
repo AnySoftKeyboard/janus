@@ -18,29 +18,38 @@
     <string name="language_picker_title">Select Translation Language</string>
     <string name="button_cancel">Cancel</string>
 
-    <!-- Empty states -->
+    <!-- Empty states (Polished) -->
     <string name="empty_state_initial">Enter a word to translate</string>
     <string name="empty_state_initial_1">Find a concept</string>
     <string name="empty_state_initial_2">Translate a subject</string>
-    <string name="empty_state_initial_3">Explore new meanings</string>
-    <string name="empty_state_initial_4">Discover languages</string>
+    <string name="empty_state_initial_3">Explore definitions</string>
+    <string name="empty_state_initial_4">Discover concepts</string>
+    <string name="empty_state_scholar">Enter a term to contextualize</string>
+    <string name="empty_state_bridge">Find a connection</string>
 
-    <!-- Search result instructions -->
-    <string name="search_instruction_initial">Select the word you meant to translate to %1$s</string>
-    <string name="search_instruction_initial_1">Select the concept you meant to translate to %1$s</string>
-    <string name="search_instruction_initial_2">Select the subject you meant to translate to %1$s</string>
-    <string name="search_instruction_initial_3">Select the meaning you meant to translate to %1$s</string>
-    <string name="search_instruction_initial_4">Select the language you meant to translate to %1$s</string>
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">Select the word you wish to translate to %1$s</string>
+    <string name="search_instruction_initial_1">Select the concept to translate to %1$s</string>
+    <string name="search_instruction_initial_2">Select the subject to translate to %1$s</string>
+    <string name="search_instruction_initial_3">Select the specific meaning for %1$s</string>
+    <string name="search_instruction_initial_4">Select the intended idea for %1$s</string>
+    <string name="search_instruction_scholar">Identify the correct context for translation to %1$s</string>
+    <string name="search_instruction_bridge">Choose the meaning to bridge into %1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No results found</string>
-    <string name="empty_state_no_results_message">For the term \"%1$s\" there were no results in Wikipedia</string>
+    <string name="empty_state_no_results_message">No Wikipedia results found for \"%1$s\"</string>
     <string name="under_construction">Under construction</string>
 
-    <!-- Loading states -->
+    <!-- Loading states (Polished) -->
     <string name="loading_state_initial">Looking up...</string>
-    <string name="loading_state_initial_1">Searching for concepts...</string>
+    <string name="loading_state_initial_1">Finding concepts...</string>
     <string name="loading_state_initial_2">Translating subject...</string>
-    <string name="loading_state_initial_3">Exploring meanings...</string>
+    <string name="loading_state_initial_3">Retrieving meanings...</string>
     <string name="loading_state_initial_4">Discovering...</string>
+    <string name="loading_state_scholar">Consulting references...</string>
+    <string name="loading_state_bridge">Locating connections...</string>
 
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Bridge the gap</string>

@@ -18,11 +18,43 @@
     <string name="language_picker_title">בחירת שפת תרגום</string>
     <string name="button_cancel">ביטול</string>
 
-    <!-- Empty states -->
-    <string name="empty_state_initial">הזנת מילה לתרגום</string>
+    <!-- Empty states (Polished) -->
+    <string name="empty_state_initial">הזן מילה לתרגום</string>
+    <string name="empty_state_initial_1">מצא מושג</string>
+    <string name="empty_state_initial_2">תרגם נושא</string>
+    <string name="empty_state_initial_3">חקור הגדרות</string>
+    <string name="empty_state_initial_4">גלה מושגים</string>
+    <string name="empty_state_scholar">הזן מונח להקשר</string>
+    <string name="empty_state_bridge">מצא חיבור</string>
+
+
+    <!-- Search result instructions (Polished) -->
+    <string name="search_instruction_initial">בחר את המילה שברצונך לתרגם ל-%1$s</string>
+    <string name="search_instruction_initial_1">בחר את המושג לתרגום ל-%1$s</string>
+    <string name="search_instruction_initial_2">בחר את הנושא לתרגום ל-%1$s</string>
+    <string name="search_instruction_initial_3">בחר את המשמעות הספציפית עבור %1$s</string>
+    <string name="search_instruction_initial_4">בחר את הרעיון המיועד עבור %1$s</string>
+    <string name="search_instruction_scholar">זהה את ההקשר הנכון לתרגום ל-%1$s</string>
+    <string name="search_instruction_bridge">בחר את המשמעות לגישור ל-%1$s</string>
+
+    <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">לא נמצאו תוצאות</string>
-    <string name="empty_state_no_results_message">עבור המונח \"%1$s\" לא נמצאו תוצאות בוויקיפדיה</string>
+    <string name="empty_state_no_results_message">לא נמצאו תוצאות בוויקיפדיה עבור \"%1$s\"</string>
     <string name="under_construction">בבנייה</string>
+
+    <!-- Loading states (Polished) -->
+    <string name="loading_state_initial">מחפש...</string>
+    <string name="loading_state_initial_1">מוצא מושגים...</string>
+    <string name="loading_state_initial_2">מתרגם נושא...</string>
+    <string name="loading_state_initial_3">מאחזר משמעויות...</string>
+    <string name="loading_state_initial_4">מגלה...</string>
+    <string name="loading_state_scholar">מתייעץ במקורות...</string>
+    <string name="loading_state_bridge">מאתר חיבורים...</string>
+
+    <!-- New message set: Bridge the gap -->
+    <string name="empty_state_initial_5">גשר על הפער</string>
+    <string name="loading_state_initial_5">בונה גשרים...</string>
+    <string name="search_instruction_initial_5">בחר את הגשר שהתכוונת לתרגם ל-%1$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">מאמרים לא מתורגמים</string>

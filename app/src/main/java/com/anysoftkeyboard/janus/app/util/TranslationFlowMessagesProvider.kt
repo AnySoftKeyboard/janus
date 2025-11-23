@@ -45,7 +45,15 @@ class TranslationFlowMessagesProvider @Inject constructor() {
           TranslationFlowMessages(
               R.string.empty_state_initial_5,
               R.string.loading_state_initial_5,
-              R.string.search_instruction_initial_5))
+              R.string.search_instruction_initial_5),
+          TranslationFlowMessages(
+              R.string.empty_state_bridge,
+              R.string.loading_state_bridge,
+              R.string.search_instruction_bridge),
+          TranslationFlowMessages(
+              R.string.empty_state_scholar,
+              R.string.loading_state_scholar,
+              R.string.search_instruction_scholar))
 
   /** Returns a random [TranslationFlowMessages] from the predefined list. */
   fun getRandomMessage(): TranslationFlowMessages {
