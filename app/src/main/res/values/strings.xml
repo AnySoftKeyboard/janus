@@ -69,6 +69,7 @@
     <string name="error_unknown">Unknown error occurred</string>
     <string name="no_translations_available">No translations available</string>
     <string name="available_in_languages">Available in: %1$s</string>
+    <string name="loading_translation_for_item">Fetching translation for %1$s...</string>
 
     <!-- Repository errors -->
     <string name="error_page_not_found">Page not found</string>

@@ -79,9 +79,6 @@ fun SearchResultItem(
 
       // Content area: loading, error, available languages, or snippet
       when {
-        isLoading -> {
-          JanusLoader(modifier = Modifier.size(24.dp))
-        }
         errorMessage != null -> {
           ErrorContent(errorMessage)
         }
@@ -95,6 +92,17 @@ fun SearchResultItem(
               textSize = MaterialTheme.typography.bodyMedium.fontSize)
         }
       }
+    }
+  }
+
+  if (isLoading) {
+    Spacer(modifier = Modifier.height(4.dp))
+    Row(verticalAlignment = Alignment.CenterVertically) {
+      JanusLoader(modifier = Modifier.size(48.dp))
+      Text(
+          text = stringResource(R.string.loading_translation_for_item, result.title),
+          style = MaterialTheme.typography.bodySmall,
+          color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
   }
 }

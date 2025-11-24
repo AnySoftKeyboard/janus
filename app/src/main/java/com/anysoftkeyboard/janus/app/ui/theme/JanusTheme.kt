@@ -22,7 +22,8 @@ private val DarkColorScheme =
         background = DeepSlate,
         surface = Charcoal,
         onSurface = OffWhiteText,
-    )
+        secondary = Patina,
+        onSecondary = DarkTextOnPatina)
 
 private val LightColorScheme =
     lightColorScheme(
@@ -32,7 +33,8 @@ private val LightColorScheme =
         surface = PureWhite,
         onSurface = DeepInk,
         secondaryContainer = BeigeTan,
-    )
+        secondary = Verdigris,
+        onSecondary = PureWhite)
 
 @Composable
 fun JanusTheme(

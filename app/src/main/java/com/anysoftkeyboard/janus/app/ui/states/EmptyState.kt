@@ -40,7 +40,7 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 private fun EmptyStateMessage(
     title: String,
     message: String,
-    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    iconTint: Color = MaterialTheme.colorScheme.primary,
     iconContent: @Composable () -> Unit
 ) {
   Column(
@@ -55,7 +55,7 @@ private fun EmptyStateMessage(
           Text(
               text = message,
               style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant)
+              color = MaterialTheme.colorScheme.secondary)
         }
       }
 }
@@ -64,7 +64,7 @@ private fun EmptyStateMessage(
 private fun EmptyStateMessageWithPainter(
     title: String,
     message: String,
-    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    iconTint: Color = MaterialTheme.colorScheme.primary,
     painter: Painter
 ) {
   EmptyStateMessage(title, message, iconTint) {
