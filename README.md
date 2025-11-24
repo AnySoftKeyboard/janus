@@ -10,6 +10,7 @@ Instead of literal machine translation, it finds the corresponding Wikipedia art
 * **Contextual Translation**: Uses Wikipedia article titles for accurate, context-aware translations instead of literal machine translation.
 * **Multi-Language Support**: Translate from any Wikipedia-supported language to any other, with support for multiple target languages.
 * **Rich Information**: Displays short descriptions and article summaries with HTML formatting for enhanced context.
+* **Smooth Animations**: A guiding icon seamlessly transitions through the translation workflow, providing visual continuity and progress indication.
 * **Full History & Bookmarks**: Keeps a chronological log of all translations and allows you to save important ones to a dedicated bookmarks screen.
 * **Searchable History**: Quickly find past translations with real-time filtering in the history screen.
 * **Quick Actions**: Copy translations to clipboard and open Wikipedia articles directly from the app.

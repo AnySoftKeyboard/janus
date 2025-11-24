@@ -104,7 +104,26 @@ The icon represents the connection of languages through a central conceptual nod
     - **Subtitle**: Sans-Serif snippets.
     - **Visuals**: Clean separation between items using standard Material spacing.
 
-## 6. Assets & Social
+## 6. Animation & User Guidance
+
+### The Guiding Icon: Shared Element Transitions
+Janus uses a **single shared element animation** to guide users through the translation workflow. The app icon serves as a visual anchor that smoothly transitions between states, helping users understand progress and context.
+
+**Animation Flow**:
+1. **Empty State** → **Loading**: Icon animates from static welcome screen to animated loader
+2. **Loading** → **Search Results**: Loader transitions to instruction icon above search results
+3. **Search Results** → **Translating**: Instruction icon transforms back to loader during translation
+4. **Translating** → **Result**: Loader becomes the pivot connector between source and target articles
+
+**Design Rationale**:
+- **Continuity**: The icon's persistent presence creates a cohesive narrative throughout the workflow
+- **Progress Indication**: The icon's position and state communicate where the user is in the process
+- **Focus**: Draws attention to the current action (searching, selecting, translating)
+- **Brand Reinforcement**: The app icon's repeated appearance strengthens brand recognition
+
+**Implementation**: Uses Jetpack Compose's `ExperimentalSharedTransitionApi` with a shared key `"shared_icon"` across all states.
+
+## 7. Assets & Social
 
 ### GitHub Social Card
 - Follows the "Gold on Slate" aesthetic.
