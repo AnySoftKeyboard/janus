@@ -20,8 +20,8 @@ android {
     applicationId = "com.anysoftkeyboard.janus"
     minSdk = 21
     targetSdk = 35
-    versionCode = 2
-    versionName = "0.0.6"
+    versionCode = 3
+    versionName = "0.0.7"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
