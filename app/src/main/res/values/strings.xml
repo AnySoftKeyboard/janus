@@ -55,6 +55,7 @@
     <string name="empty_state_initial_5">Bridge the gap</string>
     <string name="loading_state_initial_5">Constructing bridges...</string>
     <string name="search_instruction_initial_5">Select the bridge you meant to translate to %1$s</string>
+    <string name="translating_loading_message">Fetching translation...</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Untranslated Articles</string>

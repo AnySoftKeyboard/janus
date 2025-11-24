@@ -1,5 +1,8 @@
 package com.anysoftkeyboard.janus.app.ui.states
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -60,37 +63,72 @@ private fun EmptyStateMessage(
       }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun EmptyStateMessageWithPainter(
     title: String,
     message: String,
     iconTint: Color = MaterialTheme.colorScheme.primary,
-    painter: Painter
+    painter: Painter,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
 ) {
   EmptyStateMessage(title, message, iconTint) {
+    val modifier =
+        if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+          with(sharedTransitionScope) {
+            Modifier.sharedElement(
+                sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                animatedVisibilityScope = animatedVisibilityScope)
+          }
+        } else {
+          Modifier
+        }
     Icon(
         painter = painter,
         contentDescription = title,
-        modifier = Modifier.size(128.dp),
+        modifier = Modifier.size(128.dp).then(modifier),
         tint = iconTint)
   }
 }
 
 /** Initial empty state shown when the app starts. */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun InitialEmptyState(welcomeMessage: String) {
+fun InitialEmptyState(
+    welcomeMessage: String,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
+) {
   EmptyStateMessageWithPainter(
       title = welcomeMessage,
       message = "",
       iconTint = MaterialTheme.colorScheme.primary,
-      painter = painterResource(R.mipmap.ic_launcher_foreground))
+      painter = painterResource(R.mipmap.ic_launcher_foreground),
+      sharedTransitionScope = sharedTransitionScope,
+      animatedVisibilityScope = animatedVisibilityScope)
 }
 
 /** Loading state with a progress indicator. */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun LoadingState(message: String) {
+fun LoadingState(
+    message: String,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
+) {
   EmptyStateMessage(title = message, message = "", iconTint = MaterialTheme.colorScheme.primary) {
-    JanusLoader(modifier = Modifier.size(128.dp))
+    val modifier =
+        if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+          with(sharedTransitionScope) {
+            Modifier.sharedElement(
+                sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                animatedVisibilityScope = animatedVisibilityScope)
+          }
+        } else {
+          Modifier
+        }
+    JanusLoader(modifier = Modifier.size(128.dp).then(modifier))
   }
 }
 
@@ -99,6 +137,7 @@ fun LoadingState(message: String) {
  *
  * @param searchTerm The term that was searched for
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun NoResultsState(searchTerm: String) {
   EmptyStateMessageWithPainter(
@@ -115,6 +154,7 @@ fun NoResultsState(searchTerm: String) {
  * @param error The error state containing error type and message
  * @param snackbarHostState State for showing snackbar notifications
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: SnackbarHostState) {
   // Show snackbar immediately when error occurs

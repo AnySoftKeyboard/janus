@@ -5,6 +5,9 @@ import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,6 +37,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
 import com.anysoftkeyboard.janus.app.ui.components.LanguageSelectionRow
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
@@ -53,6 +59,7 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
  *
  * @param viewModel ViewModel managing translation state
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TranslateScreen(viewModel: TranslateViewModel) {
   var text by remember { mutableStateOf("") }
@@ -78,57 +85,93 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   }
 
   Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { paddingValues ->
-    Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp).padding(paddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally) {
-          // Language selection with swap button
-          LanguageSelectionRow(
-              sourceLang = sourceLang,
-              targetLang = targetLang,
-              pageState = pageState,
-              onSourceLanguageSelected = { sourceLang = it },
-              onTargetLanguageSelected = { targetLang = it },
-              onSwapLanguages = { newSource, newTarget, newSearchTerm ->
-                sourceLang = newSource
-                targetLang = newTarget
-                text = newSearchTerm
-                viewModel.searchArticles("", "")
-              })
+    SharedTransitionLayout {
+      Column(
+          modifier = Modifier.fillMaxSize().padding(16.dp).padding(paddingValues),
+          horizontalAlignment = Alignment.CenterHorizontally) {
+            // Language selection with swap button
+            LanguageSelectionRow(
+                sourceLang = sourceLang,
+                targetLang = targetLang,
+                pageState = pageState,
+                onSourceLanguageSelected = { sourceLang = it },
+                onTargetLanguageSelected = { targetLang = it },
+                onSwapLanguages = { newSource, newTarget, newSearchTerm ->
+                  sourceLang = newSource
+                  targetLang = newTarget
+                  text = newSearchTerm
+                  viewModel.searchArticles("", "")
+                })
 
-          Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-          // Search input field
-          SearchInputField(
-              text = text,
-              onTextChange = { text = it },
-              onSearch = { viewModel.searchArticles(sourceLang, text) })
+            // Search input field
+            SearchInputField(
+                text = text,
+                onTextChange = { text = it },
+                onSearch = { viewModel.searchArticles(sourceLang, text) })
 
-          Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-          // State-based content display
-          when (pageState) {
-            is TranslateViewState.Empty ->
-                InitialEmptyState(stringResource(welcomeMessage.welcomeMessageResId))
-            is TranslateViewState.FetchingOptions ->
-                LoadingState(stringResource(welcomeMessage.loadingMessageResId))
-            is TranslateViewState.OptionsFetched ->
-                SearchResultsView(
-                    pageState = pageState as TranslateViewState.OptionsFetched,
-                    viewModel = viewModel,
-                    sourceLang = sourceLang,
-                    targetLang = targetLang,
-                    snackbarHostState = snackbarHostState,
-                    instruction =
-                        stringResource(
-                            welcomeMessage.searchInstructionResId, targetLang.uppercase()))
-            is TranslateViewState.Translated ->
-                TranslationView(translated = pageState as TranslateViewState.Translated)
-            is TranslateViewState.Error ->
-                ErrorStateDisplay(
-                    error = pageState as TranslateViewState.Error,
-                    snackbarHostState = snackbarHostState)
+            // State-based content display
+            AnimatedContent(targetState = pageState, label = "TranslateScreenStateTransition") {
+                targetState ->
+              when (targetState) {
+                is TranslateViewState.Empty ->
+                    InitialEmptyState(
+                        stringResource(welcomeMessage.welcomeMessageResId),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this)
+                is TranslateViewState.FetchingOptions ->
+                    LoadingState(
+                        stringResource(welcomeMessage.loadingMessageResId),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this)
+                is TranslateViewState.OptionsFetched ->
+                    SearchResultsView(
+                        pageState = targetState as TranslateViewState.OptionsFetched,
+                        viewModel = viewModel,
+                        sourceLang = sourceLang,
+                        targetLang = targetLang,
+                        snackbarHostState = snackbarHostState,
+                        instruction =
+                            stringResource(
+                                welcomeMessage.searchInstructionResId, targetLang.uppercase()),
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this)
+                is TranslateViewState.Translating ->
+                    Row(
+                        modifier =
+                            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically) {
+                          JanusLoader(
+                              modifier =
+                                  Modifier.size(48.dp)
+                                      .sharedElement(
+                                          sharedContentState =
+                                              rememberSharedContentState(key = "shared_icon"),
+                                          animatedVisibilityScope = this@AnimatedContent))
+                          Spacer(modifier = Modifier.width(8.dp))
+                          Text(
+                              text =
+                                  stringResource(
+                                      R.string.translating_loading_message, targetLang.uppercase()),
+                              style = MaterialTheme.typography.labelMedium,
+                              color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
+                is TranslateViewState.Translated ->
+                    TranslationView(
+                        translated = targetState as TranslateViewState.Translated,
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this)
+                is TranslateViewState.Error ->
+                    ErrorStateDisplay(
+                        error = targetState as TranslateViewState.Error,
+                        snackbarHostState = snackbarHostState)
+              }
+            }
           }
-        }
+    }
   }
 }
 

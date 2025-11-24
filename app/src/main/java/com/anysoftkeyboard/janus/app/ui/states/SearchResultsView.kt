@@ -1,5 +1,8 @@
 package com.anysoftkeyboard.janus.app.ui.states
 
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +34,6 @@ import com.anysoftkeyboard.janus.app.ui.components.LanguagePickerDialog
 import com.anysoftkeyboard.janus.app.ui.items.SearchResultItem
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
-import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
 
 /**
  * Displays search results with options to fetch translations.
@@ -49,6 +50,7 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
  * @param targetLang Target language code
  * @param snackbarHostState State for showing error notifications
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SearchResultsView(
     pageState: TranslateViewState.OptionsFetched,
@@ -56,7 +58,9 @@ fun SearchResultsView(
     sourceLang: String,
     targetLang: String,
     snackbarHostState: SnackbarHostState,
-    instruction: String
+    instruction: String,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
 ) {
   val translatedArticles = pageState.options.filter { targetLang in it.availableLanguages }
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
@@ -65,107 +69,94 @@ fun SearchResultsView(
   var showLanguagePickerDialog by remember { mutableStateOf(false) }
   var selectedArticleForPicker by remember { mutableStateOf<OptionalSourceTerm?>(null) }
 
-  // Show snackbar immediately when translation errors occur
-  LaunchedEffect(pageState.translations) {
-    pageState.translations.values.forEach { translationState ->
-      if (translationState is TranslationState.Error) {
-        snackbarHostState.showSnackbar(translationState.errorMessage)
-      }
-    }
-  }
-
   // Show empty state if no results found
   if (pageState.options.isEmpty()) {
     NoResultsState(searchTerm = pageState.searchTerm)
     return
   }
 
-  LazyColumn {
-    item {
-      Row(
-          modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-          verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                painter = painterResource(R.mipmap.ic_launcher_foreground),
-                contentDescription = null,
-                modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.primary)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = instruction,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
-          }
-    }
-    // Translated articles section
-    items(translatedArticles) { item ->
-      val translationState = pageState.translations[item]
-      val errorMessage =
-          if (translationState is TranslationState.Error) translationState.errorMessage else null
-
-      SearchResultItem(
-          result = item,
-          sourceLang = sourceLang,
-          targetLang = targetLang,
-          showAvailableLanguages = false,
-          isLoading = translationState is TranslationState.Translating,
-          errorMessage = errorMessage,
-          onClick =
-              if (errorMessage != null) {
-                // No onClick handler for articles with errors
-                null
-              } else {
-                { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) }
-              })
-    }
-
-    // Divider between sections
-    if (translatedArticles.isNotEmpty() && untranslatedArticles.isNotEmpty()) {
-      item { SectionDivider() }
-    }
-
-    // Untranslated articles section
-    items(untranslatedArticles) { item ->
-      val translationState = pageState.translations[item]
-      val errorMessage =
-          if (translationState is TranslationState.Error) translationState.errorMessage else null
-
-      SearchResultItem(
-          result = item,
-          sourceLang = sourceLang,
-          targetLang = targetLang,
-          showAvailableLanguages = true,
-          isLoading = translationState is TranslationState.Translating,
-          errorMessage = errorMessage,
-          onClick =
-              if (item.availableLanguages.isEmpty() || errorMessage != null) {
-                // No onClick handler for articles with no translations or errors
-                null
-              } else {
-                {
-                  // Show language picker dialog for untranslated articles
-                  selectedArticleForPicker = item
-                  showLanguagePickerDialog = true
+  Column {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically) {
+          val modifier =
+              if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+                with(sharedTransitionScope) {
+                  Modifier.sharedElement(
+                      sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                      animatedVisibilityScope = animatedVisibilityScope)
                 }
-              })
-    }
-  }
+              } else {
+                Modifier
+              }
+          Icon(
+              painter = painterResource(R.mipmap.ic_launcher_foreground),
+              contentDescription = null,
+              modifier = Modifier.size(48.dp).then(modifier),
+              tint = MaterialTheme.colorScheme.primary)
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(
+              text = instruction,
+              style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
 
-  // Language picker dialog for untranslated articles
-  if (showLanguagePickerDialog && selectedArticleForPicker != null) {
-    LanguagePickerDialog(
-        availableLanguages = selectedArticleForPicker!!.availableLanguages,
-        onLanguageSelected = { selectedLanguage ->
-          // Fetch translation with the selected language
-          viewModel.fetchTranslation(
-              pageState, selectedArticleForPicker!!, sourceLang, selectedLanguage)
-          showLanguagePickerDialog = false
-          selectedArticleForPicker = null
-        },
-        onDismiss = {
-          showLanguagePickerDialog = false
-          selectedArticleForPicker = null
-        })
+    LazyColumn {
+      items(translatedArticles) { item ->
+        SearchResultItem(
+            result = item,
+            sourceLang = sourceLang,
+            targetLang = targetLang,
+            showAvailableLanguages = false,
+            isLoading = false,
+            errorMessage = null,
+            onClick = { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) })
+      }
+
+      // Divider between sections
+      if (translatedArticles.isNotEmpty() && untranslatedArticles.isNotEmpty()) {
+        item { SectionDivider() }
+      }
+
+      // Untranslated articles section
+      items(untranslatedArticles) { item ->
+        SearchResultItem(
+            result = item,
+            sourceLang = sourceLang,
+            targetLang = targetLang,
+            showAvailableLanguages = true,
+            isLoading = false,
+            errorMessage = null,
+            onClick =
+                if (item.availableLanguages.isEmpty()) {
+                  // No onClick handler for articles with no translations
+                  null
+                } else {
+                  {
+                    // Show language picker dialog for untranslated articles
+                    selectedArticleForPicker = item
+                    showLanguagePickerDialog = true
+                  }
+                })
+      }
+    }
+
+    // Language picker dialog for untranslated articles
+    if (showLanguagePickerDialog && selectedArticleForPicker != null) {
+      LanguagePickerDialog(
+          availableLanguages = selectedArticleForPicker!!.availableLanguages,
+          onLanguageSelected = { selectedLanguage ->
+            // Fetch translation with the selected language
+            viewModel.fetchTranslation(
+                pageState, selectedArticleForPicker!!, sourceLang, selectedLanguage)
+            showLanguagePickerDialog = false
+            selectedArticleForPicker = null
+          },
+          onDismiss = {
+            showLanguagePickerDialog = false
+            selectedArticleForPicker = null
+          })
+    }
   }
 }
 

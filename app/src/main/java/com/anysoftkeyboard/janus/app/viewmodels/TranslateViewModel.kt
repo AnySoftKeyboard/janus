@@ -40,6 +40,14 @@ sealed class TranslateViewState() {
       val translations: Map<OptionalSourceTerm, TranslationState>
   ) : TranslateViewState()
 
+  data class Translating(
+      val searchTerm: String,
+      val options: List<OptionalSourceTerm>,
+      val selectedTerm: OptionalSourceTerm,
+      val sourceLang: String,
+      val targetLang: String
+  ) : TranslateViewState()
+
   data class Translated(
       val term: OptionalSourceTerm,
       val sourceLang: String,
@@ -89,12 +97,14 @@ constructor(
       sourceLang: String,
       targetLang: String
   ) {
-    val updatedSources =
-        TranslateViewState.OptionsFetched(
-            sources.searchTerm,
-            sources.options,
-            sources.translations.plus(Pair(searchPage, TranslationState.Translating)))
-    _state.value = updatedSources
+    // Save current search results for back navigation
+    previousSearchResults = sources
+
+    // Transition to Translating state
+    _state.value =
+        TranslateViewState.Translating(
+            sources.searchTerm, sources.options, searchPage, sourceLang, targetLang)
+
     viewModelScope.launch {
       try {
         val translations = repository.fetchTranslations(searchPage, sourceLang, targetLang)
@@ -106,23 +116,13 @@ constructor(
             } else {
               TranslationState.Translated(langTranslation)
             }
-        val finalSources =
-            TranslateViewState.OptionsFetched(
-                updatedSources.searchTerm,
-                updatedSources.options,
-                updatedSources.translations.plus(Pair(searchPage, translationState)))
-        // Save search results before transitioning to Translated state for back navigation
-        previousSearchResults = finalSources
         _state.value =
             TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
+        val errorType = e.javaClass.simpleName
         val errorMessage = e.message ?: stringProvider.getString(R.string.error_unknown)
-        _state.value =
-            TranslateViewState.OptionsFetched(
-                sources.searchTerm,
-                sources.options,
-                sources.translations.plus(Pair(searchPage, TranslationState.Error(errorMessage))))
+        _state.value = TranslateViewState.Error(errorType, errorMessage)
       }
     }
   }

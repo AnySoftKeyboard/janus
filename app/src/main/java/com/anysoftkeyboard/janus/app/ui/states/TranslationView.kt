@@ -4,6 +4,9 @@ import android.os.Build
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.widget.TextView
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -54,8 +57,13 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
  *
  * @param translated The translation state containing source and translation data
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TranslationView(translated: TranslateViewState.Translated) {
+fun TranslationView(
+    translated: TranslateViewState.Translated,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
+) {
   Column(modifier = Modifier.fillMaxWidth()) {
     SourceArticleSection(
         title = translated.term.title,
@@ -64,18 +72,34 @@ fun TranslationView(translated: TranslateViewState.Translated) {
         snippet = translated.term.snippet,
         translation = translated.translation)
 
-    PivotConnector()
+    PivotConnector(
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope)
 
     TranslationContent(translation = translated.translation, targetLang = translated.targetLang)
   }
 }
 
 /** Visual connector between Source and Target cards. */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun PivotConnector() {
+private fun PivotConnector(
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null
+) {
   Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
     HorizontalDivider(color = MaterialTheme.colorScheme.primary)
     Row(verticalAlignment = Alignment.CenterVertically) {
+      val modifier =
+          if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+            with(sharedTransitionScope) {
+              Modifier.sharedElement(
+                  sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                  animatedVisibilityScope = animatedVisibilityScope)
+            }
+          } else {
+            Modifier
+          }
       Image(
           painter = painterResource(R.mipmap.ic_launcher_foreground),
           contentDescription = null,
@@ -83,7 +107,8 @@ private fun PivotConnector() {
           modifier =
               Modifier.size(48.dp)
                   .clip(CircleShape)
-                  .background(MaterialTheme.colorScheme.background))
+                  .background(MaterialTheme.colorScheme.background)
+                  .then(modifier))
       Icon(
           imageVector = Icons.Default.KeyboardDoubleArrowDown,
           contentDescription = null,
@@ -297,7 +322,6 @@ private fun setHtmlToText(view: TextView, html: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     view.text = Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
   } else {
-    @Suppress("DEPRECATION")
-    view.text = Html.fromHtml(html)
+    @Suppress("DEPRECATION") view.text = Html.fromHtml(html)
   }
 }
