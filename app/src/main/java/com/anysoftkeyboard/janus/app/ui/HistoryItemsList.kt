@@ -20,43 +20,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.ui.items.HistoryItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TranslationList(groupedTranslations: Map<String, List<UiTranslation>>) {
+fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
   LazyColumn(
-          modifier = Modifier.fillMaxSize(),
-          contentPadding = PaddingValues(16.dp),
-          verticalArrangement = Arrangement.spacedBy(8.dp)
-  ) {
-    groupedTranslations.forEach { (header, translations) ->
-      stickyHeader { TranslationHeader(header) }
-      items(translations) { translation -> TranslationCard(translation) }
-    }
-  }
+      modifier = Modifier.fillMaxSize(),
+      contentPadding = PaddingValues(16.dp),
+      verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        groupedTranslations.forEach { (header, translations) ->
+          stickyHeader { TranslationHeader(header) }
+          items(translations) { translation -> HistoryItem(translation) }
+        }
+      }
 }
 
 @Composable
 fun TranslationHeader(text: String) {
   Row(
-          modifier =
-                  Modifier.fillMaxWidth()
-                          .background(MaterialTheme.colorScheme.background)
-                          .padding(vertical = 8.dp),
-          verticalAlignment = Alignment.CenterVertically
-  ) {
-    Text(
+      modifier =
+          Modifier.fillMaxWidth()
+              .background(MaterialTheme.colorScheme.background)
+              .padding(vertical = 8.dp),
+      verticalAlignment = Alignment.CenterVertically) {
+        Text(
             text = "●",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary
-    )
-    Spacer(modifier = Modifier.width(8.dp))
-    Text(
+            color = MaterialTheme.colorScheme.primary)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary
-    )
-    Spacer(modifier = Modifier.width(8.dp))
-    HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
-  }
+            color = MaterialTheme.colorScheme.secondary)
+        Spacer(modifier = Modifier.width(8.dp))
+        HorizontalDivider(
+            modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+      }
 }

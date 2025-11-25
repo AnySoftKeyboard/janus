@@ -34,11 +34,10 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
   Column(modifier = Modifier.fillMaxSize()) {
     // Search field
     SearchInputField(
-            text = searchQuery,
-            onTextChange = { viewModel.updateSearchQuery(it) },
-            onSearch = { /* No-op for history search, filtering is real-time */},
-            label = stringResource(R.string.search_history_label)
-    )
+        text = searchQuery,
+        onTextChange = { viewModel.updateSearchQuery(it) },
+        onSearch = { /* No-op for history search, filtering is real-time */ },
+        label = stringResource(R.string.search_history_label))
 
     // Results or empty state
     if (history.isEmpty() && searchQuery.isNotBlank()) {
@@ -46,7 +45,7 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
     } else {
       val context = LocalContext.current
       val uiTranslations = history.map { UiTranslation.fromTranslation(it) }
-      TranslationList(groupedTranslations = HistoryGrouper.group(context, uiTranslations))
+      HistoryItemsList(groupedTranslations = HistoryGrouper.group(context, uiTranslations))
     }
   }
 }
@@ -54,21 +53,18 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
 @Composable
 private fun EmptySearchResults(query: String) {
   Column(
-          modifier = Modifier.fillMaxSize().padding(32.dp),
-          horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.Center
-  ) {
-    Icon(
+      modifier = Modifier.fillMaxSize().padding(32.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center) {
+        Icon(
             imageVector = Icons.Default.SearchOff,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
+            tint = MaterialTheme.colorScheme.onSurfaceVariant)
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
             text = stringResource(R.string.no_history_results, query),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface
-    )
-  }
+            color = MaterialTheme.colorScheme.onSurface)
+      }
 }
