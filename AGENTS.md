@@ -21,6 +21,7 @@
 - **Title:** The title should be concise and prefixed with `[LLM]`.
 - **Description:** Include a short description of the issue (bug, feature-request, crash, chore, etc) and a short description of the solution.
 - Add your name at the end of the description to signify the commit was made by an AI Agent.
+- When fixing or implementing a github issue, add the issue number at the end of the description with a `#` prefix. For example: `Fixes #123` or `Implements #123` or `Closes #123`.
 
 ---
 

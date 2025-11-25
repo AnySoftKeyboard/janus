@@ -2,7 +2,6 @@ package com.anysoftkeyboard.janus.app.ui.items
 
 import android.os.Build
 import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.util.TypedValue
 import android.widget.TextView
 import androidx.compose.foundation.clickable
@@ -154,9 +153,7 @@ private fun AvailableLanguagesText(availableLanguages: List<String>) {
 private fun HtmlSnippet(snippet: String, textColor: Color, textSize: TextUnit) {
   val textColorInt = textColor.toArgb()
   AndroidView(
-      factory = { context ->
-        TextView(context).apply { movementMethod = LinkMovementMethod.getInstance() }
-      },
+      factory = { context -> TextView(context) },
       update = { textView ->
         textView.setTextColor(textColorInt)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.value)
@@ -169,7 +166,6 @@ private fun setHtmlToText(view: TextView, snippet: String) {
   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
     view.text = Html.fromHtml(snippet, Html.FROM_HTML_MODE_COMPACT)
   } else {
-    @Suppress("DEPRECATION")
-    view.text = Html.fromHtml(snippet)
+    @Suppress("DEPRECATION") view.text = Html.fromHtml(snippet)
   }
 }
