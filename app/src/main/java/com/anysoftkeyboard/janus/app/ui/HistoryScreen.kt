@@ -17,11 +17,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.ui.util.HistoryGrouper
 import com.anysoftkeyboard.janus.app.viewmodels.HistoryViewModel
 
 @Composable
@@ -32,16 +34,19 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
   Column(modifier = Modifier.fillMaxSize()) {
     // Search field
     SearchInputField(
-        text = searchQuery,
-        onTextChange = { viewModel.updateSearchQuery(it) },
-        onSearch = { /* No-op for history search, filtering is real-time */ },
-        label = stringResource(R.string.search_history_label))
+            text = searchQuery,
+            onTextChange = { viewModel.updateSearchQuery(it) },
+            onSearch = { /* No-op for history search, filtering is real-time */},
+            label = stringResource(R.string.search_history_label)
+    )
 
     // Results or empty state
     if (history.isEmpty() && searchQuery.isNotBlank()) {
       EmptySearchResults(query = searchQuery)
     } else {
-      TranslationList(translations = history.map { UiTranslation.fromTranslation(it) })
+      val context = LocalContext.current
+      val uiTranslations = history.map { UiTranslation.fromTranslation(it) }
+      TranslationList(groupedTranslations = HistoryGrouper.group(context, uiTranslations))
     }
   }
 }
@@ -49,18 +54,21 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
 @Composable
 private fun EmptySearchResults(query: String) {
   Column(
-      modifier = Modifier.fillMaxSize().padding(32.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
-        Icon(
+          modifier = Modifier.fillMaxSize().padding(32.dp),
+          horizontalAlignment = Alignment.CenterHorizontally,
+          verticalArrangement = Arrangement.Center
+  ) {
+    Icon(
             imageVector = Icons.Default.SearchOff,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    Text(
             text = stringResource(R.string.no_history_results, query),
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface)
-      }
+            color = MaterialTheme.colorScheme.onSurface
+    )
+  }
 }

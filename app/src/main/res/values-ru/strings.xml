@@ -12,7 +12,9 @@
 
     <!-- History search -->
     <string name="search_history_label">Фильтр истории</string>
-    <string name="no_history_results">Нет результатов для \"%1$s\"</string>
+    <string name="no_history_results">Нет результатов для "%1$s"</string>
+    <string name="history_group_today">СЕГОДНЯ</string>
+    <string name="history_group_yesterday">ВЧЕРА</string>
 
     <!-- Language picker dialog -->
     <string name="language_picker_title">Выбор языка перевода</string>

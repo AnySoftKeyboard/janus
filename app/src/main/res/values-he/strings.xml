@@ -12,7 +12,9 @@
 
     <!-- History search -->
     <string name="search_history_label">סינון היסטוריה</string>
-    <string name="no_history_results">אין תוצאות עבור \"%1$s\"</string>
+    <string name="no_history_results">אין תוצאות עבור "%1$s"</string>
+    <string name="history_group_today">היום</string>
+    <string name="history_group_yesterday">אתמול</string>
 
     <!-- Language picker dialog -->
     <string name="language_picker_title">בחירת שפת תרגום</string>

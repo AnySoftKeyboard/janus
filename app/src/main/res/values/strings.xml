@@ -13,6 +13,8 @@
     <!-- History search -->
     <string name="search_history_label">Filter history</string>
     <string name="no_history_results">No results for "%1$s"</string>
+    <string name="history_group_today">TODAY</string>
+    <string name="history_group_yesterday">YESTERDAY</string>
 
     <!-- Language picker dialog -->
     <string name="language_picker_title">Select Translation Language</string>

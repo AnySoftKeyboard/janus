@@ -12,7 +12,9 @@
 
     <!-- History search -->
     <string name="search_history_label">تصفية السجل</string>
-    <string name="no_history_results">لا توجد نتائج لـ \"%1$s\"</string>
+    <string name="no_history_results">لا توجد نتائج لـ "%1$s"</string>
+    <string name="history_group_today">اليوم</string>
+    <string name="history_group_yesterday">أمس</string>
 
     <!-- Language picker dialog -->
     <string name="language_picker_title">اختيار لغة الترجمة</string>

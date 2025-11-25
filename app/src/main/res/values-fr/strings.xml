@@ -12,7 +12,9 @@
 
     <!-- History search -->
     <string name="search_history_label">Filtrer l\'historique</string>
-    <string name="no_history_results">Aucun résultat pour \"%1$s\"</string>
+    <string name="no_history_results">Aucun résultat pour "%1$s"</string>
+    <string name="history_group_today">AUJOURD\'HUI</string>
+    <string name="history_group_yesterday">HIER</string>
 
     <!-- Language picker dialog -->
     <string name="language_picker_title">Sélection de la langue de traduction</string>
