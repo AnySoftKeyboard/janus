@@ -16,6 +16,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,13 +29,27 @@ import com.anysoftkeyboard.janus.app.ui.items.HistoryItem
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
+  var expandedItemId by remember { mutableStateOf<Long?>(null) }
+
   LazyColumn(
       modifier = Modifier.fillMaxSize(),
       contentPadding = PaddingValues(16.dp),
       verticalArrangement = Arrangement.spacedBy(8.dp)) {
         groupedTranslations.forEach { (header, translations) ->
           stickyHeader { TranslationHeader(header) }
-          items(translations) { translation -> HistoryItem(translation) }
+          items(translations) { translation ->
+            HistoryItem(
+                translation = translation,
+                isExpanded = expandedItemId == translation.timestamp,
+                onClick = {
+                  expandedItemId =
+                      if (expandedItemId == translation.timestamp) {
+                        null
+                      } else {
+                        translation.timestamp
+                      }
+                })
+          }
         }
       }
 }

@@ -1,47 +1,31 @@
 package com.anysoftkeyboard.janus.app.ui.states
 
-import android.os.Build
-import android.text.Html
-import android.text.method.LinkMovementMethod
-import android.widget.TextView
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardDoubleArrowDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.CopyToClipboardButton
+import com.anysoftkeyboard.janus.app.ui.components.HtmlText
+import com.anysoftkeyboard.janus.app.ui.components.PivotConnector
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
@@ -77,44 +61,6 @@ fun TranslationView(
         animatedVisibilityScope = animatedVisibilityScope)
 
     TranslationContent(translation = translated.translation, targetLang = translated.targetLang)
-  }
-}
-
-/** Visual connector between Source and Target cards. */
-@OptIn(ExperimentalSharedTransitionApi::class)
-@Composable
-private fun PivotConnector(
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
-) {
-  Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-    HorizontalDivider(color = MaterialTheme.colorScheme.primary)
-    Row(verticalAlignment = Alignment.CenterVertically) {
-      val modifier =
-          if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-            with(sharedTransitionScope) {
-              Modifier.sharedElement(
-                  sharedContentState = rememberSharedContentState(key = "shared_icon"),
-                  animatedVisibilityScope = animatedVisibilityScope)
-            }
-          } else {
-            Modifier
-          }
-      Image(
-          painter = painterResource(R.mipmap.ic_launcher_foreground),
-          contentDescription = null,
-          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-          modifier =
-              Modifier.size(48.dp)
-                  .clip(CircleShape)
-                  .background(MaterialTheme.colorScheme.background)
-                  .then(modifier))
-      Icon(
-          imageVector = Icons.Default.KeyboardDoubleArrowDown,
-          contentDescription = null,
-          tint = MaterialTheme.colorScheme.primary,
-          modifier = Modifier.size(24.dp).background(MaterialTheme.colorScheme.background))
-    }
   }
 }
 
@@ -295,33 +241,4 @@ private fun UnknownStateContent(translation: TranslationState) {
   Text(
       text = "Unknown state type: ${translation.javaClass}",
       style = MaterialTheme.typography.bodyMedium)
-}
-
-/** Helper composable to display HTML text. */
-@Composable
-private fun HtmlText(html: String, color: androidx.compose.ui.graphics.Color) {
-  AndroidView(
-      factory = { context ->
-        TextView(context).apply {
-          movementMethod = LinkMovementMethod.getInstance()
-          // Convert Compose Color to Android Color int
-          val androidColor =
-              android.graphics.Color.argb(
-                  (color.alpha * 255).toInt(),
-                  (color.red * 255).toInt(),
-                  (color.green * 255).toInt(),
-                  (color.blue * 255).toInt())
-          setTextColor(androidColor)
-        }
-      },
-      update = { textView -> setHtmlToText(textView, html) })
-}
-
-/** Helper function to set HTML content to TextView with proper API level handling. */
-private fun setHtmlToText(view: TextView, html: String) {
-  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-    view.text = Html.fromHtml(html, Html.FROM_HTML_MODE_COMPACT)
-  } else {
-    @Suppress("DEPRECATION") view.text = Html.fromHtml(html)
-  }
 }
