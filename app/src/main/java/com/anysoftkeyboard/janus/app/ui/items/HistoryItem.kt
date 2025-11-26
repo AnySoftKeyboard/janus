@@ -4,6 +4,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,9 +18,17 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,14 +41,42 @@ import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 
 @Composable
-fun HistoryItem(translation: UiTranslation, isExpanded: Boolean = false, onClick: () -> Unit = {}) {
-  Card(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
-    if (isExpanded) {
-      ExpandedHistoryItem(translation)
-    } else {
-      CondensedHistoryItem(translation)
-    }
-  }
+fun HistoryItem(
+    translation: UiTranslation,
+    isExpanded: Boolean = false,
+    dimmed: Boolean = false,
+    onClick: () -> Unit = {}
+) {
+  val interactionSource = remember { MutableInteractionSource() }
+  Card(
+      modifier =
+          Modifier.fillMaxWidth()
+              .graphicsLayer {
+                val scale = if (dimmed) 0.5f else 1f
+                alpha = scale
+              }
+              .drawWithContent {
+                if (dimmed) {
+                  val matrix = ColorMatrix().apply { setToSaturation(0f) }
+                  val filter = ColorFilter.colorMatrix(matrix)
+                  val paint = Paint().apply { colorFilter = filter }
+                  drawIntoCanvas { canvas ->
+                    canvas.saveLayer(Rect(Offset.Zero, size), paint)
+                    drawContent()
+                    canvas.restore()
+                  }
+                } else {
+                  drawContent()
+                }
+              }
+              .clickable(
+                  interactionSource = interactionSource, indication = null, onClick = onClick)) {
+        if (isExpanded) {
+          ExpandedHistoryItem(translation)
+        } else {
+          CondensedHistoryItem(translation)
+        }
+      }
 }
 
 @Composable
