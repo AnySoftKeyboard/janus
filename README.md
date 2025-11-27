@@ -1,6 +1,7 @@
 <img src="fastlane/metadata/android/en-US/images/icon.png" width="96" align="right" />
 
 [![CI](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AnySoftKeyboard/janus/actions/workflows/ci.yml)
+<a href="https://f-droid.org/en/packages/com.anysoftkeyboard.janus/"><img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="60"></a>
 
 **Janus** is an open-source Android app that provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia.
 
