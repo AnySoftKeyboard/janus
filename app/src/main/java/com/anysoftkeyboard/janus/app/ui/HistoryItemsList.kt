@@ -1,5 +1,7 @@
 package com.anysoftkeyboard.janus.app.ui
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +32,7 @@ import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.ui.items.HistoryItem
 import kotlinx.coroutines.flow.collect
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
   var expandedItemId by remember { mutableStateOf<Long?>(null) }
@@ -40,71 +42,72 @@ fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
   // Monitor expanded item visibility
   LaunchedEffect(expandedItemId) {
     if (expandedItemId != null) {
-      snapshotFlow { listState.layoutInfo }.collect { layoutInfo ->
-        if (listState.isScrollInProgress) {
-          val expandedItem = layoutInfo.visibleItemsInfo.find { it.key == expandedItemId }
-          if (expandedItem != null) {
-            val itemMidpoint = expandedItem.offset + (expandedItem.size / 2)
-            if (itemMidpoint < 0 || itemMidpoint > layoutInfo.viewportEndOffset) {
-              expandedItemId = null
+      snapshotFlow { listState.layoutInfo }
+          .collect { layoutInfo ->
+            if (listState.isScrollInProgress) {
+              val expandedItem = layoutInfo.visibleItemsInfo.find { it.key == expandedItemId }
+              if (expandedItem != null) {
+                val itemMidpoint = expandedItem.offset + (expandedItem.size / 2)
+                if (itemMidpoint < 0 || itemMidpoint > layoutInfo.viewportEndOffset) {
+                  expandedItemId = null
+                }
+              } else {
+                // Item is not visible at all
+                expandedItemId = null
+              }
             }
-          } else {
-            // Item is not visible at all
-            expandedItemId = null
           }
-        }
-      }
     }
   }
 
-  LazyColumn(
-          state = listState,
-          modifier = Modifier.fillMaxSize(),
-          contentPadding = PaddingValues(16.dp),
-          verticalArrangement = Arrangement.spacedBy(8.dp)
-  ) {
-    groupedTranslations.forEach { (header, translations) ->
-      stickyHeader { TranslationHeader(header) }
-      items(items = translations, key = { it.timestamp }) { translation ->
-        HistoryItem(
-                translation = translation,
-                isExpanded = expandedItemId == translation.timestamp,
-                dimmed = expandedItemId != null && expandedItemId != translation.timestamp,
-                onClick = {
-                  expandedItemId =
-                          if (expandedItemId == translation.timestamp) {
-                            null
-                          } else {
-                            translation.timestamp
-                          }
-                }
-        )
-      }
-    }
+  SharedTransitionLayout {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)) {
+          groupedTranslations.forEach { (header, translations) ->
+            stickyHeader { TranslationHeader(header) }
+            items(items = translations, key = { it.timestamp }) { translation ->
+              HistoryItem(
+                  modifier = Modifier.animateItem(),
+                  translation = translation,
+                  isExpanded = expandedItemId == translation.timestamp,
+                  dimmed = expandedItemId != null && expandedItemId != translation.timestamp,
+                  sharedTransitionScope = this@SharedTransitionLayout,
+                  onClick = {
+                    expandedItemId =
+                        if (expandedItemId == translation.timestamp) {
+                          null
+                        } else {
+                          translation.timestamp
+                        }
+                  })
+            }
+          }
+        }
   }
 }
 
 @Composable
 fun TranslationHeader(text: String) {
   Row(
-          modifier =
-                  Modifier.fillMaxWidth()
-                          .background(MaterialTheme.colorScheme.background)
-                          .padding(vertical = 8.dp),
-          verticalAlignment = Alignment.CenterVertically
-  ) {
-    Text(
+      modifier =
+          Modifier.fillMaxWidth()
+              .background(MaterialTheme.colorScheme.background)
+              .padding(vertical = 8.dp),
+      verticalAlignment = Alignment.CenterVertically) {
+        Text(
             text = "●",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary
-    )
-    Spacer(modifier = Modifier.width(8.dp))
-    Text(
+            color = MaterialTheme.colorScheme.primary)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary
-    )
-    Spacer(modifier = Modifier.width(8.dp))
-    HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
-  }
+            color = MaterialTheme.colorScheme.secondary)
+        Spacer(modifier = Modifier.width(8.dp))
+        HorizontalDivider(
+            modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+      }
 }

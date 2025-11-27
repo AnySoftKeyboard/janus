@@ -1,6 +1,10 @@
 package com.anysoftkeyboard.janus.app.ui.items
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -40,17 +44,22 @@ import com.anysoftkeyboard.janus.app.ui.components.PivotConnector
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HistoryItem(
     translation: UiTranslation,
     isExpanded: Boolean = false,
     dimmed: Boolean = false,
+    sharedTransitionScope: SharedTransitionScope,
+    modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
   val interactionSource = remember { MutableInteractionSource() }
   Card(
       modifier =
-          Modifier.fillMaxWidth()
+          modifier
+              .fillMaxWidth()
+              .animateContentSize()
               .graphicsLayer {
                 val scale = if (dimmed) 0.5f else 1f
                 alpha = scale
@@ -68,166 +77,234 @@ fun HistoryItem(
                 } else {
                   drawContent()
                 }
+              }) {
+        sharedTransitionScope.apply {
+          AnimatedContent(
+              targetState = isExpanded,
+              label = "expand_collapse",
+              modifier =
+                  Modifier.clickable(
+                      interactionSource = interactionSource,
+                      indication = null,
+                      onClick = onClick)) { targetExpanded ->
+                if (targetExpanded) {
+                  ExpandedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
+                } else {
+                  CondensedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
+                }
               }
-              .clickable(
-                  interactionSource = interactionSource, indication = null, onClick = onClick)) {
-        if (isExpanded) {
-          ExpandedHistoryItem(translation)
-        } else {
-          CondensedHistoryItem(translation)
         }
       }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun CondensedHistoryItem(translation: UiTranslation) {
-  Column(modifier = Modifier.padding(16.dp)) {
-    // Top Row: Language Pair
-    Text(
-        text = "${translation.sourceLang.uppercase()} \u2192 ${translation.targetLang.uppercase()}",
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.secondary)
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-    // Middle Row: The Pivot
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+private fun CondensedHistoryItem(
+    translation: UiTranslation,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
+  with(sharedTransitionScope) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      // Top Row: Language Pair
       Text(
-          text = translation.sourceWord,
-          style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
-          color = MaterialTheme.colorScheme.onSurface,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.weight(1f),
-          textAlign = androidx.compose.ui.text.style.TextAlign.Start)
+          text =
+              "${translation.sourceLang.uppercase()} \u2192 ${translation.targetLang.uppercase()}",
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.secondary)
 
-      Image(
-          painter = painterResource(R.mipmap.ic_launcher_foreground),
-          contentDescription = null,
-          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
-          modifier = Modifier.padding(horizontal = 8.dp).size(24.dp))
-
-      Text(
-          text = translation.targetWord,
-          style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
-          color = MaterialTheme.colorScheme.primary,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis,
-          modifier = Modifier.weight(1f),
-          textAlign = androidx.compose.ui.text.style.TextAlign.End)
-    }
-
-    // Bottom Row: Context
-    translation.sourceShortDescription?.let { description ->
       Spacer(modifier = Modifier.height(8.dp))
-      Text(
-          text = description,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant,
-          maxLines = 1,
-          overflow = TextOverflow.Ellipsis)
+
+      // Middle Row: The Pivot
+      Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = translation.sourceWord,
+            style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier =
+                Modifier.weight(1f)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "source_title_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Start)
+
+        Image(
+            painter = painterResource(R.mipmap.ic_launcher_foreground),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
+            modifier =
+                Modifier.padding(horizontal = 8.dp)
+                    .size(24.dp)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "icon_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope))
+
+        Text(
+            text = translation.targetWord,
+            style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
+            color = MaterialTheme.colorScheme.primary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier =
+                Modifier.weight(1f)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "target_title_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope),
+            textAlign = androidx.compose.ui.text.style.TextAlign.End)
+      }
+
+      // Bottom Row: Context
+      translation.sourceShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
+      }
     }
   }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun ExpandedHistoryItem(translation: UiTranslation) {
-  Column(modifier = Modifier.padding(16.dp)) {
-    // Source Section
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
-          Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = translation.sourceWord,
-                style = MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.horizontalScroll(rememberScrollState()))
-            Text(
-                text = translation.sourceLang.uppercase(),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant)
+private fun ExpandedHistoryItem(
+    translation: UiTranslation,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
+  with(sharedTransitionScope) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      // Source Section
+      Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+              Text(
+                  text = translation.sourceWord,
+                  style =
+                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis,
+                  modifier =
+                      Modifier.horizontalScroll(rememberScrollState())
+                          .sharedElementModifier(
+                              sharedTransitionScope = sharedTransitionScope,
+                              key = "source_title_${translation.timestamp}",
+                              animatedVisibilityScope = animatedVisibilityScope))
+              Text(
+                  text = translation.sourceLang.uppercase(),
+                  style = MaterialTheme.typography.labelMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Row {
+              CopyToClipboardButton(
+                  text = translation.sourceWord,
+                  contentDescription = "Copy source title",
+                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
+              WikipediaLinkButton(
+                  url = translation.sourceArticleUrl,
+                  contentDescription = "Open source article",
+                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
           }
-          Row {
-            CopyToClipboardButton(
-                text = translation.sourceWord,
-                contentDescription = "Copy source title",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            WikipediaLinkButton(
-                url = translation.sourceArticleUrl,
-                contentDescription = "Open source article",
-                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+
+      translation.sourceShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface)
+      }
+
+      translation.sourceSummary?.let { snippet ->
+        Spacer(modifier = Modifier.height(4.dp))
+        HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
+      }
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      // Pivot Connector
+      PivotConnector(
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+          sharedElementKey = "icon_${translation.timestamp}")
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      // Target Section
+      Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+              Text(
+                  text = translation.targetWord,
+                  style =
+                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+                  color = MaterialTheme.colorScheme.primary,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis,
+                  modifier =
+                      Modifier.horizontalScroll(rememberScrollState())
+                          .sharedElementModifier(
+                              sharedTransitionScope = sharedTransitionScope,
+                              key = "target_title_${translation.timestamp}",
+                              animatedVisibilityScope = animatedVisibilityScope))
+              Text(
+                  text = translation.targetLang.uppercase(),
+                  style = MaterialTheme.typography.labelLarge,
+                  color = MaterialTheme.colorScheme.primary)
+            }
+            Row {
+              CopyToClipboardButton(
+                  text = translation.targetWord,
+                  contentDescription = "Copy translated title",
+                  tint = MaterialTheme.colorScheme.primary)
+              WikipediaLinkButton(
+                  url = translation.targetArticleUrl,
+                  contentDescription = "Open target article",
+                  tint = MaterialTheme.colorScheme.primary)
+            }
           }
-        }
 
-    translation.sourceShortDescription?.let { description ->
-      Spacer(modifier = Modifier.height(8.dp))
-      Text(
-          text = description,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurface)
+      translation.targetShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface)
+      }
+
+      translation.targetSummary?.let { summary ->
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = summary,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
+      }
     }
+  }
+}
 
-    translation.sourceSummary?.let { snippet ->
-      Spacer(modifier = Modifier.height(4.dp))
-      HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Pivot Connector
-    PivotConnector()
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    // Target Section
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically) {
-          Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = translation.targetWord,
-                style = MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.horizontalScroll(rememberScrollState()))
-            Text(
-                text = translation.targetLang.uppercase(),
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary)
-          }
-          Row {
-            CopyToClipboardButton(
-                text = translation.targetWord,
-                contentDescription = "Copy translated title",
-                tint = MaterialTheme.colorScheme.primary)
-            WikipediaLinkButton(
-                url = translation.targetArticleUrl,
-                contentDescription = "Open target article",
-                tint = MaterialTheme.colorScheme.primary)
-          }
-        }
-
-    translation.targetShortDescription?.let { description ->
-      Spacer(modifier = Modifier.height(8.dp))
-      Text(
-          text = description,
-          style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.onSurface)
-    }
-
-    translation.targetSummary?.let { summary ->
-      Spacer(modifier = Modifier.height(4.dp))
-      Text(
-          text = summary,
-          style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
+@OptIn(ExperimentalSharedTransitionApi::class)
+@Composable
+private fun Modifier.sharedElementModifier(
+    sharedTransitionScope: SharedTransitionScope,
+    key: String,
+    animatedVisibilityScope: AnimatedVisibilityScope
+): Modifier {
+  with(sharedTransitionScope) {
+    return this@sharedElementModifier.sharedElement(
+        sharedContentState = rememberSharedContentState(key = key),
+        animatedVisibilityScope = animatedVisibilityScope)
   }
 }

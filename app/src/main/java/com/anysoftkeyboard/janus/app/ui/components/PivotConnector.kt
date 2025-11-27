@@ -1,8 +1,14 @@
 package com.anysoftkeyboard.janus.app.ui.components
 
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -28,7 +34,8 @@ import com.anysoftkeyboard.janus.app.R
 @Composable
 fun PivotConnector(
     sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+    sharedElementKey: String = "shared_icon"
 ) {
   Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -36,7 +43,7 @@ fun PivotConnector(
           if (sharedTransitionScope != null && animatedVisibilityScope != null) {
             with(sharedTransitionScope) {
               Modifier.sharedElement(
-                  sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                  sharedContentState = rememberSharedContentState(key = sharedElementKey),
                   animatedVisibilityScope = animatedVisibilityScope)
             }
           } else {
@@ -47,12 +54,35 @@ fun PivotConnector(
           contentDescription = null,
           colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
           modifier = Modifier.size(48.dp).clip(CircleShape).then(modifier))
+
       Icon(
           imageVector = Icons.Default.KeyboardDoubleArrowDown,
           contentDescription = null,
           tint = MaterialTheme.colorScheme.primary,
-          modifier = Modifier.size(24.dp))
-      HorizontalDivider(color = MaterialTheme.colorScheme.primary)
+          modifier =
+              Modifier.size(24.dp)
+                  .animateInScope(animatedVisibilityScope, enter = fadeIn(), exit = fadeOut()))
+
+      HorizontalDivider(
+          color = MaterialTheme.colorScheme.primary,
+          modifier =
+              Modifier.weight(1f)
+                  .animateInScope(
+                      animatedVisibilityScope,
+                      enter = expandHorizontally(expandFrom = Alignment.Start),
+                      exit = shrinkHorizontally(shrinkTowards = Alignment.Start)))
     }
+  }
+}
+
+private fun Modifier.animateInScope(
+    scope: AnimatedVisibilityScope?,
+    enter: EnterTransition,
+    exit: ExitTransition
+): Modifier {
+  return if (scope != null) {
+    with(scope) { this@animateInScope.animateEnterExit(enter = enter, exit = exit) }
+  } else {
+    this
   }
 }
