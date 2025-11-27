@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
+import com.anysoftkeyboard.janus.app.util.supportedLanguages
 
 /**
  * Language selection row with source/target selectors and swap button.
@@ -84,7 +85,7 @@ fun LanguageSelectionRow(
 @Composable
 fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> Unit) {
   // In a real app, you'd get this from a ViewModel
-  val languages = listOf("en", "he", "fr", "de")
+  val languages = supportedLanguages
   var expanded by remember { mutableStateOf(false) }
 
   Box {
