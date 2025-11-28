@@ -160,9 +160,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                         sharedTransitionScope = this@SharedTransitionLayout,
                         animatedVisibilityScope = this)
                 is TranslateViewState.Error ->
-                    ErrorStateDisplay(
-                        error = targetState as TranslateViewState.Error,
-                        snackbarHostState = snackbarHostState)
+                    ErrorStateDisplay(error = targetState as TranslateViewState.Error)
               }
             }
           }

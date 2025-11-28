@@ -170,9 +170,7 @@ class TranslateViewModelTest {
 
       // First update: Translating state
       val translatingState = awaitItem()
-      assertTrue(translatingState is TranslateViewState.OptionsFetched)
-      val translating = translatingState as TranslateViewState.OptionsFetched
-      assertTrue(translating.translations[searchTerm] is TranslationState.Translating)
+      assertTrue(translatingState is TranslateViewState.Translating)
 
       advanceUntilIdle()
 
@@ -231,7 +229,7 @@ class TranslateViewModelTest {
 
       // First update: Translating state
       val translatingState = awaitItem()
-      assertTrue(translatingState is TranslateViewState.OptionsFetched)
+      assertTrue(translatingState is TranslateViewState.Translating)
 
       advanceUntilIdle()
 
@@ -263,8 +261,84 @@ class TranslateViewModelTest {
       val errorState = awaitItem()
       assertTrue(errorState is TranslateViewState.Error)
       val error = errorState as TranslateViewState.Error
-      assertEquals("IllegalStateException", error.errorType)
+      assertEquals(TranslateViewModel.ErrorType.Unknown, error.errorType)
       assertEquals("Network error", error.errorMessage)
+    }
+  }
+
+  @Test
+  fun `searchArticles maps UnknownHostException to Network error`() = runTest {
+    fakeRepository.searchException = java.net.UnknownHostException()
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "test")
+      skipItems(1) // FetchingOptions
+      advanceUntilIdle()
+
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+      assertEquals(
+          TranslateViewModel.ErrorType.Network, (errorState as TranslateViewState.Error).errorType)
+    }
+  }
+
+  @Test
+  fun `searchArticles maps HttpException 429 to RateLimit error`() = runTest {
+    val response = retrofit2.Response.error<Any>(429, okhttp3.ResponseBody.create(null, ""))
+    fakeRepository.searchException = retrofit2.HttpException(response)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "test")
+      skipItems(1) // FetchingOptions
+      advanceUntilIdle()
+
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+      assertEquals(
+          TranslateViewModel.ErrorType.RateLimit,
+          (errorState as TranslateViewState.Error).errorType)
+    }
+  }
+
+  @Test
+  fun `searchArticles maps HttpException 404 to NotFound error`() = runTest {
+    val response = retrofit2.Response.error<Any>(404, okhttp3.ResponseBody.create(null, ""))
+    fakeRepository.searchException = retrofit2.HttpException(response)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "test")
+      skipItems(1) // FetchingOptions
+      advanceUntilIdle()
+
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+      assertEquals(
+          TranslateViewModel.ErrorType.NotFound, (errorState as TranslateViewState.Error).errorType)
+    }
+  }
+
+  @Test
+  fun `searchArticles maps HttpException 500 to Server error`() = runTest {
+    val response = retrofit2.Response.error<Any>(500, okhttp3.ResponseBody.create(null, ""))
+    fakeRepository.searchException = retrofit2.HttpException(response)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("en", "test")
+      skipItems(1) // FetchingOptions
+      advanceUntilIdle()
+
+      val errorState = awaitItem()
+      assertTrue(errorState is TranslateViewState.Error)
+      assertEquals(
+          TranslateViewModel.ErrorType.Server, (errorState as TranslateViewState.Error).errorType)
     }
   }
 
@@ -287,20 +361,16 @@ class TranslateViewModelTest {
 
       // First update: Translating state
       val translatingState = awaitItem()
-      assertTrue(translatingState is TranslateViewState.OptionsFetched)
-      val translating = translatingState as TranslateViewState.OptionsFetched
-      assertTrue(translating.translations[searchTerm] is TranslationState.Translating)
+      assertTrue(translatingState is TranslateViewState.Translating)
 
       advanceUntilIdle()
 
-      // Second update: Error state in translations map
+      // Second update: Error state
       val errorState = awaitItem()
-      assertTrue(errorState is TranslateViewState.OptionsFetched)
-      val withError = errorState as TranslateViewState.OptionsFetched
-      val errorTranslation = withError.translations[searchTerm]
-      assertTrue(errorTranslation is TranslationState.Error)
-      val error = errorTranslation as TranslationState.Error
+      assertTrue(errorState is TranslateViewState.Error)
+      val error = errorState as TranslateViewState.Error
       assertEquals("Failed to fetch translation", error.errorMessage)
+      assertEquals(TranslateViewModel.ErrorType.Unknown, error.errorType)
     }
   }
 

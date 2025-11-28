@@ -90,4 +90,15 @@
     <string name="content_description_copy_source">Copy source title</string>
     <string name="content_description_bookmark_source">Bookmark source article</string>
     <string name="content_description_open_source">Open source article in Wikipedia</string>
+
+    <!-- Error messages -->
+    <string name="error_network_title">No internet connection</string>
+    <string name="error_network_message">Please check your connection and try again.</string>
+    <string name="error_rate_limit_title">Too many requests</string>
+    <string name="error_rate_limit_message">Please try again later.</string>
+    <string name="error_not_found_title">Translation not found</string>
+    <string name="error_not_found_message">We could not find a translation for this term.</string>
+    <string name="error_server_title">Server error</string>
+    <string name="error_server_message">Please try again later.</string>
+    <string name="error_unknown_title">Something went wrong</string>
 </resources>
