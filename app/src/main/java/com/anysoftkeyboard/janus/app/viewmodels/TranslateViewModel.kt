@@ -76,6 +76,10 @@ constructor(
   private var previousSearchResults: TranslateViewState.OptionsFetched? = null
 
   fun searchArticles(sourceLang: String, term: String) {
+    if (sourceLang.isEmpty()) {
+      Log.w("TranslateViewModel", "searchArticles called with empty sourceLang")
+      return
+    }
     _state.value = TranslateViewState.FetchingOptions
     viewModelScope.launch {
       try {
