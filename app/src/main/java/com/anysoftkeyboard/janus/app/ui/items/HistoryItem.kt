@@ -48,351 +48,270 @@ import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HistoryItem(
-        translation: UiTranslation,
-        modifier: Modifier = Modifier,
-        isExpanded: Boolean = false,
-        unfocused: Boolean = false,
-        sharedTransitionScope: SharedTransitionScope,
-        onClick: () -> Unit = {}
+    translation: UiTranslation,
+    modifier: Modifier = Modifier,
+    isExpanded: Boolean = false,
+    unfocused: Boolean = false,
+    sharedTransitionScope: SharedTransitionScope,
+    onClick: () -> Unit = {}
 ) {
-        val interactionSource = remember { MutableInteractionSource() }
-        Card(
-                modifier =
-                        modifier.fillMaxWidth()
-                                .animateContentSize()
-                                .then(
-                                        if (unfocused)
-                                                modifier.blur(
-                                                                radius = 2.dp,
-                                                                edgeTreatment =
-                                                                        BlurredEdgeTreatment
-                                                                                .Unbounded
-                                                        )
-                                                        .padding(8.dp, 0.dp)
-                                        else modifier
-                                )
-                                .drawWithContent {
-                                        if (unfocused) {
-                                                val matrix =
-                                                        ColorMatrix().apply {
-                                                                setToSaturation(0.05f)
-                                                                setToScale(0.8f, 0.8f, 0.8f, 1f)
-                                                        }
-                                                val filter = ColorFilter.colorMatrix(matrix)
-                                                val paint = Paint().apply { colorFilter = filter }
-                                                drawIntoCanvas { canvas ->
-                                                        canvas.saveLayer(
-                                                                Rect(Offset.Zero, size),
-                                                                paint
-                                                        )
-                                                        drawContent()
-                                                        canvas.restore()
-                                                }
-                                        } else {
-                                                drawContent()
-                                        }
-                                }
-        ) {
-                sharedTransitionScope.apply {
-                        AnimatedContent(
-                                targetState = isExpanded,
-                                label = "expand_collapse",
-                                modifier =
-                                        Modifier.clickable(
-                                                interactionSource = interactionSource,
-                                                indication = null,
-                                                onClick = onClick
-                                        )
-                        ) { targetExpanded ->
-                                if (targetExpanded) {
-                                        ExpandedHistoryItem(
-                                                translation,
-                                                sharedTransitionScope,
-                                                this@AnimatedContent
-                                        )
-                                } else {
-                                        CondensedHistoryItem(
-                                                translation,
-                                                sharedTransitionScope,
-                                                this@AnimatedContent
-                                        )
-                                }
-                        }
+  val interactionSource = remember { MutableInteractionSource() }
+  Card(
+      modifier =
+          modifier
+              .fillMaxWidth()
+              .animateContentSize()
+              .then(
+                  if (unfocused)
+                      modifier
+                          .blur(radius = 2.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                          .padding(8.dp, 0.dp)
+                  else modifier)
+              .drawWithContent {
+                if (unfocused) {
+                  val matrix =
+                      ColorMatrix().apply {
+                        setToSaturation(0.05f)
+                        setToScale(0.8f, 0.8f, 0.8f, 1f)
+                      }
+                  val filter = ColorFilter.colorMatrix(matrix)
+                  val paint = Paint().apply { colorFilter = filter }
+                  drawIntoCanvas { canvas ->
+                    canvas.saveLayer(Rect(Offset.Zero, size), paint)
+                    drawContent()
+                    canvas.restore()
+                  }
+                } else {
+                  drawContent()
                 }
+              }) {
+        sharedTransitionScope.apply {
+          AnimatedContent(
+              targetState = isExpanded,
+              label = "expand_collapse",
+              modifier =
+                  Modifier.clickable(
+                      interactionSource = interactionSource,
+                      indication = null,
+                      onClick = onClick)) { targetExpanded ->
+                if (targetExpanded) {
+                  ExpandedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
+                } else {
+                  CondensedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
+                }
+              }
         }
+      }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun CondensedHistoryItem(
-        translation: UiTranslation,
-        sharedTransitionScope: SharedTransitionScope,
-        animatedVisibilityScope: AnimatedVisibilityScope
+    translation: UiTranslation,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-        with(sharedTransitionScope) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                        // Top Row: Language Pair
-                        Text(
-                                text =
-                                        "${translation.sourceLang.uppercase()} \u2192 ${translation.targetLang.uppercase()}",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.secondary
-                        )
+  with(sharedTransitionScope) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      // Top Row: Language Pair
+      Text(
+          text =
+              "${translation.sourceLang.uppercase()} \u2192 ${translation.targetLang.uppercase()}",
+          style = MaterialTheme.typography.labelSmall,
+          color = MaterialTheme.colorScheme.secondary)
 
-                        Spacer(modifier = Modifier.height(8.dp))
+      Spacer(modifier = Modifier.height(8.dp))
 
-                        // Middle Row: The Pivot
-                        Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
-                        ) {
-                                Text(
-                                        text = translation.sourceWord,
-                                        style =
-                                                MaterialTheme.typography.titleMedium.copy(
-                                                        fontFamily = FontFamily.Serif
-                                                ),
-                                        color = MaterialTheme.colorScheme.onSurface,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier =
-                                                Modifier.weight(1f)
-                                                        .sharedElementModifier(
-                                                                sharedTransitionScope =
-                                                                        sharedTransitionScope,
-                                                                key =
-                                                                        "source_title_${translation.timestamp}",
-                                                                animatedVisibilityScope =
-                                                                        animatedVisibilityScope
-                                                        ),
-                                        textAlign = androidx.compose.ui.text.style.TextAlign.Start
-                                )
+      // Middle Row: The Pivot
+      Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = translation.sourceWord,
+            style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier =
+                Modifier.weight(1f)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "source_title_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Start)
 
-                                Image(
-                                        painter = painterResource(R.mipmap.ic_launcher_foreground),
-                                        contentDescription = null,
-                                        colorFilter =
-                                                ColorFilter.tint(
-                                                        MaterialTheme.colorScheme.secondary
-                                                ),
-                                        modifier =
-                                                Modifier.padding(horizontal = 8.dp)
-                                                        .size(24.dp)
-                                                        .sharedElementModifier(
-                                                                sharedTransitionScope =
-                                                                        sharedTransitionScope,
-                                                                key =
-                                                                        "icon_${translation.timestamp}",
-                                                                animatedVisibilityScope =
-                                                                        animatedVisibilityScope
-                                                        )
-                                )
+        Image(
+            painter = painterResource(R.mipmap.ic_launcher_foreground),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.secondary),
+            modifier =
+                Modifier.padding(horizontal = 8.dp)
+                    .size(24.dp)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "icon_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope))
 
-                                Text(
-                                        text = translation.targetWord,
-                                        style =
-                                                MaterialTheme.typography.titleMedium.copy(
-                                                        fontFamily = FontFamily.Serif
-                                                ),
-                                        color = MaterialTheme.colorScheme.primary,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        modifier =
-                                                Modifier.weight(1f)
-                                                        .sharedElementModifier(
-                                                                sharedTransitionScope =
-                                                                        sharedTransitionScope,
-                                                                key =
-                                                                        "target_title_${translation.timestamp}",
-                                                                animatedVisibilityScope =
-                                                                        animatedVisibilityScope
-                                                        ),
-                                        textAlign = androidx.compose.ui.text.style.TextAlign.End
-                                )
-                        }
+        Text(
+            text = translation.targetWord,
+            style = MaterialTheme.typography.titleMedium.copy(fontFamily = FontFamily.Serif),
+            color = MaterialTheme.colorScheme.primary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier =
+                Modifier.weight(1f)
+                    .sharedElementModifier(
+                        sharedTransitionScope = sharedTransitionScope,
+                        key = "target_title_${translation.timestamp}",
+                        animatedVisibilityScope = animatedVisibilityScope),
+            textAlign = androidx.compose.ui.text.style.TextAlign.End)
+      }
 
-                        // Bottom Row: Context
-                        translation.sourceShortDescription?.let { description ->
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                        text = description,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis
-                                )
-                        }
-                }
-        }
+      // Bottom Row: Context
+      translation.sourceShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
+      }
+    }
+  }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ExpandedHistoryItem(
-        translation: UiTranslation,
-        sharedTransitionScope: SharedTransitionScope,
-        animatedVisibilityScope: AnimatedVisibilityScope
+    translation: UiTranslation,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-        with(sharedTransitionScope) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                        // Source Section
-                        Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                        ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                                text = translation.sourceWord,
-                                                style =
-                                                        MaterialTheme.typography.headlineSmall.copy(
-                                                                fontFamily = FontFamily.Serif
-                                                        ),
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                                modifier =
-                                                        Modifier.horizontalScroll(
-                                                                        rememberScrollState()
-                                                                )
-                                                                .sharedElementModifier(
-                                                                        sharedTransitionScope =
-                                                                                sharedTransitionScope,
-                                                                        key =
-                                                                                "source_title_${translation.timestamp}",
-                                                                        animatedVisibilityScope =
-                                                                                animatedVisibilityScope
-                                                                )
-                                        )
-                                        Text(
-                                                text = translation.sourceLang.uppercase(),
-                                                style = MaterialTheme.typography.labelMedium,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                }
-                                Row {
-                                        CopyToClipboardButton(
-                                                text = translation.sourceWord,
-                                                contentDescription = "Copy source title",
-                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                        WikipediaLinkButton(
-                                                url = translation.sourceArticleUrl,
-                                                contentDescription = "Open source article",
-                                                tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
-                                }
-                        }
+  with(sharedTransitionScope) {
+    Column(modifier = Modifier.padding(16.dp)) {
+      // Source Section
+      Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+              Text(
+                  text = translation.sourceWord,
+                  style =
+                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis,
+                  modifier =
+                      Modifier.horizontalScroll(rememberScrollState())
+                          .sharedElementModifier(
+                              sharedTransitionScope = sharedTransitionScope,
+                              key = "source_title_${translation.timestamp}",
+                              animatedVisibilityScope = animatedVisibilityScope))
+              Text(
+                  text = translation.sourceLang.uppercase(),
+                  style = MaterialTheme.typography.labelMedium,
+                  color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+            Row {
+              CopyToClipboardButton(
+                  text = translation.sourceWord,
+                  contentDescription = "Copy source title",
+                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
+              WikipediaLinkButton(
+                  url = translation.sourceArticleUrl,
+                  contentDescription = "Open source article",
+                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+          }
 
-                        translation.sourceShortDescription?.let { description ->
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                        text = description,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                )
-                        }
+      translation.sourceShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface)
+      }
 
-                        translation.sourceSummary?.let { snippet ->
-                                Spacer(modifier = Modifier.height(4.dp))
-                                HtmlText(
-                                        html = snippet,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                        }
+      translation.sourceSummary?.let { snippet ->
+        Spacer(modifier = Modifier.height(4.dp))
+        HtmlText(html = snippet, color = MaterialTheme.colorScheme.onSurfaceVariant)
+      }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(16.dp))
 
-                        // Pivot Connector
-                        PivotConnector(
-                                sharedTransitionScope = sharedTransitionScope,
-                                animatedVisibilityScope = animatedVisibilityScope,
-                                sharedElementKey = "icon_${translation.timestamp}"
-                        )
+      // Pivot Connector
+      PivotConnector(
+          sharedTransitionScope = sharedTransitionScope,
+          animatedVisibilityScope = animatedVisibilityScope,
+          sharedElementKey = "icon_${translation.timestamp}")
 
-                        Spacer(modifier = Modifier.height(16.dp))
+      Spacer(modifier = Modifier.height(16.dp))
 
-                        // Target Section
-                        Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                verticalAlignment = Alignment.CenterVertically
-                        ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                        Text(
-                                                text = translation.targetWord,
-                                                style =
-                                                        MaterialTheme.typography.headlineSmall.copy(
-                                                                fontFamily = FontFamily.Serif
-                                                        ),
-                                                color = MaterialTheme.colorScheme.primary,
-                                                maxLines = 1,
-                                                overflow = TextOverflow.Ellipsis,
-                                                modifier =
-                                                        Modifier.horizontalScroll(
-                                                                        rememberScrollState()
-                                                                )
-                                                                .sharedElementModifier(
-                                                                        sharedTransitionScope =
-                                                                                sharedTransitionScope,
-                                                                        key =
-                                                                                "target_title_${translation.timestamp}",
-                                                                        animatedVisibilityScope =
-                                                                                animatedVisibilityScope
-                                                                )
-                                        )
-                                        Text(
-                                                text = translation.targetLang.uppercase(),
-                                                style = MaterialTheme.typography.labelLarge,
-                                                color = MaterialTheme.colorScheme.primary
-                                        )
-                                }
-                                Row {
-                                        CopyToClipboardButton(
-                                                text = translation.targetWord,
-                                                contentDescription = "Copy translated title",
-                                                tint = MaterialTheme.colorScheme.primary
-                                        )
-                                        WikipediaLinkButton(
-                                                url = translation.targetArticleUrl,
-                                                contentDescription = "Open target article",
-                                                tint = MaterialTheme.colorScheme.primary
-                                        )
-                                }
-                        }
+      // Target Section
+      Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+              Text(
+                  text = translation.targetWord,
+                  style =
+                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+                  color = MaterialTheme.colorScheme.primary,
+                  maxLines = 1,
+                  overflow = TextOverflow.Ellipsis,
+                  modifier =
+                      Modifier.horizontalScroll(rememberScrollState())
+                          .sharedElementModifier(
+                              sharedTransitionScope = sharedTransitionScope,
+                              key = "target_title_${translation.timestamp}",
+                              animatedVisibilityScope = animatedVisibilityScope))
+              Text(
+                  text = translation.targetLang.uppercase(),
+                  style = MaterialTheme.typography.labelLarge,
+                  color = MaterialTheme.colorScheme.primary)
+            }
+            Row {
+              CopyToClipboardButton(
+                  text = translation.targetWord,
+                  contentDescription = "Copy translated title",
+                  tint = MaterialTheme.colorScheme.primary)
+              WikipediaLinkButton(
+                  url = translation.targetArticleUrl,
+                  contentDescription = "Open target article",
+                  tint = MaterialTheme.colorScheme.primary)
+            }
+          }
 
-                        translation.targetShortDescription?.let { description ->
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(
-                                        text = description,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                )
-                        }
+      translation.targetShortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface)
+      }
 
-                        translation.targetSummary?.let { summary ->
-                                Spacer(modifier = Modifier.height(4.dp))
-                                Text(
-                                        text = summary,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                        }
-                }
-        }
+      translation.targetSummary?.let { summary ->
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = summary,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant)
+      }
+    }
+  }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun Modifier.sharedElementModifier(
-        sharedTransitionScope: SharedTransitionScope,
-        key: String,
-        animatedVisibilityScope: AnimatedVisibilityScope
+    sharedTransitionScope: SharedTransitionScope,
+    key: String,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ): Modifier {
-        with(sharedTransitionScope) {
-                return this@sharedElementModifier.sharedElement(
-                        sharedContentState = rememberSharedContentState(key = key),
-                        animatedVisibilityScope = animatedVisibilityScope
-                )
-        }
+  with(sharedTransitionScope) {
+    return this@sharedElementModifier.sharedElement(
+        sharedContentState = rememberSharedContentState(key = key),
+        animatedVisibilityScope = animatedVisibilityScope)
+  }
 }

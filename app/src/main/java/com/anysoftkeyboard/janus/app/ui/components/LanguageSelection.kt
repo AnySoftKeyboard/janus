@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
 
@@ -84,17 +85,20 @@ fun LanguageSelectionRow(
 @Composable
 fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> Unit) {
   // In a real app, you'd get this from a ViewModel
-  val languages = listOf("en", "he", "fr", "de")
+  val languages = supportedLanguages
   var expanded by remember { mutableStateOf(false) }
 
+  // Find name for selected code
+  val selectedName = languages.find { it.code == selectedLanguage }?.name ?: selectedLanguage
+
   Box {
-    Button(onClick = { expanded = true }) { Text(selectedLanguage) }
+    Button(onClick = { expanded = true }) { Text(selectedName) }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
       languages.forEach { language ->
         DropdownMenuItem(
-            text = { Text(language) },
+            text = { Text(language.name) },
             onClick = {
-              onLanguageSelected(language)
+              onLanguageSelected(language.code)
               expanded = false
             })
       }
