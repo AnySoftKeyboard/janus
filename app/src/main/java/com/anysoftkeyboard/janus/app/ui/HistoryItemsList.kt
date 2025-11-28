@@ -73,7 +73,7 @@ fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
                   modifier = Modifier.animateItem(),
                   translation = translation,
                   isExpanded = expandedItemId == translation.timestamp,
-                  dimmed = expandedItemId != null && expandedItemId != translation.timestamp,
+                  unfocused = expandedItemId != null && expandedItemId != translation.timestamp,
                   sharedTransitionScope = this@SharedTransitionLayout,
                   onClick = {
                     expandedItemId =
