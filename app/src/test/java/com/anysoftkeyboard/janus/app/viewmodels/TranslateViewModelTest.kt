@@ -129,6 +129,18 @@ class TranslateViewModelTest {
   }
 
   @Test
+  fun `searchArticles with empty source language does nothing`() = runTest {
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles("", "term")
+
+      // Should not emit FetchingOptions or any other state
+      expectNoEvents()
+    }
+  }
+
+  @Test
   fun `fetchTranslation success with target language available`() = runTest {
     val searchTerm =
         OptionalSourceTerm(

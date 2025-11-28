@@ -91,7 +91,11 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                   sourceLang = newSource
                   targetLang = newTarget
                   text = newSearchTerm
-                  viewModel.searchArticles("", "")
+                  if (newSearchTerm.isNotEmpty()) {
+                    viewModel.searchArticles(newSource, newSearchTerm)
+                  } else {
+                    viewModel.clearSearch()
+                  }
                 })
 
             Spacer(modifier = Modifier.height(16.dp))
