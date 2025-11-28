@@ -19,9 +19,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
-import com.anysoftkeyboard.janus.app.util.supportedLanguages
 
 /**
  * Language selection row with source/target selectors and swap button.
