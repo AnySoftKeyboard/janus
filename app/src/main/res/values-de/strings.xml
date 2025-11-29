@@ -88,4 +88,25 @@
     <string name="content_description_copy_source">Quelltitel kopieren</string>
     <string name="content_description_bookmark_source">Quellartikel speichern</string>
     <string name="content_description_open_source">Quellartikel in Wikipedia öffnen</string>
+    <string name="translating_loading_message">Übersetzung wird abgerufen...</string>
+    <string name="loading_translation_for_item">Übersetzung für %1$s wird abgerufen...</string>
+
+    <!-- Network -->
+    <string name="error_network_title">Verbindung verloren</string>
+    <string name="error_network_message">Zugriff auf die Archive nicht möglich. Überprüfen Sie Ihre Verbindung.</string>
+
+    <!-- Rate Limit -->
+    <string name="error_rate_limit_title">Zugriffslimit erreicht</string>
+    <string name="error_rate_limit_message">Der Katalog ist ausgelastet. Bitte versuchen Sie es in einem Moment erneut.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found_title">Referenz fehlt</string>
+    <string name="error_not_found_message">Kein Querverweis für dieses Konzept gefunden.</string>
+
+    <!-- Server Error -->
+    <string name="error_server_title">Dienst nicht verfügbar</string>
+    <string name="error_server_message">Der Katalog ist derzeit nicht erreichbar.</string>
+
+    <!-- Unknown -->
+    <string name="error_unknown_title">Unerwartetes Problem</string>
 </resources>

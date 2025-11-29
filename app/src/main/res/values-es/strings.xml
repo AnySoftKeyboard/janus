@@ -88,4 +88,25 @@
     <string name="content_description_copy_source">Copiar título origen</string>
     <string name="content_description_bookmark_source">Guardar artículo origen</string>
     <string name="content_description_open_source">Abrir artículo origen en Wikipedia</string>
+    <string name="translating_loading_message">Obteniendo traducción...</string>
+    <string name="loading_translation_for_item">Obteniendo traducción para %1$s...</string>
+
+    <!-- Network -->
+    <string name="error_network_title">Conexión perdida</string>
+    <string name="error_network_message">No se puede acceder a los archivos. Compruebe su conexión.</string>
+
+    <!-- Rate Limit -->
+    <string name="error_rate_limit_title">Límite de acceso alcanzado</string>
+    <string name="error_rate_limit_message">El catálogo está ocupado. Por favor, consulte de nuevo en un momento.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found_title">Referencia faltante</string>
+    <string name="error_not_found_message">No se encontró ninguna referencia cruzada para este concepto.</string>
+
+    <!-- Server Error -->
+    <string name="error_server_title">Servicio no disponible</string>
+    <string name="error_server_message">El catálogo no está disponible actualmente.</string>
+
+    <!-- Unknown -->
+    <string name="error_unknown_title">Problema inesperado</string>
 </resources>

@@ -3,7 +3,6 @@ package com.anysoftkeyboard.janus.app.viewmodels
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.StringProvider
@@ -55,7 +54,8 @@ sealed class TranslateViewState() {
       val translation: TranslationState
   ) : TranslateViewState()
 
-  data class Error(val errorType: String, val errorMessage: String) : TranslateViewState()
+  data class Error(val errorType: TranslateViewModel.ErrorType, val errorMessage: String?) :
+      TranslateViewState()
 }
 
 @HiltViewModel
@@ -66,6 +66,14 @@ constructor(
     private val stringProvider: StringProvider,
     private val welcomeMessageProvider: TranslationFlowMessagesProvider
 ) : ViewModel() {
+  enum class ErrorType {
+    Network,
+    RateLimit,
+    NotFound,
+    Server,
+    Unknown
+  }
+
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
 
@@ -88,9 +96,8 @@ constructor(
                 term, repository.searchArticles(sourceLang, term), emptyMap())
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
-        val errorType = e.javaClass.simpleName
-        val errorMessage = e.message ?: stringProvider.getString(R.string.error_unknown)
-        _state.value = TranslateViewState.Error(errorType, errorMessage)
+        val errorType = mapToErrorType(e)
+        _state.value = TranslateViewState.Error(errorType, e.message)
       }
     }
   }
@@ -124,10 +131,26 @@ constructor(
             TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
-        val errorType = e.javaClass.simpleName
-        val errorMessage = e.message ?: stringProvider.getString(R.string.error_unknown)
-        _state.value = TranslateViewState.Error(errorType, errorMessage)
+        val errorType = mapToErrorType(e)
+        _state.value = TranslateViewState.Error(errorType, e.message)
       }
+    }
+  }
+
+  private fun mapToErrorType(e: Exception): ErrorType {
+    return when (e) {
+      is java.net.UnknownHostException,
+      is java.net.SocketTimeoutException,
+      is java.net.ConnectException -> ErrorType.Network
+      is retrofit2.HttpException -> {
+        when (e.code()) {
+          429 -> ErrorType.RateLimit
+          404 -> ErrorType.NotFound
+          in 500..599 -> ErrorType.Server
+          else -> ErrorType.Unknown
+        }
+      }
+      else -> ErrorType.Unknown
     }
   }
 

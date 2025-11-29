@@ -15,10 +15,8 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
+import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel.ErrorType
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 
 /**
@@ -147,22 +146,46 @@ fun NoResultsState(searchTerm: String) {
 }
 
 /**
- * Error state display with snackbar notification.
+ * Error state display.
  *
- * Shows error information both visually and via snackbar.
+ * Shows error information visually.
  *
  * @param error The error state containing error type and message
- * @param snackbarHostState State for showing snackbar notifications
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun ErrorStateDisplay(error: TranslateViewState.Error, snackbarHostState: SnackbarHostState) {
-  // Show snackbar immediately when error occurs
-  LaunchedEffect(error) {
-    snackbarHostState.showSnackbar("${error.errorType}: ${error.errorMessage}")
-  }
+fun ErrorStateDisplay(error: TranslateViewState.Error) {
+  val (titleRes, messageRes, icon) =
+      when (error.errorType) {
+        ErrorType.Network ->
+            Triple(
+                R.string.error_network_title, R.string.error_network_message, Icons.Default.Warning)
+        ErrorType.RateLimit ->
+            Triple(
+                R.string.error_rate_limit_title,
+                R.string.error_rate_limit_message,
+                Icons.Default.Warning)
+        ErrorType.NotFound ->
+            Triple(
+                R.string.error_not_found_title,
+                R.string.error_not_found_message,
+                Icons.Default.Warning)
+        ErrorType.Server ->
+            Triple(
+                R.string.error_server_title, R.string.error_server_message, Icons.Default.Warning)
+        ErrorType.Unknown ->
+            Triple(
+                R.string.error_unknown_title,
+                0, // Use error message from exception if available, or generic
+                Icons.Default.Warning)
+      }
+
+  val message =
+      if (messageRes != 0) stringResource(messageRes)
+      else error.errorMessage ?: stringResource(R.string.error_unknown)
+
   EmptyStateMessageWithPainter(
-      title = error.errorType,
-      message = error.errorMessage,
-      painter = rememberVectorPainter(image = Icons.Default.Warning))
+      title = stringResource(titleRes),
+      message = message,
+      painter = rememberVectorPainter(image = icon))
 }

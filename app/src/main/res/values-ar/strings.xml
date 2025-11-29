@@ -88,4 +88,25 @@
     <string name="content_description_copy_source">نسخ عنوان المصدر</string>
     <string name="content_description_bookmark_source">حفظ مقال المصدر</string>
     <string name="content_description_open_source">فتح مقال المصدر في ويكيبيديا</string>
+    <string name="translating_loading_message">جاري جلب الترجمة...</string>
+    <string name="loading_translation_for_item">جاري جلب الترجمة لـ %1$s...</string>
+
+    <!-- Network -->
+    <string name="error_network_title">فقد الاتصال</string>
+    <string name="error_network_message">تعذر الوصول إلى الأرشيف. تحقق من اتصالك.</string>
+
+    <!-- Rate Limit -->
+    <string name="error_rate_limit_title">تم الوصول إلى حد الوصول</string>
+    <string name="error_rate_limit_message">الكتالوج مشغول. يرجى المحاولة مرة أخرى بعد قليل.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found_title">المرجع مفقود</string>
+    <string name="error_not_found_message">لم يتم العثور على إشارة مرجعية لهذا المفهوم.</string>
+
+    <!-- Server Error -->
+    <string name="error_server_title">الخدمة غير متوفرة</string>
+    <string name="error_server_message">الكتالوج غير متاح حاليًا.</string>
+
+    <!-- Unknown -->
+    <string name="error_unknown_title">مشكلة غير متوقعة</string>
 </resources>
