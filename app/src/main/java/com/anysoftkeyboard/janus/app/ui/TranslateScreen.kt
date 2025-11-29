@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
@@ -59,6 +60,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   val pageState by viewModel.pageState.collectAsState()
   val welcomeMessage by viewModel.welcomeMessage.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
+  val keyboardController = LocalSoftwareKeyboardController.current
 
   // Handle back button navigation within translation flow
   BackHandler(enabled = pageState !is TranslateViewState.Empty) {
@@ -104,7 +106,10 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
             SearchInputField(
                 text = text,
                 onTextChange = { text = it },
-                onSearch = { viewModel.searchArticles(sourceLang, text) })
+                onSearch = {
+                  keyboardController?.hide()
+                  viewModel.searchArticles(sourceLang, text)
+                })
 
             Spacer(modifier = Modifier.height(16.dp))
 
