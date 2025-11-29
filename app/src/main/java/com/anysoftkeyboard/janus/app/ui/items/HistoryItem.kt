@@ -5,6 +5,8 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -22,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,24 +59,26 @@ fun HistoryItem(
     onClick: () -> Unit = {}
 ) {
   val interactionSource = remember { MutableInteractionSource() }
+  val blurRadius by animateDpAsState(targetValue = if (unfocused) 2.dp else 0.dp, label = "blur")
+  val padding by animateDpAsState(targetValue = if (unfocused) 8.dp else 0.dp, label = "padding")
+  val saturation by
+      animateFloatAsState(targetValue = if (unfocused) 0.05f else 1f, label = "saturation")
+  val scale by animateFloatAsState(targetValue = if (unfocused) 0.8f else 1f, label = "scale")
+
   Card(
       modifier =
           modifier
               .fillMaxWidth()
               .animateContentSize()
-              .then(
-                  if (unfocused)
-                      modifier
-                          .blur(radius = 2.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                          .padding(8.dp, 0.dp)
-                  else modifier)
+              .blur(radius = blurRadius, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+              .padding(horizontal = padding)
               .drawWithContent {
-                if (unfocused) {
-                  val matrix =
-                      ColorMatrix().apply {
-                        setToSaturation(0.05f)
-                        setToScale(0.8f, 0.8f, 0.8f, 1f)
-                      }
+                if (saturation < 0.99f || scale < 0.99f) {
+                  val matrix = ColorMatrix()
+                  matrix.setToSaturation(saturation)
+                  val scaleMatrix = ColorMatrix().apply { setToScale(scale, scale, scale, 1f) }
+                  matrix.timesAssign(scaleMatrix)
+
                   val filter = ColorFilter.colorMatrix(matrix)
                   val paint = Paint().apply { colorFilter = filter }
                   drawIntoCanvas { canvas ->
