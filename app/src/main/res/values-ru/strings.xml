@@ -88,4 +88,25 @@
     <string name="content_description_copy_source">Копировать исходный заголовок</string>
     <string name="content_description_bookmark_source">Сохранить исходную статью</string>
     <string name="content_description_open_source">Открыть исходную статью в Википедии</string>
+    <string name="translating_loading_message">Получение перевода...</string>
+    <string name="loading_translation_for_item">Получение перевода для %1$s...</string>
+
+    <!-- Network -->
+    <string name="error_network_title">Соединение потеряно</string>
+    <string name="error_network_message">Невозможно получить доступ к архивам. Проверьте подключение.</string>
+
+    <!-- Rate Limit -->
+    <string name="error_rate_limit_title">Предел доступа достигнут</string>
+    <string name="error_rate_limit_message">Каталог занят. Пожалуйста, попробуйте еще раз через минуту.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found_title">Ссылка отсутствует</string>
+    <string name="error_not_found_message">Перекрестная ссылка для этого понятия не найдена.</string>
+
+    <!-- Server Error -->
+    <string name="error_server_title">Служба недоступна</string>
+    <string name="error_server_message">Каталог в настоящее время недоступен.</string>
+
+    <!-- Unknown -->
+    <string name="error_unknown_title">Неожиданная проблема</string>
 </resources>

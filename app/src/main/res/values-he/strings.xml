@@ -88,4 +88,25 @@
     <string name="content_description_copy_source">העתקת כותרת מקור</string>
     <string name="content_description_bookmark_source">שמירת מאמר מקור</string>
     <string name="content_description_open_source">פתיחת מאמר מקור בוויקיפדיה</string>
+    <string name="translating_loading_message">מביא תרגום...</string>
+    <string name="loading_translation_for_item">מביא תרגום עבור %1$s...</string>
+
+    <!-- Network -->
+    <string name="error_network_title">החיבור אבד</string>
+    <string name="error_network_message">לא ניתן לגשת לארכיונים. בדוק את החיבור שלך.</string>
+
+    <!-- Rate Limit -->
+    <string name="error_rate_limit_title">הגיע למגבלת הגישה</string>
+    <string name="error_rate_limit_message">הקטלוג עמוס. אנא נסה שוב בעוד רגע.</string>
+
+    <!-- Not Found -->
+    <string name="error_not_found_title">הפניה חסרה</string>
+    <string name="error_not_found_message">לא נמצאה הפניה צולבת למושג זה.</string>
+
+    <!-- Server Error -->
+    <string name="error_server_title">השירות אינו זמין</string>
+    <string name="error_server_message">הקטלוג אינו זמין כרגע.</string>
+
+    <!-- Unknown -->
+    <string name="error_unknown_title">בעיה לא צפויה</string>
 </resources>
