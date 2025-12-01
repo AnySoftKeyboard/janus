@@ -16,22 +16,21 @@ class HistoryItemTest {
   @get:Rule val composeTestRule = createComposeRule()
 
   private val testTranslation =
-          UiTranslation(
-                  sourceWord = "Cat",
-                  sourceLang = "en",
-                  sourceArticleUrl = "http://en.wikipedia.org/wiki/Cat",
-                  sourceShortDescription = "A small domesticated carnivorous mammal.",
-                  sourceSummary =
-                          "The cat (Felis catus) is a domestic species of small carnivorous mammal.",
-                  targetWord = "Gato",
-                  targetLang = "es",
-                  targetArticleUrl = "http://es.wikipedia.org/wiki/Gato",
-                  targetShortDescription = "Mamífero carnívoro de la familia Felidae.",
-                  targetSummary =
-                          "El gato doméstico (Felis silvestris catus), llamado popularmente gato...",
-                  isFavorite = false,
-                  timestamp = 1234567890L
-          )
+      UiTranslation(
+          sourceWord = "Cat",
+          sourceLang = "en",
+          sourceArticleUrl = "http://en.wikipedia.org/wiki/Cat",
+          sourceShortDescription = "A small domesticated carnivorous mammal.",
+          sourceSummary =
+              "The cat (Felis catus) is a domestic species of small carnivorous mammal.",
+          targetWord = "Gato",
+          targetLang = "es",
+          targetArticleUrl = "http://es.wikipedia.org/wiki/Gato",
+          targetShortDescription = "Mamífero carnívoro de la familia Felidae.",
+          targetSummary =
+              "El gato doméstico (Felis silvestris catus), llamado popularmente gato...",
+          isFavorite = false,
+          timestamp = 1234567890L)
 
   @OptIn(ExperimentalSharedTransitionApi::class)
   @Test
@@ -39,11 +38,10 @@ class HistoryItemTest {
     composeTestRule.setContent {
       SharedTransitionLayout {
         HistoryItem(
-                translation = testTranslation,
-                isExpanded = false,
-                unfocused = false,
-                sharedTransitionScope = this
-        )
+            translation = testTranslation,
+            isExpanded = false,
+            unfocused = false,
+            sharedTransitionScope = this)
       }
     }
 
@@ -57,11 +55,10 @@ class HistoryItemTest {
     composeTestRule.setContent {
       SharedTransitionLayout {
         HistoryItem(
-                translation = testTranslation,
-                isExpanded = false,
-                unfocused = true,
-                sharedTransitionScope = this
-        )
+            translation = testTranslation,
+            isExpanded = false,
+            unfocused = true,
+            sharedTransitionScope = this)
       }
     }
 
