@@ -15,7 +15,7 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
-  kotlin { jvmToolchain(17) }
+  kotlin { jvmToolchain(21) }
   testOptions { unitTests.isIncludeAndroidResources = true }
 }
 

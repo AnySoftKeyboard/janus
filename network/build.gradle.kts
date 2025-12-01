@@ -20,7 +20,7 @@ android {
       proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
     }
   }
-  kotlin { jvmToolchain(17) }
+  kotlin { jvmToolchain(21) }
   testOptions { unitTests.isIncludeAndroidResources = true }
 }
 
