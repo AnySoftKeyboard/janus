@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
@@ -110,7 +111,8 @@ fun LanguageSelector(
           recentLanguages.mapNotNull { code -> languages.find { it.code == code } }
 
       if (recentSupported.isNotEmpty()) {
-        com.anysoftkeyboard.janus.app.ui.TranslationHeader("RECENT")
+        com.anysoftkeyboard.janus.app.ui.TranslationHeader(
+            stringResource(com.anysoftkeyboard.janus.app.R.string.language_selector_recent))
         recentSupported.forEach { language ->
           DropdownMenuItem(
               text = { Text(language.name) },
@@ -119,7 +121,8 @@ fun LanguageSelector(
                 expanded = false
               })
         }
-        com.anysoftkeyboard.janus.app.ui.TranslationHeader("ALL LANGUAGES")
+        com.anysoftkeyboard.janus.app.ui.TranslationHeader(
+            stringResource(com.anysoftkeyboard.janus.app.R.string.language_selector_all_languages))
       }
 
       languages.forEach { language ->

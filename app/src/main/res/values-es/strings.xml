@@ -109,4 +109,6 @@
 
     <!-- Unknown -->
     <string name="error_unknown_title">Problema inesperado</string>
+    <string name="language_selector_recent">RECIENTE</string>
+    <string name="language_selector_all_languages">TODOS LOS IDIOMAS</string>
 </resources>
