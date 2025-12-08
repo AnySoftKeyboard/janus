@@ -103,6 +103,14 @@ object AppModule {
       }
     }
   }
+
+  @Provides
+  @Singleton
+  fun provideSharedPreferences(
+      @ApplicationContext context: Context
+  ): android.content.SharedPreferences {
+    return context.getSharedPreferences("janus_prefs", Context.MODE_PRIVATE)
+  }
 }
 
 interface LangRetrofitFactory {

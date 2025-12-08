@@ -8,6 +8,13 @@
 
 ---
 
+# Localization
+- **Always use localization for user-facing text.** Do not hardcode strings in the UI code.
+- Add new strings to `app/src/main/res/values/strings.xml` (English/Default).
+- You **MUST** translate new strings into all supported languages found in the `app/src/main/res/` directory (e.g., `values-ar`, `values-de`, `values-es`, `values-fr`, `values-he`, `values-ru`).
+
+---
+
 # Lint and Format
 - Do not manually fix linting or formatting issues. The project uses an auto-formatter.
 - You can run the auto-formatter with the command `./gradlew spotlessApply`. This applies to all code in the codebase.

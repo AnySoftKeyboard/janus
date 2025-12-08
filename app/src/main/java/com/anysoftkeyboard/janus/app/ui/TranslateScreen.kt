@@ -58,6 +58,7 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
   var sourceLang by remember { mutableStateOf("en") }
   var targetLang by remember { mutableStateOf("he") }
   val pageState by viewModel.pageState.collectAsState()
+  val recentLanguages by viewModel.recentLanguages.collectAsState()
   val welcomeMessage by viewModel.welcomeMessage.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
   val keyboardController = LocalSoftwareKeyboardController.current
@@ -87,8 +88,15 @@ fun TranslateScreen(viewModel: TranslateViewModel) {
                 sourceLang = sourceLang,
                 targetLang = targetLang,
                 pageState = pageState,
-                onSourceLanguageSelected = { sourceLang = it },
-                onTargetLanguageSelected = { targetLang = it },
+                recentLanguages = recentLanguages,
+                onSourceLanguageSelected = {
+                  sourceLang = it
+                  viewModel.updateRecentLanguage(it)
+                },
+                onTargetLanguageSelected = {
+                  targetLang = it
+                  viewModel.updateRecentLanguage(it)
+                },
                 onSwapLanguages = { newSource, newTarget, newSearchTerm ->
                   sourceLang = newSource
                   targetLang = newTarget

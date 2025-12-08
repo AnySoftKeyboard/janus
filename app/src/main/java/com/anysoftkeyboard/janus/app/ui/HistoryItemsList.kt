@@ -67,7 +67,11 @@ fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)) {
           groupedTranslations.forEach { (header, translations) ->
-            stickyHeader { TranslationHeader(header) }
+            stickyHeader {
+              TranslationHeader(
+                  text = header,
+                  modifier = Modifier.background(MaterialTheme.colorScheme.background))
+            }
             items(items = translations, key = { it.timestamp }) { translation ->
               HistoryItem(
                   modifier = Modifier.animateItem(),
@@ -90,12 +94,9 @@ fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
 }
 
 @Composable
-fun TranslationHeader(text: String) {
+fun TranslationHeader(text: String, modifier: Modifier = Modifier) {
   Row(
-      modifier =
-          Modifier.fillMaxWidth()
-              .background(MaterialTheme.colorScheme.background)
-              .padding(vertical = 8.dp),
+      modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
       verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = "●",
