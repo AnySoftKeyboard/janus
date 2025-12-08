@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -57,7 +58,8 @@ fun LanguageSelectionRow(
         LanguageSelector(
             selectedLanguage = sourceLang,
             recentLanguages = recentLanguages,
-            onLanguageSelected = onSourceLanguageSelected)
+            onLanguageSelected = onSourceLanguageSelected,
+            modifier = Modifier.testTag("source_lang_selector"))
         IconButton(
             onClick = {
               // If translation is shown, put target word in input, else clear
@@ -79,7 +81,8 @@ fun LanguageSelectionRow(
         LanguageSelector(
             selectedLanguage = targetLang,
             recentLanguages = recentLanguages,
-            onLanguageSelected = onTargetLanguageSelected)
+            onLanguageSelected = onTargetLanguageSelected,
+            modifier = Modifier.testTag("target_lang_selector"))
       }
 }
 
@@ -94,7 +97,8 @@ fun LanguageSelectionRow(
 fun LanguageSelector(
     selectedLanguage: String,
     recentLanguages: List<String>,
-    onLanguageSelected: (String) -> Unit
+    onLanguageSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
   // In a real app, you'd get this from a ViewModel
   val languages = supportedLanguages
@@ -103,7 +107,7 @@ fun LanguageSelector(
   // Find name for selected code
   val selectedName = languages.find { it.code == selectedLanguage }?.name ?: selectedLanguage
 
-  Box {
+  Box(modifier = modifier) {
     Button(onClick = { expanded = true }) { Text(selectedName) }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
       // Filter recent languages that are supported
@@ -131,7 +135,8 @@ fun LanguageSelector(
             onClick = {
               onLanguageSelected(language.code)
               expanded = false
-            })
+            },
+            modifier = Modifier.testTag("language_menu_item_${language.code}"))
       }
     }
   }
