@@ -9,2414 +9,2741 @@ data class SupportedLanguage(
     val activeUserCount: Int
 )
 
-val supportedLanguages =
-    listOf(
-        SupportedLanguage(
-            code = "en",
-            name = "English",
-            localName = "English",
-            articleCount = 7096419,
-            pageCount = 64542724,
-            activeUserCount = 261477),
-        SupportedLanguage(
-            code = "ceb",
-            name = "Cebuano",
-            localName = "Cebuano",
-            articleCount = 6115870,
-            pageCount = 11230172,
-            activeUserCount = 189),
-        SupportedLanguage(
-            code = "de",
-            name = "German",
-            localName = "Deutsch",
-            articleCount = 3072427,
-            pageCount = 8427276,
-            activeUserCount = 39995),
-        SupportedLanguage(
-            code = "fr",
-            name = "French",
-            localName = "français",
-            articleCount = 2722268,
-            pageCount = 13743645,
-            activeUserCount = 42516),
-        SupportedLanguage(
-            code = "sv",
-            name = "Swedish",
-            localName = "svenska",
-            articleCount = 2619706,
-            pageCount = 6343361,
-            activeUserCount = 5218),
-        SupportedLanguage(
-            code = "nl",
-            name = "Dutch",
-            localName = "Nederlands",
-            articleCount = 2203596,
-            pageCount = 4742971,
-            activeUserCount = 9343),
-        SupportedLanguage(
-            code = "es",
-            name = "Spanish",
-            localName = "español",
-            articleCount = 2076520,
-            pageCount = 8537575,
-            activeUserCount = 26832),
-        SupportedLanguage(
-            code = "ru",
-            name = "Russian",
-            localName = "русский",
-            articleCount = 2073285,
-            pageCount = 8427678,
-            activeUserCount = 7671),
-        SupportedLanguage(
-            code = "it",
-            name = "Italian",
-            localName = "italiano",
-            articleCount = 1945867,
-            pageCount = 8477651,
-            activeUserCount = 33143),
-        SupportedLanguage(
-            code = "pl",
-            name = "Polish",
-            localName = "polski",
-            articleCount = 1675966,
-            pageCount = 3957940,
-            activeUserCount = 12261),
-        SupportedLanguage(
-            code = "arz",
-            name = "Egyptian Arabic",
-            localName = "مصرى",
-            articleCount = 1629656,
-            pageCount = 2202268,
-            activeUserCount = 372),
-        SupportedLanguage(
-            code = "zh",
-            name = "Chinese",
-            localName = "中文",
-            articleCount = 1512647,
-            pageCount = 8244994,
-            activeUserCount = 16845),
-        SupportedLanguage(
-            code = "ja",
-            name = "Japanese",
-            localName = "日本語",
-            articleCount = 1481606,
-            pageCount = 4353136,
-            activeUserCount = 26310),
-        SupportedLanguage(
-            code = "uk",
-            name = "Ukrainian",
-            localName = "українська",
-            articleCount = 1398140,
-            pageCount = 5064748,
-            activeUserCount = 6250),
-        SupportedLanguage(
-            code = "vi",
-            name = "Vietnamese",
-            localName = "Tiếng Việt",
-            articleCount = 1296501,
-            pageCount = 13320959,
-            activeUserCount = 3871),
-        SupportedLanguage(
-            code = "ab",
-            name = "Abkhazian",
-            localName = "аԥсшәа",
-            articleCount = 6478,
-            pageCount = 32904,
-            activeUserCount = 35),
-        SupportedLanguage(
-            code = "ace",
-            name = "Acehnese",
-            localName = "Acèh",
-            articleCount = 13010,
-            pageCount = 27974,
-            activeUserCount = 65),
-        SupportedLanguage(
-            code = "ady",
-            name = "Adyghe",
-            localName = "адыгабзэ",
-            articleCount = 618,
-            pageCount = 4694,
-            activeUserCount = 23),
-        SupportedLanguage(
-            code = "af",
-            name = "Afrikaans",
-            localName = "Afrikaans",
-            articleCount = 127240,
-            pageCount = 433354,
-            activeUserCount = 300),
-        SupportedLanguage(
-            code = "sq",
-            name = "Albanian",
-            localName = "shqip",
-            articleCount = 104736,
-            pageCount = 320613,
-            activeUserCount = 484),
-        SupportedLanguage(
-            code = "als",
-            name = "Alemannic",
-            localName = "Alemannisch",
-            articleCount = 31402,
-            pageCount = 74698,
-            activeUserCount = 133),
-        SupportedLanguage(
-            code = "am",
-            name = "Amharic",
-            localName = "አማርኛ",
-            articleCount = 15457,
-            pageCount = 46429,
-            activeUserCount = 95),
-        SupportedLanguage(
-            code = "ami",
-            name = "Amis",
-            localName = "Pangcah",
-            articleCount = 1145,
-            pageCount = 2253,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "anp",
-            name = "Angika",
-            localName = "अंगिका",
-            articleCount = 1669,
-            pageCount = 5279,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "ar",
-            name = "Arabic",
-            localName = "العربية",
-            articleCount = 1287522,
-            pageCount = 8976774,
-            activeUserCount = 7554),
-        SupportedLanguage(
-            code = "an",
-            name = "Aragonese",
-            localName = "aragonés",
-            articleCount = 50704,
-            pageCount = 183477,
-            activeUserCount = 77),
-        SupportedLanguage(
-            code = "rki",
-            name = "Arakanese",
-            localName = "ရခိုင်",
-            articleCount = 1079,
-            pageCount = 3226,
-            activeUserCount = 42),
-        SupportedLanguage(
-            code = "arc",
-            name = "Aramaic",
-            localName = "ܐܪܡܝܐ",
-            articleCount = 1915,
-            pageCount = 6574,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "hy",
-            name = "Armenian",
-            localName = "հայերեն",
-            articleCount = 323217,
-            pageCount = 1186396,
-            activeUserCount = 780),
-        SupportedLanguage(
-            code = "roa-rup",
-            name = "Aromanian",
-            localName = "armãneashti",
-            articleCount = 1389,
-            pageCount = 4623,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "frp",
-            name = "Arpitan",
-            localName = "arpetan",
-            articleCount = 5814,
-            pageCount = 18026,
-            activeUserCount = 32),
-        SupportedLanguage(
-            code = "as",
-            name = "Assamese",
-            localName = "অসমীয়া",
-            articleCount = 20417,
-            pageCount = 116319,
-            activeUserCount = 169),
-        SupportedLanguage(
-            code = "ast",
-            name = "Asturian",
-            localName = "asturianu",
-            articleCount = 138193,
-            pageCount = 247171,
-            activeUserCount = 188),
-        SupportedLanguage(
-            code = "tay",
-            name = "Atayal",
-            localName = "Tayal",
-            articleCount = 2582,
-            pageCount = 3291,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "atj",
-            name = "Atikamekw",
-            localName = "Atikamekw",
-            articleCount = 2076,
-            pageCount = 3289,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "av",
-            name = "Avaric",
-            localName = "авар",
-            articleCount = 4003,
-            pageCount = 18760,
-            activeUserCount = 29),
-        SupportedLanguage(
-            code = "awa",
-            name = "Awadhi",
-            localName = "अवधी",
-            articleCount = 2544,
-            pageCount = 6204,
-            activeUserCount = 34),
-        SupportedLanguage(
-            code = "ay",
-            name = "Aymara",
-            localName = "Aymar aru",
-            articleCount = 5246,
-            pageCount = 8917,
-            activeUserCount = 33),
-        SupportedLanguage(
-            code = "az",
-            name = "Azerbaijani",
-            localName = "azərbaycanca",
-            articleCount = 209452,
-            pageCount = 636921,
-            activeUserCount = 1124),
-        SupportedLanguage(
-            code = "ban",
-            name = "Balinese",
-            localName = "Basa Bali",
-            articleCount = 34328,
-            pageCount = 70161,
-            activeUserCount = 144),
-        SupportedLanguage(
-            code = "bm",
-            name = "Bambara",
-            localName = "bamanankan",
-            articleCount = 922,
-            pageCount = 3337,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "bn",
-            name = "Bangla",
-            localName = "বাংলা",
-            articleCount = 177694,
-            pageCount = 1368063,
-            activeUserCount = 2349),
-        SupportedLanguage(
-            code = "bjn",
-            name = "Banjar",
-            localName = "Banjar",
-            articleCount = 11444,
-            pageCount = 34934,
-            activeUserCount = 72),
-        SupportedLanguage(
-            code = "map-bms",
-            name = "Banyumasan",
-            localName = "Basa Banyumasan",
-            articleCount = 13941,
-            pageCount = 30445,
-            activeUserCount = 57),
-        SupportedLanguage(
-            code = "ba",
-            name = "Bashkir",
-            localName = "башҡортса",
-            articleCount = 63915,
-            pageCount = 183878,
-            activeUserCount = 83),
-        SupportedLanguage(
-            code = "eu",
-            name = "Basque",
-            localName = "euskara",
-            articleCount = 476118,
-            pageCount = 1021905,
-            activeUserCount = 1308),
-        SupportedLanguage(
-            code = "btm",
-            name = "Batak Mandailing",
-            localName = "Batak Mandailing",
-            articleCount = 1188,
-            pageCount = 2667,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "bbc",
-            name = "Batak Toba",
-            localName = "Batak Toba",
-            articleCount = 1263,
-            pageCount = 2338,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "bar",
-            name = "Bavarian",
-            localName = "Boarisch",
-            articleCount = 27202,
-            pageCount = 110555,
-            activeUserCount = 61),
-        SupportedLanguage(
-            code = "be",
-            name = "Belarusian",
-            localName = "беларуская",
-            articleCount = 257466,
-            pageCount = 719821,
-            activeUserCount = 438),
-        SupportedLanguage(
-            code = "be-tarask",
-            name = "Belarusian (Taraškievica orthography)",
-            localName = "беларуская (тарашкевіца)",
-            articleCount = 90019,
-            pageCount = 263819,
-            activeUserCount = 238),
-        SupportedLanguage(
-            code = "bew",
-            name = "Betawi",
-            localName = "Betawi",
-            articleCount = 3075,
-            pageCount = 7430,
-            activeUserCount = 59),
-        SupportedLanguage(
-            code = "bh",
-            name = "Bhojpuri",
-            localName = "भोजपुरी",
-            articleCount = 8858,
-            pageCount = 80602,
-            activeUserCount = 44),
-        SupportedLanguage(
-            code = "bpy",
-            name = "Bishnupriya",
-            localName = "বিষ্ণুপ্রিয়া মণিপুরী",
-            articleCount = 25092,
-            pageCount = 63453,
-            activeUserCount = 22),
-        SupportedLanguage(
-            code = "bi",
-            name = "Bislama",
-            localName = "Bislama",
-            articleCount = 1478,
-            pageCount = 3442,
-            activeUserCount = 22),
-        SupportedLanguage(
-            code = "bs",
-            name = "Bosnian",
-            localName = "bosanski",
-            articleCount = 96195,
-            pageCount = 381687,
-            activeUserCount = 299),
-        SupportedLanguage(
-            code = "br",
-            name = "Breton",
-            localName = "brezhoneg",
-            articleCount = 89900,
-            pageCount = 160107,
-            activeUserCount = 127),
-        SupportedLanguage(
-            code = "bug",
-            name = "Buginese",
-            localName = "Basa Ugi",
-            articleCount = 15955,
-            pageCount = 20471,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "bg",
-            name = "Bulgarian",
-            localName = "български",
-            articleCount = 306677,
-            pageCount = 694241,
-            activeUserCount = 2184),
-        SupportedLanguage(
-            code = "my",
-            name = "Burmese",
-            localName = "မြန်မာဘာသာ",
-            articleCount = 109830,
-            pageCount = 261011,
-            activeUserCount = 351),
-        SupportedLanguage(
-            code = "zh-yue",
-            name = "Cantonese",
-            localName = "粵語",
-            articleCount = 148124,
-            pageCount = 334083,
-            activeUserCount = 1014),
-        SupportedLanguage(
-            code = "ca",
-            name = "Catalan",
-            localName = "català",
-            articleCount = 784654,
-            pageCount = 1969455,
-            activeUserCount = 3285),
-        SupportedLanguage(
-            code = "bcl",
-            name = "Central Bikol",
-            localName = "Bikol Central",
-            articleCount = 21216,
-            pageCount = 50032,
-            activeUserCount = 92),
-        SupportedLanguage(
-            code = "dtp",
-            name = "Central Dusun",
-            localName = "Kadazandusun",
-            articleCount = 1714,
-            pageCount = 7222,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "knc",
-            name = "Central Kanuri",
-            localName = "Yerwa Kanuri",
-            articleCount = 1539,
-            pageCount = 2430,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "ckb",
-            name = "Central Kurdish",
-            localName = "کوردی",
-            articleCount = 79280,
-            pageCount = 251942,
-            activeUserCount = 195),
-        SupportedLanguage(
-            code = "ch",
-            name = "Chamorro",
-            localName = "Chamoru",
-            articleCount = 558,
-            pageCount = 2589,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "cbk-zam",
-            name = "Chavacano",
-            localName = "Chavacano de Zamboanga",
-            articleCount = 3236,
-            pageCount = 8991,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "ce",
-            name = "Chechen",
-            localName = "нохчийн",
-            articleCount = 688321,
-            pageCount = 1322256,
-            activeUserCount = 85),
-        SupportedLanguage(
-            code = "chr",
-            name = "Cherokee",
-            localName = "ᏣᎳᎩ",
-            articleCount = 1004,
-            pageCount = 4068,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "chy",
-            name = "Cheyenne",
-            localName = "Tsetsêhestâhese",
-            articleCount = 724,
-            pageCount = 2285,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "cu",
-            name = "Church Slavic",
-            localName = "словѣньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ",
-            articleCount = 1312,
-            pageCount = 5887,
-            activeUserCount = 22),
-        SupportedLanguage(
-            code = "cv",
-            name = "Chuvash",
-            localName = "чӑвашла",
-            articleCount = 58119,
-            pageCount = 120968,
-            activeUserCount = 52),
-        SupportedLanguage(
-            code = "ksh",
-            name = "Colognian",
-            localName = "Ripoarisch",
-            articleCount = 3037,
-            pageCount = 10798,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "kw",
-            name = "Cornish",
-            localName = "kernowek",
-            articleCount = 7097,
-            pageCount = 14777,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "co",
-            name = "Corsican",
-            localName = "corsu",
-            articleCount = 8628,
-            pageCount = 18019,
-            activeUserCount = 63),
-        SupportedLanguage(
-            code = "cr",
-            name = "Cree",
-            localName = "Nēhiyawēwin / ᓀᐦᐃᔭᐍᐏᐣ",
-            articleCount = 14,
-            pageCount = 2343,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "crh",
-            name = "Crimean Tatar",
-            localName = "qırımtatarca",
-            articleCount = 29622,
-            pageCount = 57540,
-            activeUserCount = 46),
-        SupportedLanguage(
-            code = "hr",
-            name = "Croatian",
-            localName = "hrvatski",
-            articleCount = 228544,
-            pageCount = 493520,
-            activeUserCount = 1422),
-        SupportedLanguage(
-            code = "cs",
-            name = "Czech",
-            localName = "čeština",
-            articleCount = 580990,
-            pageCount = 1619920,
-            activeUserCount = 5695),
-        SupportedLanguage(
-            code = "dag",
-            name = "Dagbani",
-            localName = "dagbanli",
-            articleCount = 13337,
-            pageCount = 24348,
-            activeUserCount = 40),
-        SupportedLanguage(
-            code = "da",
-            name = "Danish",
-            localName = "dansk",
-            articleCount = 311578,
-            pageCount = 976952,
-            activeUserCount = 1848),
-        SupportedLanguage(
-            code = "diq",
-            name = "Dimli",
-            localName = "Zazaki",
-            articleCount = 42344,
-            pageCount = 63888,
-            activeUserCount = 38),
-        SupportedLanguage(
-            code = "din",
-            name = "Dinka",
-            localName = "Thuɔŋjäŋ",
-            articleCount = 339,
-            pageCount = 1128,
-            activeUserCount = 10),
-        SupportedLanguage(
-            code = "dv",
-            name = "Divehi",
-            localName = "ދިވެހިބަސް",
-            articleCount = 3192,
-            pageCount = 12542,
-            activeUserCount = 30),
-        SupportedLanguage(
-            code = "dty",
-            name = "Doteli",
-            localName = "डोटेली",
-            articleCount = 3631,
-            pageCount = 22198,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "dz",
-            name = "Dzongkha",
-            localName = "ཇོང་ཁ",
-            articleCount = 377,
-            pageCount = 5496,
-            activeUserCount = 29),
-        SupportedLanguage(
-            code = "mhr",
-            name = "Eastern Mari",
-            localName = "олык марий",
-            articleCount = 11327,
-            pageCount = 31232,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "eml",
-            name = "Emiliano-Romagnolo",
-            localName = "emiliàn e rumagnòl",
-            articleCount = 13729,
-            pageCount = 36806,
-            activeUserCount = 63),
-        SupportedLanguage(
-            code = "myv",
-            name = "Erzya",
-            localName = "эрзянь",
-            articleCount = 7867,
-            pageCount = 31483,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "eo",
-            name = "Esperanto",
-            localName = "Esperanto",
-            articleCount = 378409,
-            pageCount = 848996,
-            activeUserCount = 516),
-        SupportedLanguage(
-            code = "et",
-            name = "Estonian",
-            localName = "eesti",
-            articleCount = 256039,
-            pageCount = 603542,
-            activeUserCount = 1423),
-        SupportedLanguage(
-            code = "ee",
-            name = "Ewe",
-            localName = "eʋegbe",
-            articleCount = 1268,
-            pageCount = 4252,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "ext",
-            name = "Extremaduran",
-            localName = "estremeñu",
-            articleCount = 4071,
-            pageCount = 9149,
-            activeUserCount = 35),
-        SupportedLanguage(
-            code = "fat",
-            name = "Fanti",
-            localName = "mfantse",
-            articleCount = 1764,
-            pageCount = 4720,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "fo",
-            name = "Faroese",
-            localName = "føroyskt",
-            articleCount = 14179,
-            pageCount = 41109,
-            activeUserCount = 58),
-        SupportedLanguage(
-            code = "hif",
-            name = "Fiji Hindi",
-            localName = "Fiji Hindi",
-            articleCount = 12074,
-            pageCount = 55109,
-            activeUserCount = 75),
-        SupportedLanguage(
-            code = "fj",
-            name = "Fijian",
-            localName = "Na Vosa Vakaviti",
-            articleCount = 1612,
-            pageCount = 4352,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "fi",
-            name = "Finnish",
-            localName = "suomi",
-            articleCount = 608307,
-            pageCount = 1562005,
-            activeUserCount = 3765),
-        SupportedLanguage(
-            code = "fon",
-            name = "Fon",
-            localName = "fɔ̀ngbè",
-            articleCount = 3334,
-            pageCount = 5063,
-            activeUserCount = 34),
-        SupportedLanguage(
-            code = "gur",
-            name = "Frafra",
-            localName = "farefare",
-            articleCount = 1330,
-            pageCount = 2526,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "fur",
-            name = "Friulian",
-            localName = "furlan",
-            articleCount = 4886,
-            pageCount = 11194,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "ff",
-            name = "Fula",
-            localName = "Fulfulde",
-            articleCount = 13000,
-            pageCount = 27537,
-            activeUserCount = 53),
-        SupportedLanguage(
-            code = "gag",
-            name = "Gagauz",
-            localName = "Gagauz",
-            articleCount = 3013,
-            pageCount = 7801,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "gl",
-            name = "Galician",
-            localName = "galego",
-            articleCount = 227878,
-            pageCount = 559681,
-            activeUserCount = 508),
-        SupportedLanguage(
-            code = "gan",
-            name = "Gan",
-            localName = "贛語",
-            articleCount = 6814,
-            pageCount = 34473,
-            activeUserCount = 39),
-        SupportedLanguage(
-            code = "lg",
-            name = "Ganda",
-            localName = "Luganda",
-            articleCount = 4414,
-            pageCount = 8755,
-            activeUserCount = 49),
-        SupportedLanguage(
-            code = "ka",
-            name = "Georgian",
-            localName = "ქართული",
-            articleCount = 187688,
-            pageCount = 522487,
-            activeUserCount = 506),
-        SupportedLanguage(
-            code = "gpe",
-            name = "Ghanaian Pidgin",
-            localName = "Ghanaian Pidgin",
-            articleCount = 4075,
-            pageCount = 21834,
-            activeUserCount = 29),
-        SupportedLanguage(
-            code = "glk",
-            name = "Gilaki",
-            localName = "گیلکی",
-            articleCount = 48352,
-            pageCount = 57651,
-            activeUserCount = 33),
-        SupportedLanguage(
-            code = "gom",
-            name = "Goan Konkani",
-            localName = "गोंयची कोंकणी / Gõychi Konknni",
-            articleCount = 3643,
-            pageCount = 8907,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "gor",
-            name = "Gorontalo",
-            localName = "Bahasa Hulontalo",
-            articleCount = 14906,
-            pageCount = 24422,
-            activeUserCount = 45),
-        SupportedLanguage(
-            code = "got",
-            name = "Gothic",
-            localName = "𐌲𐌿𐍄𐌹𐍃𐌺",
-            articleCount = 978,
-            pageCount = 3951,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "el",
-            name = "Greek",
-            localName = "Ελληνικά",
-            articleCount = 261415,
-            pageCount = 735531,
-            activeUserCount = 2750),
-        SupportedLanguage(
-            code = "gn",
-            name = "Guarani",
-            localName = "Avañe'ẽ",
-            articleCount = 5980,
-            pageCount = 14072,
-            activeUserCount = 38),
-        SupportedLanguage(
-            code = "gcr",
-            name = "Guianan Creole",
-            localName = "kriyòl gwiyannen",
-            articleCount = 1075,
-            pageCount = 2671,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "gu",
-            name = "Gujarati",
-            localName = "ગુજરાતી",
-            articleCount = 30722,
-            pageCount = 134662,
-            activeUserCount = 166),
-        SupportedLanguage(
-            code = "guw",
-            name = "Gun",
-            localName = "gungbe",
-            articleCount = 1562,
-            pageCount = 2778,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "ht",
-            name = "Haitian Creole",
-            localName = "Kreyòl ayisyen",
-            articleCount = 71310,
-            pageCount = 92788,
-            activeUserCount = 108),
-        SupportedLanguage(
-            code = "hak",
-            name = "Hakka Chinese",
-            localName = "客家語 / Hak-kâ-ngî",
-            articleCount = 10384,
-            pageCount = 19920,
-            activeUserCount = 51),
-        SupportedLanguage(
-            code = "ha",
-            name = "Hausa",
-            localName = "Hausa",
-            articleCount = 72594,
-            pageCount = 111041,
-            activeUserCount = 252),
-        SupportedLanguage(
-            code = "haw",
-            name = "Hawaiian",
-            localName = "Hawaiʻi",
-            articleCount = 2966,
-            pageCount = 6205,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "he",
-            name = "Hebrew",
-            localName = "עברית",
-            articleCount = 386534,
-            pageCount = 1626802,
-            activeUserCount = 8366),
-        SupportedLanguage(
-            code = "hi",
-            name = "Hindi",
-            localName = "हिन्दी",
-            articleCount = 166809,
-            pageCount = 1382337,
-            activeUserCount = 1284),
-        SupportedLanguage(
-            code = "hu",
-            name = "Hungarian",
-            localName = "magyar",
-            articleCount = 563367,
-            pageCount = 1601701,
-            activeUserCount = 2404),
-        SupportedLanguage(
-            code = "iba",
-            name = "Iban",
-            localName = "Jaku Iban",
-            articleCount = 1855,
-            pageCount = 4959,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "is",
-            name = "Icelandic",
-            localName = "íslenska",
-            articleCount = 60844,
-            pageCount = 158805,
-            activeUserCount = 334),
-        SupportedLanguage(
-            code = "io",
-            name = "Ido",
-            localName = "Ido",
-            articleCount = 60137,
-            pageCount = 87336,
-            activeUserCount = 89),
-        SupportedLanguage(
-            code = "igl",
-            name = "Igala",
-            localName = "Igala",
-            articleCount = 948,
-            pageCount = 1347,
-            activeUserCount = 10),
-        SupportedLanguage(
-            code = "ig",
-            name = "Igbo",
-            localName = "Igbo",
-            articleCount = 44056,
-            pageCount = 60517,
-            activeUserCount = 102),
-        SupportedLanguage(
-            code = "ilo",
-            name = "Iloko",
-            localName = "Ilokano",
-            articleCount = 15439,
-            pageCount = 70544,
-            activeUserCount = 52),
-        SupportedLanguage(
-            code = "smn",
-            name = "Inari Sami",
-            localName = "anarâškielâ",
-            articleCount = 6493,
-            pageCount = 28323,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "id",
-            name = "Indonesian",
-            localName = "Bahasa Indonesia",
-            articleCount = 756000,
-            pageCount = 4179680,
-            activeUserCount = 6797),
-        SupportedLanguage(
-            code = "inh",
-            name = "Ingush",
-            localName = "гӀалгӀай",
-            articleCount = 2411,
-            pageCount = 16076,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "ia",
-            name = "Interlingua",
-            localName = "interlingua",
-            articleCount = 30152,
-            pageCount = 45807,
-            activeUserCount = 50),
-        SupportedLanguage(
-            code = "ie",
-            name = "Interlingue",
-            localName = "Interlingue",
-            articleCount = 13384,
-            pageCount = 17670,
-            activeUserCount = 48),
-        SupportedLanguage(
-            code = "iu",
-            name = "Inuktitut",
-            localName = "ᐃᓄᒃᑎᑐᑦ / inuktitut",
-            articleCount = 430,
-            pageCount = 3020,
-            activeUserCount = 39),
-        SupportedLanguage(
-            code = "ik",
-            name = "Inupiaq",
-            localName = "Iñupiatun",
-            articleCount = 604,
-            pageCount = 2873,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "ga",
-            name = "Irish",
-            localName = "Gaeilge",
-            articleCount = 62652,
-            pageCount = 112181,
-            activeUserCount = 146),
-        SupportedLanguage(
-            code = "jam",
-            name = "Jamaican Creole English",
-            localName = "Patois",
-            articleCount = 1730,
-            pageCount = 3132,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "jv",
-            name = "Javanese",
-            localName = "Jawa",
-            articleCount = 74710,
-            pageCount = 185510,
-            activeUserCount = 249),
-        SupportedLanguage(
-            code = "kbd",
-            name = "Kabardian",
-            localName = "адыгэбзэ",
-            articleCount = 1637,
-            pageCount = 7101,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "kbp",
-            name = "Kabiye",
-            localName = "Kabɩyɛ",
-            articleCount = 1715,
-            pageCount = 3449,
-            activeUserCount = 14),
-        SupportedLanguage(
-            code = "kab",
-            name = "Kabyle",
-            localName = "Taqbaylit",
-            articleCount = 7006,
-            pageCount = 17979,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "kl",
-            name = "Kalaallisut",
-            localName = "kalaallisut",
-            articleCount = 245,
-            pageCount = 2292,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "xal",
-            name = "Kalmyk",
-            localName = "хальмг",
-            articleCount = 1596,
-            pageCount = 12364,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "kn",
-            name = "Kannada",
-            localName = "ಕನ್ನಡ",
-            articleCount = 34067,
-            pageCount = 157718,
-            activeUserCount = 286),
-        SupportedLanguage(
-            code = "kaa",
-            name = "Kara-Kalpak",
-            localName = "Qaraqalpaqsha",
-            articleCount = 10887,
-            pageCount = 28720,
-            activeUserCount = 59),
-        SupportedLanguage(
-            code = "krc",
-            name = "Karachay-Balkar",
-            localName = "къарачай-малкъар",
-            articleCount = 2656,
-            pageCount = 16803,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "ks",
-            name = "Kashmiri",
-            localName = "کٲشُر",
-            articleCount = 8303,
-            pageCount = 20391,
-            activeUserCount = 40),
-        SupportedLanguage(
-            code = "csb",
-            name = "Kashubian",
-            localName = "kaszëbsczi",
-            articleCount = 5498,
-            pageCount = 8899,
-            activeUserCount = 29),
-        SupportedLanguage(
-            code = "kk",
-            name = "Kazakh",
-            localName = "қазақша",
-            articleCount = 241180,
-            pageCount = 656744,
-            activeUserCount = 414),
-        SupportedLanguage(
-            code = "km",
-            name = "Khmer",
-            localName = "ភាសាខ្មែរ",
-            articleCount = 11811,
-            pageCount = 36768,
-            activeUserCount = 167),
-        SupportedLanguage(
-            code = "ki",
-            name = "Kikuyu",
-            localName = "Gĩkũyũ",
-            articleCount = 1908,
-            pageCount = 3796,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "rw",
-            name = "Kinyarwanda",
-            localName = "Ikinyarwanda",
-            articleCount = 8887,
-            pageCount = 17684,
-            activeUserCount = 79),
-        SupportedLanguage(
-            code = "kge",
-            name = "Komering",
-            localName = "Kumoring",
-            articleCount = 2660,
-            pageCount = 4373,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "kv",
-            name = "Komi",
-            localName = "коми",
-            articleCount = 5730,
-            pageCount = 19780,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "koi",
-            name = "Komi-Permyak",
-            localName = "перем коми",
-            articleCount = 3468,
-            pageCount = 13427,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "kg",
-            name = "Kongo",
-            localName = "Kongo",
-            articleCount = 1570,
-            pageCount = 4022,
-            activeUserCount = 23),
-        SupportedLanguage(
-            code = "ko",
-            name = "Korean",
-            localName = "한국어",
-            articleCount = 730591,
-            pageCount = 3482212,
-            activeUserCount = 7043),
-        SupportedLanguage(
-            code = "avk",
-            name = "Kotava",
-            localName = "Kotava",
-            articleCount = 29899,
-            pageCount = 36346,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "ku",
-            name = "Kurdish",
-            localName = "kurdî",
-            articleCount = 90925,
-            pageCount = 289237,
-            activeUserCount = 185),
-        SupportedLanguage(
-            code = "kus",
-            name = "Kusaal",
-            localName = "Kʋsaal",
-            articleCount = 1224,
-            pageCount = 1810,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "ky",
-            name = "Kyrgyz",
-            localName = "кыргызча",
-            articleCount = 76099,
-            pageCount = 110215,
-            activeUserCount = 133),
-        SupportedLanguage(
-            code = "lld",
-            name = "Ladin",
-            localName = "Ladin",
-            articleCount = 180810,
-            pageCount = 188130,
-            activeUserCount = 44),
-        SupportedLanguage(
-            code = "lad",
-            name = "Ladino",
-            localName = "Ladino",
-            articleCount = 3885,
-            pageCount = 13629,
-            activeUserCount = 34),
-        SupportedLanguage(
-            code = "lbe",
-            name = "Lak",
-            localName = "лакку",
-            articleCount = 1251,
-            pageCount = 16226,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "lo",
-            name = "Lao",
-            localName = "ລາວ",
-            articleCount = 5227,
-            pageCount = 15734,
-            activeUserCount = 60),
-        SupportedLanguage(
-            code = "ltg",
-            name = "Latgalian",
-            localName = "latgaļu",
-            articleCount = 1112,
-            pageCount = 3409,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "la",
-            name = "Latin",
-            localName = "Latina",
-            articleCount = 140759,
-            pageCount = 291039,
-            activeUserCount = 227),
-        SupportedLanguage(
-            code = "lv",
-            name = "Latvian",
-            localName = "latviešu",
-            articleCount = 138807,
-            pageCount = 556071,
-            activeUserCount = 671),
-        SupportedLanguage(
-            code = "lez",
-            name = "Lezghian",
-            localName = "лезги",
-            articleCount = 4452,
-            pageCount = 14902,
-            activeUserCount = 23),
-        SupportedLanguage(
-            code = "lij",
-            name = "Ligurian",
-            localName = "Ligure",
-            articleCount = 11455,
-            pageCount = 28112,
-            activeUserCount = 46),
-        SupportedLanguage(
-            code = "li",
-            name = "Limburgish",
-            localName = "Limburgs",
-            articleCount = 15146,
-            pageCount = 68665,
-            activeUserCount = 44),
-        SupportedLanguage(
-            code = "ln",
-            name = "Lingala",
-            localName = "lingála",
-            articleCount = 4840,
-            pageCount = 11469,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "lfn",
-            name = "Lingua Franca Nova",
-            localName = "Lingua Franca Nova",
-            articleCount = 4498,
-            pageCount = 7201,
-            activeUserCount = 35),
-        SupportedLanguage(
-            code = "zh-classical",
-            name = "Literary Chinese",
-            localName = "文言",
-            articleCount = 13881,
-            pageCount = 116926,
-            activeUserCount = 79),
-        SupportedLanguage(
-            code = "lt",
-            name = "Lithuanian",
-            localName = "lietuvių",
-            articleCount = 224256,
-            pageCount = 559768,
-            activeUserCount = 830),
-        SupportedLanguage(
-            code = "olo",
-            name = "Livvi-Karelian",
-            localName = "livvinkarjala",
-            articleCount = 4636,
-            pageCount = 13978,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "jbo",
-            name = "Lojban",
-            localName = "la .lojban.",
-            articleCount = 1348,
-            pageCount = 5817,
-            activeUserCount = 22),
-        SupportedLanguage(
-            code = "lmo",
-            name = "Lombard",
-            localName = "lombard",
-            articleCount = 79770,
-            pageCount = 152569,
-            activeUserCount = 82),
-        SupportedLanguage(
-            code = "nds",
-            name = "Low German",
-            localName = "Plattdüütsch",
-            articleCount = 85770,
-            pageCount = 185044,
-            activeUserCount = 64),
-        SupportedLanguage(
-            code = "nds-nl",
-            name = "Low Saxon",
-            localName = "Nedersaksies",
-            articleCount = 8061,
-            pageCount = 21947,
-            activeUserCount = 44),
-        SupportedLanguage(
-            code = "dsb",
-            name = "Lower Sorbian",
-            localName = "dolnoserbski",
-            articleCount = 3426,
-            pageCount = 11629,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "lb",
-            name = "Luxembourgish",
-            localName = "Lëtzebuergesch",
-            articleCount = 66091,
-            pageCount = 143932,
-            activeUserCount = 139),
-        SupportedLanguage(
-            code = "mk",
-            name = "Macedonian",
-            localName = "македонски",
-            articleCount = 156759,
-            pageCount = 589716,
-            activeUserCount = 436),
-        SupportedLanguage(
-            code = "mad",
-            name = "Madurese",
-            localName = "Madhurâ",
-            articleCount = 1996,
-            pageCount = 11289,
-            activeUserCount = 42),
-        SupportedLanguage(
-            code = "mai",
-            name = "Maithili",
-            localName = "मैथिली",
-            articleCount = 14252,
-            pageCount = 45274,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "mg",
-            name = "Malagasy",
-            localName = "Malagasy",
-            articleCount = 101382,
-            pageCount = 258803,
-            activeUserCount = 76),
-        SupportedLanguage(
-            code = "ms",
-            name = "Malay",
-            localName = "Bahasa Melayu",
-            articleCount = 434699,
-            pageCount = 1168200,
-            activeUserCount = 2780),
-        SupportedLanguage(
-            code = "ml",
-            name = "Malayalam",
-            localName = "മലയാളം",
-            articleCount = 87414,
-            pageCount = 548289,
-            activeUserCount = 557),
-        SupportedLanguage(
-            code = "mt",
-            name = "Maltese",
-            localName = "Malti",
-            articleCount = 7662,
-            pageCount = 23529,
-            activeUserCount = 78),
-        SupportedLanguage(
-            code = "mni",
-            name = "Manipuri",
-            localName = "ꯃꯤꯇꯩ ꯂꯣꯟ",
-            articleCount = 10454,
-            pageCount = 17375,
-            activeUserCount = 33),
-        SupportedLanguage(
-            code = "gv",
-            name = "Manx",
-            localName = "Gaelg",
-            articleCount = 7031,
-            pageCount = 39185,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "mr",
-            name = "Marathi",
-            localName = "मराठी",
-            articleCount = 100789,
-            pageCount = 326051,
-            activeUserCount = 381),
-        SupportedLanguage(
-            code = "mzn",
-            name = "Mazanderani",
-            localName = "مازِرونی",
-            articleCount = 64355,
-            pageCount = 106913,
-            activeUserCount = 52),
-        SupportedLanguage(
-            code = "min",
-            name = "Minangkabau",
-            localName = "Minangkabau",
-            articleCount = 228708,
-            pageCount = 473764,
-            activeUserCount = 104),
-        SupportedLanguage(
-            code = "cdo",
-            name = "Mindong",
-            localName = "閩東語 / Mìng-dĕ̤ng-ngṳ̄",
-            articleCount = 16692,
-            pageCount = 33553,
-            activeUserCount = 32),
-        SupportedLanguage(
-            code = "xmf",
-            name = "Mingrelian",
-            localName = "მარგალური",
-            articleCount = 21937,
-            pageCount = 41544,
-            activeUserCount = 37),
-        SupportedLanguage(
-            code = "zh-min-nan",
-            name = "Minnan",
-            localName = "閩南語 / Bân-lâm-gí",
-            articleCount = 433848,
-            pageCount = 1074898,
-            activeUserCount = 139),
-        SupportedLanguage(
-            code = "mwl",
-            name = "Mirandese",
-            localName = "Mirandés",
-            articleCount = 4282,
-            pageCount = 10736,
-            activeUserCount = 29),
-        SupportedLanguage(
-            code = "mdf",
-            name = "Moksha",
-            localName = "мокшень",
-            articleCount = 7614,
-            pageCount = 23709,
-            activeUserCount = 23),
-        SupportedLanguage(
-            code = "mnw",
-            name = "Mon",
-            localName = "ဘာသာမန်",
-            articleCount = 1963,
-            pageCount = 6794,
-            activeUserCount = 14),
-        SupportedLanguage(
-            code = "mn",
-            name = "Mongolian",
-            localName = "монгол",
-            articleCount = 26507,
-            pageCount = 113370,
-            activeUserCount = 293),
-        SupportedLanguage(
-            code = "ary",
-            name = "Moroccan Arabic",
-            localName = "الدارجة",
-            articleCount = 10913,
-            pageCount = 90721,
-            activeUserCount = 55),
-        SupportedLanguage(
-            code = "mos",
-            name = "Mossi",
-            localName = "moore",
-            articleCount = 1306,
-            pageCount = 2089,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "mi",
-            name = "Māori",
-            localName = "Māori",
-            articleCount = 8019,
-            pageCount = 15443,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "nah",
-            name = "Nahuatl",
-            localName = "Nāhuatl",
-            articleCount = 4282,
-            pageCount = 13348,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "nv",
-            name = "Navajo",
-            localName = "Diné bizaad",
-            articleCount = 22664,
-            pageCount = 37321,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "nap",
-            name = "Neapolitan",
-            localName = "Napulitano",
-            articleCount = 14937,
-            pageCount = 24158,
-            activeUserCount = 39),
-        SupportedLanguage(
-            code = "ne",
-            name = "Nepali",
-            localName = "नेपाली",
-            articleCount = 29332,
-            pageCount = 112020,
-            activeUserCount = 216),
-        SupportedLanguage(
-            code = "new",
-            name = "Newari",
-            localName = "नेपाल भाषा",
-            articleCount = 72648,
-            pageCount = 166711,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "nia",
-            name = "Nias",
-            localName = "Li Niha",
-            articleCount = 1765,
-            pageCount = 4461,
-            activeUserCount = 11),
-        SupportedLanguage(
-            code = "pcm",
-            name = "Nigerian Pidgin",
-            localName = "Naijá",
-            articleCount = 1524,
-            pageCount = 2782,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "nrm",
-            name = "Norman",
-            localName = "Nouormand",
-            articleCount = 5055,
-            pageCount = 10682,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "frr",
-            name = "Northern Frisian",
-            localName = "Nordfriisk",
-            articleCount = 20688,
-            pageCount = 51306,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "se",
-            name = "Northern Sami",
-            localName = "davvisámegiella",
-            articleCount = 7905,
-            pageCount = 21129,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "nso",
-            name = "Northern Sotho",
-            localName = "Sesotho sa Leboa",
-            articleCount = 8783,
-            pageCount = 11493,
-            activeUserCount = 30),
-        SupportedLanguage(
-            code = "no",
-            name = "Norwegian",
-            localName = "norsk",
-            articleCount = 661630,
-            pageCount = 1881251,
-            activeUserCount = 2932),
-        SupportedLanguage(
-            code = "nn",
-            name = "Norwegian Nynorsk",
-            localName = "norsk nynorsk",
-            articleCount = 176898,
-            pageCount = 398455,
-            activeUserCount = 199),
-        SupportedLanguage(
-            code = "nov",
-            name = "Novial",
-            localName = "Novial",
-            articleCount = 1885,
-            pageCount = 4821,
-            activeUserCount = 21),
-        SupportedLanguage(
-            code = "nup",
-            name = "Nupe",
-            localName = "Nupe",
-            articleCount = 530,
-            pageCount = 1033,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "ny",
-            name = "Nyanja",
-            localName = "Chi-Chewa",
-            articleCount = 1099,
-            pageCount = 5416,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "nqo",
-            name = "N’Ko",
-            localName = "ߒߞߏ",
-            articleCount = 1581,
-            pageCount = 3416,
-            activeUserCount = 23),
-        SupportedLanguage(
-            code = "ann",
-            name = "Obolo",
-            localName = "Obolo",
-            articleCount = 433,
-            pageCount = 893,
-            activeUserCount = 11),
-        SupportedLanguage(
-            code = "oc",
-            name = "Occitan",
-            localName = "occitan",
-            articleCount = 90404,
-            pageCount = 166418,
-            activeUserCount = 138),
-        SupportedLanguage(
-            code = "or",
-            name = "Odia",
-            localName = "ଓଡ଼ିଆ",
-            articleCount = 20075,
-            pageCount = 85456,
-            activeUserCount = 103),
-        SupportedLanguage(
-            code = "ang",
-            name = "Old English",
-            localName = "Ænglisc",
-            articleCount = 5024,
-            pageCount = 21205,
-            activeUserCount = 86),
-        SupportedLanguage(
-            code = "om",
-            name = "Oromo",
-            localName = "Oromoo",
-            articleCount = 1960,
-            pageCount = 5341,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "os",
-            name = "Ossetic",
-            localName = "ирон",
-            articleCount = 21375,
-            pageCount = 76475,
-            activeUserCount = 44),
-        SupportedLanguage(
-            code = "blk",
-            name = "Pa'O",
-            localName = "ပအိုဝ်ႏဘာႏသာႏ",
-            articleCount = 2907,
-            pageCount = 8699,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "pwn",
-            name = "Paiwan",
-            localName = "pinayuanan",
-            articleCount = 376,
-            pageCount = 634,
-            activeUserCount = 11),
-        SupportedLanguage(
-            code = "pfl",
-            name = "Palatine German",
-            localName = "Pälzisch",
-            articleCount = 2829,
-            pageCount = 7069,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "pi",
-            name = "Pali",
-            localName = "पालि",
-            articleCount = 290,
-            pageCount = 1827,
-            activeUserCount = 14),
-        SupportedLanguage(
-            code = "pam",
-            name = "Pampanga",
-            localName = "Kapampangan",
-            articleCount = 10138,
-            pageCount = 23253,
-            activeUserCount = 40),
-        SupportedLanguage(
-            code = "pag",
-            name = "Pangasinan",
-            localName = "Pangasinan",
-            articleCount = 2618,
-            pageCount = 6740,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "rsk",
-            name = "Pannonian Rusyn",
-            localName = "руски",
-            articleCount = 1007,
-            pageCount = 2221,
-            activeUserCount = 25),
-        SupportedLanguage(
-            code = "pap",
-            name = "Papiamento",
-            localName = "Papiamentu",
-            articleCount = 4996,
-            pageCount = 10379,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "ps",
-            name = "Pashto",
-            localName = "پښتو",
-            articleCount = 20829,
-            pageCount = 74947,
-            activeUserCount = 77),
-        SupportedLanguage(
-            code = "pdc",
-            name = "Pennsylvania German",
-            localName = "Deitsch",
-            articleCount = 2042,
-            pageCount = 6048,
-            activeUserCount = 38),
-        SupportedLanguage(
-            code = "fa",
-            name = "Persian",
-            localName = "فارسی",
-            articleCount = 1063050,
-            pageCount = 6001306,
-            activeUserCount = 11310),
-        SupportedLanguage(
-            code = "pcd",
-            name = "Picard",
-            localName = "Picard",
-            articleCount = 6035,
-            pageCount = 12025,
-            activeUserCount = 37),
-        SupportedLanguage(
-            code = "pms",
-            name = "Piedmontese",
-            localName = "Piemontèis",
-            articleCount = 70686,
-            pageCount = 106710,
-            activeUserCount = 47),
-        SupportedLanguage(
-            code = "pnt",
-            name = "Pontic",
-            localName = "Ποντιακά",
-            articleCount = 489,
-            pageCount = 2107,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "pt",
-            name = "Portuguese",
-            localName = "português",
-            articleCount = 1160904,
-            pageCount = 6010491,
-            activeUserCount = 8370),
-        SupportedLanguage(
-            code = "pa",
-            name = "Punjabi",
-            localName = "ਪੰਜਾਬੀ",
-            articleCount = 58962,
-            pageCount = 190277,
-            activeUserCount = 184),
-        SupportedLanguage(
-            code = "qu",
-            name = "Quechua",
-            localName = "Runa Simi",
-            articleCount = 24288,
-            pageCount = 58371,
-            activeUserCount = 56),
-        SupportedLanguage(
-            code = "ro",
-            name = "Romanian",
-            localName = "română",
-            articleCount = 518442,
-            pageCount = 2935861,
-            activeUserCount = 2360),
-        SupportedLanguage(
-            code = "rm",
-            name = "Romansh",
-            localName = "rumantsch",
-            articleCount = 3813,
-            pageCount = 9784,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "rn",
-            name = "Rundi",
-            localName = "ikirundi",
-            articleCount = 703,
-            pageCount = 2728,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "bxr",
-            name = "Russia Buriat",
-            localName = "буряад",
-            articleCount = 2911,
-            pageCount = 11322,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "rue",
-            name = "Rusyn",
-            localName = "русиньскый",
-            articleCount = 10143,
-            pageCount = 22319,
-            activeUserCount = 49),
-        SupportedLanguage(
-            code = "szy",
-            name = "Sakizaya",
-            localName = "Sakizaya",
-            articleCount = 2735,
-            pageCount = 6313,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "sm",
-            name = "Samoan",
-            localName = "Gagana Samoa",
-            articleCount = 1198,
-            pageCount = 6171,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "bat-smg",
-            name = "Samogitian",
-            localName = "žemaitėška",
-            articleCount = 17273,
-            pageCount = 30044,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "sg",
-            name = "Sango",
-            localName = "Sängö",
-            articleCount = 368,
-            pageCount = 2063,
-            activeUserCount = 17),
-        SupportedLanguage(
-            code = "sa",
-            name = "Sanskrit",
-            localName = "संस्कृतम्",
-            articleCount = 12414,
-            pageCount = 81244,
-            activeUserCount = 49),
-        SupportedLanguage(
-            code = "sat",
-            name = "Santali",
-            localName = "ᱥᱟᱱᱛᱟᱲᱤ",
-            articleCount = 13911,
-            pageCount = 29803,
-            activeUserCount = 54),
-        SupportedLanguage(
-            code = "skr",
-            name = "Saraiki",
-            localName = "سرائیکی",
-            articleCount = 24335,
-            pageCount = 28721,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "sc",
-            name = "Sardinian",
-            localName = "sardu",
-            articleCount = 7735,
-            pageCount = 17537,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "stq",
-            name = "Saterland Frisian",
-            localName = "Seeltersk",
-            articleCount = 4129,
-            pageCount = 10819,
-            activeUserCount = 14),
-        SupportedLanguage(
-            code = "sco",
-            name = "Scots",
-            localName = "Scots",
-            articleCount = 34282,
-            pageCount = 138198,
-            activeUserCount = 147),
-        SupportedLanguage(
-            code = "gd",
-            name = "Scottish Gaelic",
-            localName = "Gàidhlig",
-            articleCount = 16017,
-            pageCount = 32592,
-            activeUserCount = 35),
-        SupportedLanguage(
-            code = "sr",
-            name = "Serbian",
-            localName = "српски / srpski",
-            articleCount = 713097,
-            pageCount = 4218075,
-            activeUserCount = 2196),
-        SupportedLanguage(
-            code = "sh",
-            name = "Serbo-Croatian",
-            localName = "srpskohrvatski / српскохрватски",
-            articleCount = 461208,
-            pageCount = 4627152,
-            activeUserCount = 415),
-        SupportedLanguage(
-            code = "shn",
-            name = "Shan",
-            localName = "တႆး",
-            articleCount = 14343,
-            pageCount = 34233,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "sn",
-            name = "Shona",
-            localName = "chiShona",
-            articleCount = 11497,
-            pageCount = 20499,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "scn",
-            name = "Sicilian",
-            localName = "sicilianu",
-            articleCount = 26262,
-            pageCount = 56027,
-            activeUserCount = 71),
-        SupportedLanguage(
-            code = "szl",
-            name = "Silesian",
-            localName = "ślůnski",
-            articleCount = 59581,
-            pageCount = 75965,
-            activeUserCount = 52),
-        SupportedLanguage(
-            code = "simple",
-            name = "Simple English",
-            localName = "Simple English",
-            articleCount = 276668,
-            pageCount = 917554,
-            activeUserCount = 5137),
-        SupportedLanguage(
-            code = "sd",
-            name = "Sindhi",
-            localName = "سنڌي",
-            articleCount = 19662,
-            pageCount = 70507,
-            activeUserCount = 49),
-        SupportedLanguage(
-            code = "si",
-            name = "Sinhala",
-            localName = "සිංහල",
-            articleCount = 24813,
-            pageCount = 166294,
-            activeUserCount = 200),
-        SupportedLanguage(
-            code = "sk",
-            name = "Slovak",
-            localName = "slovenčina",
-            articleCount = 256804,
-            pageCount = 595445,
-            activeUserCount = 1535),
-        SupportedLanguage(
-            code = "sl",
-            name = "Slovenian",
-            localName = "slovenščina",
-            articleCount = 195728,
-            pageCount = 499183,
-            activeUserCount = 779),
-        SupportedLanguage(
-            code = "so",
-            name = "Somali",
-            localName = "Soomaaliga",
-            articleCount = 9156,
-            pageCount = 28828,
-            activeUserCount = 181),
-        SupportedLanguage(
-            code = "azb",
-            name = "South Azerbaijani",
-            localName = "تۆرکجه",
-            articleCount = 244400,
-            pageCount = 579823,
-            activeUserCount = 127),
-        SupportedLanguage(
-            code = "nr",
-            name = "South Ndebele",
-            localName = "isiNdebele seSewula",
-            articleCount = 273,
-            pageCount = 855,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "alt",
-            name = "Southern Altai",
-            localName = "алтай тил",
-            articleCount = 1102,
-            pageCount = 7006,
-            activeUserCount = 11),
-        SupportedLanguage(
-            code = "dga",
-            name = "Southern Dagaare",
-            localName = "Dagaare",
-            articleCount = 2945,
-            pageCount = 6464,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "st",
-            name = "Southern Sotho",
-            localName = "Sesotho",
-            articleCount = 1546,
-            pageCount = 5415,
-            activeUserCount = 32),
-        SupportedLanguage(
-            code = "srn",
-            name = "Sranan Tongo",
-            localName = "Sranantongo",
-            articleCount = 1128,
-            pageCount = 2730,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "zgh",
-            name = "Standard Moroccan Tamazight",
-            localName = "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ",
-            articleCount = 11958,
-            pageCount = 39468,
-            activeUserCount = 88),
-        SupportedLanguage(
-            code = "su",
-            name = "Sundanese",
-            localName = "Sunda",
-            articleCount = 62154,
-            pageCount = 99751,
-            activeUserCount = 72),
-        SupportedLanguage(
-            code = "sw",
-            name = "Swahili",
-            localName = "Kiswahili",
-            articleCount = 102753,
-            pageCount = 206887,
-            activeUserCount = 367),
-        SupportedLanguage(
-            code = "ss",
-            name = "Swati",
-            localName = "SiSwati",
-            articleCount = 1133,
-            pageCount = 3484,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "syl",
-            name = "Sylheti",
-            localName = "ꠍꠤꠟꠐꠤ",
-            articleCount = 1195,
-            pageCount = 6204,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "shi",
-            name = "Tachelhit",
-            localName = "Taclḥit",
-            articleCount = 10880,
-            pageCount = 14937,
-            activeUserCount = 30),
-        SupportedLanguage(
-            code = "tl",
-            name = "Tagalog",
-            localName = "Tagalog",
-            articleCount = 48786,
-            pageCount = 247961,
-            activeUserCount = 332),
-        SupportedLanguage(
-            code = "ty",
-            name = "Tahitian",
-            localName = "reo tahiti",
-            articleCount = 1250,
-            pageCount = 3077,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "tdd",
-            name = "Tai Nuea",
-            localName = "ᥖᥭᥰ ᥖᥬᥲ ᥑᥨᥒᥰ",
-            articleCount = 447,
-            pageCount = 2190,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "tg",
-            name = "Tajik",
-            localName = "тоҷикӣ",
-            articleCount = 116056,
-            pageCount = 283755,
-            activeUserCount = 131),
-        SupportedLanguage(
-            code = "tly",
-            name = "Talysh",
-            localName = "tolışi",
-            articleCount = 10048,
-            pageCount = 13839,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "ta",
-            name = "Tamil",
-            localName = "தமிழ்",
-            articleCount = 178716,
-            pageCount = 608750,
-            activeUserCount = 636),
-        SupportedLanguage(
-            code = "roa-tara",
-            name = "Tarantino",
-            localName = "tarandíne",
-            articleCount = 9497,
-            pageCount = 18906,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "trv",
-            name = "Taroko",
-            localName = "Seediq",
-            articleCount = 1201,
-            pageCount = 2210,
-            activeUserCount = 18),
-        SupportedLanguage(
-            code = "tt",
-            name = "Tatar",
-            localName = "татарча / tatarça",
-            articleCount = 561982,
-            pageCount = 899350,
-            activeUserCount = 119),
-        SupportedLanguage(
-            code = "te",
-            name = "Telugu",
-            localName = "తెలుగు",
-            articleCount = 117143,
-            pageCount = 400462,
-            activeUserCount = 420),
-        SupportedLanguage(
-            code = "tet",
-            name = "Tetum",
-            localName = "tetun",
-            articleCount = 1380,
-            pageCount = 3953,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "th",
-            name = "Thai",
-            localName = "ไทย",
-            articleCount = 177835,
-            pageCount = 1146150,
-            activeUserCount = 3626),
-        SupportedLanguage(
-            code = "bo",
-            name = "Tibetan",
-            localName = "བོད་ཡིག",
-            articleCount = 7383,
-            pageCount = 21040,
-            activeUserCount = 63),
-        SupportedLanguage(
-            code = "tig",
-            name = "Tigre",
-            localName = "ትግሬ",
-            articleCount = 41,
-            pageCount = 480,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "ti",
-            name = "Tigrinya",
-            localName = "ትግርኛ",
-            articleCount = 335,
-            pageCount = 3030,
-            activeUserCount = 19),
-        SupportedLanguage(
-            code = "tpi",
-            name = "Tok Pisin",
-            localName = "Tok Pisin",
-            articleCount = 1406,
-            pageCount = 5795,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "tok",
-            name = "Toki Pona",
-            localName = "toki pona",
-            articleCount = 3247,
-            pageCount = 7793,
-            activeUserCount = 0),
-        SupportedLanguage(
-            code = "to",
-            name = "Tongan",
-            localName = "lea faka-Tonga",
-            articleCount = 2043,
-            pageCount = 5536,
-            activeUserCount = 15),
-        SupportedLanguage(
-            code = "ts",
-            name = "Tsonga",
-            localName = "Xitsonga",
-            articleCount = 957,
-            pageCount = 4255,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "tn",
-            name = "Tswana",
-            localName = "Setswana",
-            articleCount = 3438,
-            pageCount = 7635,
-            activeUserCount = 39),
-        SupportedLanguage(
-            code = "tcy",
-            name = "Tulu",
-            localName = "ತುಳು",
-            articleCount = 2878,
-            pageCount = 17232,
-            activeUserCount = 32),
-        SupportedLanguage(
-            code = "tum",
-            name = "Tumbuka",
-            localName = "chiTumbuka",
-            articleCount = 18796,
-            pageCount = 39192,
-            activeUserCount = 31),
-        SupportedLanguage(
-            code = "tr",
-            name = "Turkish",
-            localName = "Türkçe",
-            articleCount = 653368,
-            pageCount = 3380188,
-            activeUserCount = 5359),
-        SupportedLanguage(
-            code = "tk",
-            name = "Turkmen",
-            localName = "Türkmençe",
-            articleCount = 7047,
-            pageCount = 17533,
-            activeUserCount = 88),
-        SupportedLanguage(
-            code = "tyv",
-            name = "Tuvinian",
-            localName = "тыва дыл",
-            articleCount = 4044,
-            pageCount = 14498,
-            activeUserCount = 24),
-        SupportedLanguage(
-            code = "tw",
-            name = "Twi",
-            localName = "Twi",
-            articleCount = 4624,
-            pageCount = 8592,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "kcg",
-            name = "Tyap",
-            localName = "Tyap",
-            articleCount = 1463,
-            pageCount = 6409,
-            activeUserCount = 14),
-        SupportedLanguage(
-            code = "udm",
-            name = "Udmurt",
-            localName = "удмурт",
-            articleCount = 5714,
-            pageCount = 20049,
-            activeUserCount = 26),
-        SupportedLanguage(
-            code = "hsb",
-            name = "Upper Sorbian",
-            localName = "hornjoserbsce",
-            articleCount = 14208,
-            pageCount = 36368,
-            activeUserCount = 37),
-        SupportedLanguage(
-            code = "ur",
-            name = "Urdu",
-            localName = "اردو",
-            articleCount = 235466,
-            pageCount = 2302325,
-            activeUserCount = 389),
-        SupportedLanguage(
-            code = "ug",
-            name = "Uyghur",
-            localName = "ئۇيغۇرچە / Uyghurche",
-            articleCount = 9615,
-            pageCount = 16991,
-            activeUserCount = 33),
-        SupportedLanguage(
-            code = "uz",
-            name = "Uzbek",
-            localName = "oʻzbekcha / ўзбекча",
-            articleCount = 316532,
-            pageCount = 1162719,
-            activeUserCount = 921),
-        SupportedLanguage(
-            code = "ve",
-            name = "Venda",
-            localName = "Tshivenda",
-            articleCount = 823,
-            pageCount = 2421,
-            activeUserCount = 12),
-        SupportedLanguage(
-            code = "vec",
-            name = "Venetian",
-            localName = "vèneto",
-            articleCount = 69526,
-            pageCount = 143313,
-            activeUserCount = 59),
-        SupportedLanguage(
-            code = "vep",
-            name = "Veps",
-            localName = "vepsän kel’",
-            articleCount = 7076,
-            pageCount = 38116,
-            activeUserCount = 27),
-        SupportedLanguage(
-            code = "rmy",
-            name = "Vlax Romani",
-            localName = "romani čhib",
-            articleCount = 756,
-            pageCount = 2841,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "vo",
-            name = "Volapük",
-            localName = "Volapük",
-            articleCount = 46213,
-            pageCount = 163884,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "fiu-vro",
-            name = "Võro",
-            localName = "võro",
-            articleCount = 6862,
-            pageCount = 13025,
-            activeUserCount = 37),
-        SupportedLanguage(
-            code = "wa",
-            name = "Walloon",
-            localName = "walon",
-            articleCount = 12798,
-            pageCount = 30647,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "war",
-            name = "Waray",
-            localName = "Winaray",
-            articleCount = 1266825,
-            pageCount = 2870600,
-            activeUserCount = 102),
-        SupportedLanguage(
-            code = "guc",
-            name = "Wayuu",
-            localName = "wayuunaiki",
-            articleCount = 687,
-            pageCount = 1347,
-            activeUserCount = 30),
-        SupportedLanguage(
-            code = "cy",
-            name = "Welsh",
-            localName = "Cymraeg",
-            articleCount = 283787,
-            pageCount = 535073,
-            activeUserCount = 177),
-        SupportedLanguage(
-            code = "bdr",
-            name = "West Coast Bajau",
-            localName = "Bajau Sama",
-            articleCount = 234,
-            pageCount = 1319,
-            activeUserCount = 13),
-        SupportedLanguage(
-            code = "vls",
-            name = "West Flemish",
-            localName = "West-Vlams",
-            articleCount = 8219,
-            pageCount = 22445,
-            activeUserCount = 45),
-        SupportedLanguage(
-            code = "hyw",
-            name = "Western Armenian",
-            localName = "Արեւմտահայերէն",
-            articleCount = 13257,
-            pageCount = 28757,
-            activeUserCount = 49),
-        SupportedLanguage(
-            code = "fy",
-            name = "Western Frisian",
-            localName = "Frysk",
-            articleCount = 58577,
-            pageCount = 175686,
-            activeUserCount = 98),
-        SupportedLanguage(
-            code = "mrj",
-            name = "Western Mari",
-            localName = "кырык мары",
-            articleCount = 10429,
-            pageCount = 21156,
-            activeUserCount = 16),
-        SupportedLanguage(
-            code = "pnb",
-            name = "Western Punjabi",
-            localName = "پنجابی",
-            articleCount = 74746,
-            pageCount = 140441,
-            activeUserCount = 66),
-        SupportedLanguage(
-            code = "wo",
-            name = "Wolof",
-            localName = "Wolof",
-            articleCount = 1743,
-            pageCount = 5567,
-            activeUserCount = 30),
-        SupportedLanguage(
-            code = "wuu",
-            name = "Wu",
-            localName = "吴语",
-            articleCount = 46987,
-            pageCount = 71500,
-            activeUserCount = 116),
-        SupportedLanguage(
-            code = "xh",
-            name = "Xhosa",
-            localName = "isiXhosa",
-            articleCount = 2319,
-            pageCount = 5574,
-            activeUserCount = 28),
-        SupportedLanguage(
-            code = "sah",
-            name = "Yakut",
-            localName = "саха тыла",
-            articleCount = 17801,
-            pageCount = 53888,
-            activeUserCount = 51),
-        SupportedLanguage(
-            code = "yi",
-            name = "Yiddish",
-            localName = "ייִדיש",
-            articleCount = 15634,
-            pageCount = 44409,
-            activeUserCount = 56),
-        SupportedLanguage(
-            code = "yo",
-            name = "Yoruba",
-            localName = "Yorùbá",
-            articleCount = 36329,
-            pageCount = 61076,
-            activeUserCount = 104),
-        SupportedLanguage(
-            code = "zea",
-            name = "Zeelandic",
-            localName = "Zeêuws",
-            articleCount = 7093,
-            pageCount = 13557,
-            activeUserCount = 36),
-        SupportedLanguage(
-            code = "za",
-            name = "Zhuang",
-            localName = "Vahcuengh",
-            articleCount = 3005,
-            pageCount = 5569,
-            activeUserCount = 20),
-        SupportedLanguage(
-            code = "zu",
-            name = "Zulu",
-            localName = "isiZulu",
-            articleCount = 11815,
-            pageCount = 26149,
-            activeUserCount = 52),
-    )
+val supportedLanguages = listOf(
+    SupportedLanguage(
+        code = "en",
+        name = "English",
+        localName = "English",
+        articleCount = 7101693,
+        pageCount = 64605013,
+        activeUserCount = 314074
+    ),
+    SupportedLanguage(
+        code = "ceb",
+        name = "Cebuano",
+        localName = "Cebuano",
+        articleCount = 6115856,
+        pageCount = 11230201,
+        activeUserCount = 193
+    ),
+    SupportedLanguage(
+        code = "de",
+        name = "German",
+        localName = "Deutsch",
+        articleCount = 3075402,
+        pageCount = 8433912,
+        activeUserCount = 40156
+    ),
+    SupportedLanguage(
+        code = "fr",
+        name = "French",
+        localName = "français",
+        articleCount = 2724333,
+        pageCount = 13759655,
+        activeUserCount = 41953
+    ),
+    SupportedLanguage(
+        code = "sv",
+        name = "Swedish",
+        localName = "svenska",
+        articleCount = 2619647,
+        pageCount = 6345570,
+        activeUserCount = 5229
+    ),
+    SupportedLanguage(
+        code = "nl",
+        name = "Dutch",
+        localName = "Nederlands",
+        articleCount = 2204521,
+        pageCount = 4745223,
+        activeUserCount = 9465
+    ),
+    SupportedLanguage(
+        code = "es",
+        name = "Spanish",
+        localName = "español",
+        articleCount = 2078527,
+        pageCount = 8544339,
+        activeUserCount = 35737
+    ),
+    SupportedLanguage(
+        code = "ru",
+        name = "Russian",
+        localName = "русский",
+        articleCount = 2074682,
+        pageCount = 8434995,
+        activeUserCount = 7694
+    ),
+    SupportedLanguage(
+        code = "it",
+        name = "Italian",
+        localName = "italiano",
+        articleCount = 1947089,
+        pageCount = 8494674,
+        activeUserCount = 33136
+    ),
+    SupportedLanguage(
+        code = "pl",
+        name = "Polish",
+        localName = "polski",
+        articleCount = 1676966,
+        pageCount = 3962200,
+        activeUserCount = 12278
+    ),
+    SupportedLanguage(
+        code = "arz",
+        name = "Egyptian Arabic",
+        localName = "مصرى",
+        articleCount = 1629788,
+        pageCount = 2209872,
+        activeUserCount = 360
+    ),
+    SupportedLanguage(
+        code = "zh",
+        name = "Chinese",
+        localName = "中文",
+        articleCount = 1514141,
+        pageCount = 8254289,
+        activeUserCount = 16823
+    ),
+    SupportedLanguage(
+        code = "ja",
+        name = "Japanese",
+        localName = "日本語",
+        articleCount = 1482833,
+        pageCount = 4356617,
+        activeUserCount = 26609
+    ),
+    SupportedLanguage(
+        code = "uk",
+        name = "Ukrainian",
+        localName = "українська",
+        articleCount = 1399138,
+        pageCount = 5112362,
+        activeUserCount = 6231
+    ),
+    SupportedLanguage(
+        code = "vi",
+        name = "Vietnamese",
+        localName = "Tiếng Việt",
+        articleCount = 1296534,
+        pageCount = 12577788,
+        activeUserCount = 3873
+    ),
+    SupportedLanguage(
+        code = "ab",
+        name = "Abkhazian",
+        localName = "аԥсшәа",
+        articleCount = 6480,
+        pageCount = 32909,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "ace",
+        name = "Acehnese",
+        localName = "Acèh",
+        articleCount = 13004,
+        pageCount = 27968,
+        activeUserCount = 64
+    ),
+    SupportedLanguage(
+        code = "ady",
+        name = "Adyghe",
+        localName = "адыгабзэ",
+        articleCount = 620,
+        pageCount = 4708,
+        activeUserCount = 24
+    ),
+    SupportedLanguage(
+        code = "af",
+        name = "Afrikaans",
+        localName = "Afrikaans",
+        articleCount = 127377,
+        pageCount = 433680,
+        activeUserCount = 309
+    ),
+    SupportedLanguage(
+        code = "sq",
+        name = "Albanian",
+        localName = "shqip",
+        articleCount = 104802,
+        pageCount = 320792,
+        activeUserCount = 500
+    ),
+    SupportedLanguage(
+        code = "als",
+        name = "Alemannic",
+        localName = "Alemannisch",
+        articleCount = 31409,
+        pageCount = 74713,
+        activeUserCount = 140
+    ),
+    SupportedLanguage(
+        code = "am",
+        name = "Amharic",
+        localName = "አማርኛ",
+        articleCount = 15458,
+        pageCount = 46434,
+        activeUserCount = 84
+    ),
+    SupportedLanguage(
+        code = "ami",
+        name = "Amis",
+        localName = "Pangcah",
+        articleCount = 1145,
+        pageCount = 2254,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "anp",
+        name = "Angika",
+        localName = "अंगिका",
+        articleCount = 1669,
+        pageCount = 5280,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "ar",
+        name = "Arabic",
+        localName = "العربية",
+        articleCount = 1288540,
+        pageCount = 8988255,
+        activeUserCount = 7222
+    ),
+    SupportedLanguage(
+        code = "an",
+        name = "Aragonese",
+        localName = "aragonés",
+        articleCount = 50785,
+        pageCount = 184054,
+        activeUserCount = 91
+    ),
+    SupportedLanguage(
+        code = "rki",
+        name = "Arakanese",
+        localName = "ရခိုင်",
+        articleCount = 1081,
+        pageCount = 3229,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "arc",
+        name = "Aramaic",
+        localName = "ܐܪܡܝܐ",
+        articleCount = 1916,
+        pageCount = 6575,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "hy",
+        name = "Armenian",
+        localName = "հայերեն",
+        articleCount = 323256,
+        pageCount = 1186955,
+        activeUserCount = 757
+    ),
+    SupportedLanguage(
+        code = "roa-rup",
+        name = "Aromanian",
+        localName = "armãneashti",
+        articleCount = 1389,
+        pageCount = 4622,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "frp",
+        name = "Arpitan",
+        localName = "arpetan",
+        articleCount = 5815,
+        pageCount = 18037,
+        activeUserCount = 29
+    ),
+    SupportedLanguage(
+        code = "as",
+        name = "Assamese",
+        localName = "অসমীয়া",
+        articleCount = 20650,
+        pageCount = 117090,
+        activeUserCount = 203
+    ),
+    SupportedLanguage(
+        code = "ast",
+        name = "Asturian",
+        localName = "asturianu",
+        articleCount = 138266,
+        pageCount = 247306,
+        activeUserCount = 192
+    ),
+    SupportedLanguage(
+        code = "tay",
+        name = "Atayal",
+        localName = "Tayal",
+        articleCount = 2582,
+        pageCount = 3293,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "atj",
+        name = "Atikamekw",
+        localName = "Atikamekw",
+        articleCount = 2078,
+        pageCount = 3291,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "av",
+        name = "Avaric",
+        localName = "авар",
+        articleCount = 4002,
+        pageCount = 18792,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "awa",
+        name = "Awadhi",
+        localName = "अवधी",
+        articleCount = 2560,
+        pageCount = 6315,
+        activeUserCount = 31
+    ),
+    SupportedLanguage(
+        code = "ay",
+        name = "Aymara",
+        localName = "Aymar aru",
+        articleCount = 5245,
+        pageCount = 8917,
+        activeUserCount = 24
+    ),
+    SupportedLanguage(
+        code = "az",
+        name = "Azerbaijani",
+        localName = "azərbaycanca",
+        articleCount = 209617,
+        pageCount = 638041,
+        activeUserCount = 1145
+    ),
+    SupportedLanguage(
+        code = "ban",
+        name = "Balinese",
+        localName = "Basa Bali",
+        articleCount = 34651,
+        pageCount = 70657,
+        activeUserCount = 129
+    ),
+    SupportedLanguage(
+        code = "bm",
+        name = "Bambara",
+        localName = "bamanankan",
+        articleCount = 921,
+        pageCount = 3338,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "bn",
+        name = "Bangla",
+        localName = "বাংলা",
+        articleCount = 178221,
+        pageCount = 1370254,
+        activeUserCount = 2347
+    ),
+    SupportedLanguage(
+        code = "bjn",
+        name = "Banjar",
+        localName = "Banjar",
+        articleCount = 11453,
+        pageCount = 35004,
+        activeUserCount = 66
+    ),
+    SupportedLanguage(
+        code = "map-bms",
+        name = "Banyumasan",
+        localName = "Basa Banyumasan",
+        articleCount = 13940,
+        pageCount = 30444,
+        activeUserCount = 39
+    ),
+    SupportedLanguage(
+        code = "ba",
+        name = "Bashkir",
+        localName = "башҡортса",
+        articleCount = 63916,
+        pageCount = 183921,
+        activeUserCount = 75
+    ),
+    SupportedLanguage(
+        code = "eu",
+        name = "Basque",
+        localName = "euskara",
+        articleCount = 476634,
+        pageCount = 1022909,
+        activeUserCount = 1518
+    ),
+    SupportedLanguage(
+        code = "btm",
+        name = "Batak Mandailing",
+        localName = "Batak Mandailing",
+        articleCount = 1195,
+        pageCount = 2683,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "bbc",
+        name = "Batak Toba",
+        localName = "Batak Toba",
+        articleCount = 1282,
+        pageCount = 2360,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "bar",
+        name = "Bavarian",
+        localName = "Boarisch",
+        articleCount = 27202,
+        pageCount = 110590,
+        activeUserCount = 77
+    ),
+    SupportedLanguage(
+        code = "be",
+        name = "Belarusian",
+        localName = "беларуская",
+        articleCount = 257641,
+        pageCount = 720261,
+        activeUserCount = 409
+    ),
+    SupportedLanguage(
+        code = "be-tarask",
+        name = "Belarusian (Taraškievica orthography)",
+        localName = "беларуская (тарашкевіца)",
+        articleCount = 90094,
+        pageCount = 263981,
+        activeUserCount = 284
+    ),
+    SupportedLanguage(
+        code = "bew",
+        name = "Betawi",
+        localName = "Betawi",
+        articleCount = 3087,
+        pageCount = 7460,
+        activeUserCount = 60
+    ),
+    SupportedLanguage(
+        code = "bh",
+        name = "Bhojpuri",
+        localName = "भोजपुरी",
+        articleCount = 8858,
+        pageCount = 80654,
+        activeUserCount = 52
+    ),
+    SupportedLanguage(
+        code = "bpy",
+        name = "Bishnupriya",
+        localName = "বিষ্ণুপ্রিয়া মণিপুরী",
+        articleCount = 25092,
+        pageCount = 63453,
+        activeUserCount = 15
+    ),
+    SupportedLanguage(
+        code = "bi",
+        name = "Bislama",
+        localName = "Bislama",
+        articleCount = 1478,
+        pageCount = 3443,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "bs",
+        name = "Bosnian",
+        localName = "bosanski",
+        articleCount = 96263,
+        pageCount = 382100,
+        activeUserCount = 311
+    ),
+    SupportedLanguage(
+        code = "br",
+        name = "Breton",
+        localName = "brezhoneg",
+        articleCount = 89988,
+        pageCount = 160254,
+        activeUserCount = 128
+    ),
+    SupportedLanguage(
+        code = "bug",
+        name = "Buginese",
+        localName = "Basa Ugi",
+        articleCount = 15957,
+        pageCount = 20478,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "bg",
+        name = "Bulgarian",
+        localName = "български",
+        articleCount = 306771,
+        pageCount = 694700,
+        activeUserCount = 2443
+    ),
+    SupportedLanguage(
+        code = "my",
+        name = "Burmese",
+        localName = "မြန်မာဘာသာ",
+        articleCount = 109834,
+        pageCount = 261368,
+        activeUserCount = 334
+    ),
+    SupportedLanguage(
+        code = "zh-yue",
+        name = "Cantonese",
+        localName = "粵語",
+        articleCount = 148227,
+        pageCount = 334314,
+        activeUserCount = 994
+    ),
+    SupportedLanguage(
+        code = "ca",
+        name = "Catalan",
+        localName = "català",
+        articleCount = 785211,
+        pageCount = 1971020,
+        activeUserCount = 3295
+    ),
+    SupportedLanguage(
+        code = "bcl",
+        name = "Central Bikol",
+        localName = "Bikol Central",
+        articleCount = 21235,
+        pageCount = 50062,
+        activeUserCount = 84
+    ),
+    SupportedLanguage(
+        code = "dtp",
+        name = "Central Dusun",
+        localName = "Kadazandusun",
+        articleCount = 1716,
+        pageCount = 7236,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "knc",
+        name = "Central Kanuri",
+        localName = "Yerwa Kanuri",
+        articleCount = 1544,
+        pageCount = 2439,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "ckb",
+        name = "Central Kurdish",
+        localName = "کوردی",
+        articleCount = 79302,
+        pageCount = 252038,
+        activeUserCount = 205
+    ),
+    SupportedLanguage(
+        code = "ch",
+        name = "Chamorro",
+        localName = "Chamoru",
+        articleCount = 558,
+        pageCount = 2590,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "cbk-zam",
+        name = "Chavacano",
+        localName = "Chavacano de Zamboanga",
+        articleCount = 3235,
+        pageCount = 8991,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "ce",
+        name = "Chechen",
+        localName = "нохчийн",
+        articleCount = 688324,
+        pageCount = 1322323,
+        activeUserCount = 64
+    ),
+    SupportedLanguage(
+        code = "chr",
+        name = "Cherokee",
+        localName = "ᏣᎳᎩ",
+        articleCount = 1004,
+        pageCount = 4068,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "chy",
+        name = "Cheyenne",
+        localName = "Tsetsêhestâhese",
+        articleCount = 720,
+        pageCount = 2280,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "cu",
+        name = "Church Slavic",
+        localName = "словѣньскъ / ⰔⰎⰑⰂⰡⰐⰠⰔⰍⰟ",
+        articleCount = 1312,
+        pageCount = 5887,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "cv",
+        name = "Chuvash",
+        localName = "чӑвашла",
+        articleCount = 58180,
+        pageCount = 121199,
+        activeUserCount = 55
+    ),
+    SupportedLanguage(
+        code = "ksh",
+        name = "Colognian",
+        localName = "Ripoarisch",
+        articleCount = 3038,
+        pageCount = 10802,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "kw",
+        name = "Cornish",
+        localName = "kernowek",
+        articleCount = 7096,
+        pageCount = 14778,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "co",
+        name = "Corsican",
+        localName = "corsu",
+        articleCount = 8603,
+        pageCount = 18021,
+        activeUserCount = 60
+    ),
+    SupportedLanguage(
+        code = "crh",
+        name = "Crimean Tatar",
+        localName = "qırımtatarca",
+        articleCount = 29622,
+        pageCount = 57567,
+        activeUserCount = 43
+    ),
+    SupportedLanguage(
+        code = "hr",
+        name = "Croatian",
+        localName = "hrvatski",
+        articleCount = 228624,
+        pageCount = 494027,
+        activeUserCount = 1436
+    ),
+    SupportedLanguage(
+        code = "cs",
+        name = "Czech",
+        localName = "čeština",
+        articleCount = 581621,
+        pageCount = 1621515,
+        activeUserCount = 5702
+    ),
+    SupportedLanguage(
+        code = "dag",
+        name = "Dagbani",
+        localName = "dagbanli",
+        articleCount = 13347,
+        pageCount = 24379,
+        activeUserCount = 70
+    ),
+    SupportedLanguage(
+        code = "da",
+        name = "Danish",
+        localName = "dansk",
+        articleCount = 311709,
+        pageCount = 977445,
+        activeUserCount = 1828
+    ),
+    SupportedLanguage(
+        code = "diq",
+        name = "Dimli",
+        localName = "Zazaki",
+        articleCount = 42359,
+        pageCount = 63905,
+        activeUserCount = 46
+    ),
+    SupportedLanguage(
+        code = "din",
+        name = "Dinka",
+        localName = "Thuɔŋjäŋ",
+        articleCount = 365,
+        pageCount = 1128,
+        activeUserCount = 7
+    ),
+    SupportedLanguage(
+        code = "dv",
+        name = "Divehi",
+        localName = "ދިވެހިބަސް",
+        articleCount = 3192,
+        pageCount = 12508,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "dty",
+        name = "Doteli",
+        localName = "डोटेली",
+        articleCount = 3632,
+        pageCount = 22217,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "dz",
+        name = "Dzongkha",
+        localName = "ཇོང་ཁ",
+        articleCount = 377,
+        pageCount = 5501,
+        activeUserCount = 22
+    ),
+    SupportedLanguage(
+        code = "mhr",
+        name = "Eastern Mari",
+        localName = "олык марий",
+        articleCount = 11327,
+        pageCount = 31252,
+        activeUserCount = 22
+    ),
+    SupportedLanguage(
+        code = "eml",
+        name = "Emiliano-Romagnolo",
+        localName = "emiliàn e rumagnòl",
+        articleCount = 13742,
+        pageCount = 36836,
+        activeUserCount = 59
+    ),
+    SupportedLanguage(
+        code = "myv",
+        name = "Erzya",
+        localName = "эрзянь",
+        articleCount = 7867,
+        pageCount = 31503,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "eo",
+        name = "Esperanto",
+        localName = "Esperanto",
+        articleCount = 378819,
+        pageCount = 849796,
+        activeUserCount = 532
+    ),
+    SupportedLanguage(
+        code = "et",
+        name = "Estonian",
+        localName = "eesti",
+        articleCount = 256287,
+        pageCount = 604138,
+        activeUserCount = 1487
+    ),
+    SupportedLanguage(
+        code = "ee",
+        name = "Ewe",
+        localName = "eʋegbe",
+        articleCount = 1267,
+        pageCount = 4252,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "ext",
+        name = "Extremaduran",
+        localName = "estremeñu",
+        articleCount = 4077,
+        pageCount = 9157,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "fat",
+        name = "Fanti",
+        localName = "mfantse",
+        articleCount = 1762,
+        pageCount = 4723,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "fo",
+        name = "Faroese",
+        localName = "føroyskt",
+        articleCount = 14180,
+        pageCount = 41111,
+        activeUserCount = 42
+    ),
+    SupportedLanguage(
+        code = "hif",
+        name = "Fiji Hindi",
+        localName = "Fiji Hindi",
+        articleCount = 12081,
+        pageCount = 55206,
+        activeUserCount = 70
+    ),
+    SupportedLanguage(
+        code = "fj",
+        name = "Fijian",
+        localName = "Na Vosa Vakaviti",
+        articleCount = 1614,
+        pageCount = 4355,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "fi",
+        name = "Finnish",
+        localName = "suomi",
+        articleCount = 608830,
+        pageCount = 1563104,
+        activeUserCount = 3703
+    ),
+    SupportedLanguage(
+        code = "fon",
+        name = "Fon",
+        localName = "fɔ̀ngbè",
+        articleCount = 3343,
+        pageCount = 5070,
+        activeUserCount = 35
+    ),
+    SupportedLanguage(
+        code = "gur",
+        name = "Frafra",
+        localName = "farefare",
+        articleCount = 1333,
+        pageCount = 2529,
+        activeUserCount = 29
+    ),
+    SupportedLanguage(
+        code = "fur",
+        name = "Friulian",
+        localName = "furlan",
+        articleCount = 4886,
+        pageCount = 11195,
+        activeUserCount = 38
+    ),
+    SupportedLanguage(
+        code = "ff",
+        name = "Fula",
+        localName = "Fulfulde",
+        articleCount = 13168,
+        pageCount = 27750,
+        activeUserCount = 47
+    ),
+    SupportedLanguage(
+        code = "gag",
+        name = "Gagauz",
+        localName = "Gagauz",
+        articleCount = 3013,
+        pageCount = 7802,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "gl",
+        name = "Galician",
+        localName = "galego",
+        articleCount = 228138,
+        pageCount = 560516,
+        activeUserCount = 510
+    ),
+    SupportedLanguage(
+        code = "gan",
+        name = "Gan",
+        localName = "贛語",
+        articleCount = 6815,
+        pageCount = 34474,
+        activeUserCount = 36
+    ),
+    SupportedLanguage(
+        code = "lg",
+        name = "Ganda",
+        localName = "Luganda",
+        articleCount = 4419,
+        pageCount = 8765,
+        activeUserCount = 44
+    ),
+    SupportedLanguage(
+        code = "ka",
+        name = "Georgian",
+        localName = "ქართული",
+        articleCount = 188096,
+        pageCount = 523706,
+        activeUserCount = 512
+    ),
+    SupportedLanguage(
+        code = "gpe",
+        name = "Ghanaian Pidgin",
+        localName = "Ghanaian Pidgin",
+        articleCount = 4112,
+        pageCount = 22029,
+        activeUserCount = 42
+    ),
+    SupportedLanguage(
+        code = "glk",
+        name = "Gilaki",
+        localName = "گیلکی",
+        articleCount = 48351,
+        pageCount = 57649,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "gom",
+        name = "Goan Konkani",
+        localName = "गोंयची कोंकणी / Gõychi Konknni",
+        articleCount = 3643,
+        pageCount = 8907,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "gor",
+        name = "Gorontalo",
+        localName = "Bahasa Hulontalo",
+        articleCount = 14913,
+        pageCount = 24428,
+        activeUserCount = 52
+    ),
+    SupportedLanguage(
+        code = "got",
+        name = "Gothic",
+        localName = "𐌲𐌿𐍄𐌹𐍃𐌺",
+        articleCount = 984,
+        pageCount = 3956,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "el",
+        name = "Greek",
+        localName = "Ελληνικά",
+        articleCount = 261936,
+        pageCount = 736439,
+        activeUserCount = 2690
+    ),
+    SupportedLanguage(
+        code = "gn",
+        name = "Guarani",
+        localName = "Avañe'ẽ",
+        articleCount = 5982,
+        pageCount = 14076,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "gcr",
+        name = "Guianan Creole",
+        localName = "kriyòl gwiyannen",
+        articleCount = 1075,
+        pageCount = 2671,
+        activeUserCount = 7
+    ),
+    SupportedLanguage(
+        code = "gu",
+        name = "Gujarati",
+        localName = "ગુજરાતી",
+        articleCount = 30726,
+        pageCount = 134753,
+        activeUserCount = 151
+    ),
+    SupportedLanguage(
+        code = "guw",
+        name = "Gun",
+        localName = "gungbe",
+        articleCount = 1562,
+        pageCount = 2780,
+        activeUserCount = 15
+    ),
+    SupportedLanguage(
+        code = "ht",
+        name = "Haitian Creole",
+        localName = "Kreyòl ayisyen",
+        articleCount = 71418,
+        pageCount = 92914,
+        activeUserCount = 102
+    ),
+    SupportedLanguage(
+        code = "hak",
+        name = "Hakka Chinese",
+        localName = "客家語 / Hak-kâ-ngî",
+        articleCount = 10386,
+        pageCount = 19923,
+        activeUserCount = 41
+    ),
+    SupportedLanguage(
+        code = "ha",
+        name = "Hausa",
+        localName = "Hausa",
+        articleCount = 73287,
+        pageCount = 111913,
+        activeUserCount = 246
+    ),
+    SupportedLanguage(
+        code = "haw",
+        name = "Hawaiian",
+        localName = "Hawaiʻi",
+        articleCount = 2965,
+        pageCount = 6204,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "he",
+        name = "Hebrew",
+        localName = "עברית",
+        articleCount = 386998,
+        pageCount = 1628511,
+        activeUserCount = 8545
+    ),
+    SupportedLanguage(
+        code = "hi",
+        name = "Hindi",
+        localName = "हिन्दी",
+        articleCount = 166858,
+        pageCount = 1382530,
+        activeUserCount = 1216
+    ),
+    SupportedLanguage(
+        code = "hu",
+        name = "Hungarian",
+        localName = "magyar",
+        articleCount = 563687,
+        pageCount = 1602518,
+        activeUserCount = 3007
+    ),
+    SupportedLanguage(
+        code = "iba",
+        name = "Iban",
+        localName = "Jaku Iban",
+        articleCount = 1860,
+        pageCount = 5000,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "is",
+        name = "Icelandic",
+        localName = "íslenska",
+        articleCount = 60867,
+        pageCount = 158874,
+        activeUserCount = 308
+    ),
+    SupportedLanguage(
+        code = "io",
+        name = "Ido",
+        localName = "Ido",
+        articleCount = 60204,
+        pageCount = 88511,
+        activeUserCount = 73
+    ),
+    SupportedLanguage(
+        code = "igl",
+        name = "Igala",
+        localName = "Igala",
+        articleCount = 945,
+        pageCount = 1349,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "ig",
+        name = "Igbo",
+        localName = "Igbo",
+        articleCount = 44112,
+        pageCount = 60562,
+        activeUserCount = 112
+    ),
+    SupportedLanguage(
+        code = "ilo",
+        name = "Iloko",
+        localName = "Ilokano",
+        articleCount = 15441,
+        pageCount = 70547,
+        activeUserCount = 36
+    ),
+    SupportedLanguage(
+        code = "smn",
+        name = "Inari Sami",
+        localName = "anarâškielâ",
+        articleCount = 6501,
+        pageCount = 28571,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "id",
+        name = "Indonesian",
+        localName = "Bahasa Indonesia",
+        articleCount = 757117,
+        pageCount = 4184985,
+        activeUserCount = 6583
+    ),
+    SupportedLanguage(
+        code = "inh",
+        name = "Ingush",
+        localName = "гӀалгӀай",
+        articleCount = 2411,
+        pageCount = 16126,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "ia",
+        name = "Interlingua",
+        localName = "interlingua",
+        articleCount = 30152,
+        pageCount = 45847,
+        activeUserCount = 41
+    ),
+    SupportedLanguage(
+        code = "ie",
+        name = "Interlingue",
+        localName = "Interlingue",
+        articleCount = 13395,
+        pageCount = 17684,
+        activeUserCount = 41
+    ),
+    SupportedLanguage(
+        code = "iu",
+        name = "Inuktitut",
+        localName = "ᐃᓄᒃᑎᑐᑦ / inuktitut",
+        articleCount = 425,
+        pageCount = 3013,
+        activeUserCount = 34
+    ),
+    SupportedLanguage(
+        code = "ik",
+        name = "Inupiaq",
+        localName = "Iñupiatun",
+        articleCount = 662,
+        pageCount = 2872,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "ga",
+        name = "Irish",
+        localName = "Gaeilge",
+        articleCount = 62681,
+        pageCount = 112271,
+        activeUserCount = 145
+    ),
+    SupportedLanguage(
+        code = "jam",
+        name = "Jamaican Creole English",
+        localName = "Patois",
+        articleCount = 1730,
+        pageCount = 3131,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "jv",
+        name = "Javanese",
+        localName = "Jawa",
+        articleCount = 74747,
+        pageCount = 185562,
+        activeUserCount = 222
+    ),
+    SupportedLanguage(
+        code = "kbd",
+        name = "Kabardian",
+        localName = "адыгэбзэ",
+        articleCount = 1639,
+        pageCount = 7103,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "kbp",
+        name = "Kabiye",
+        localName = "Kabɩyɛ",
+        articleCount = 1715,
+        pageCount = 3449,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "kab",
+        name = "Kabyle",
+        localName = "Taqbaylit",
+        articleCount = 7008,
+        pageCount = 17989,
+        activeUserCount = 24
+    ),
+    SupportedLanguage(
+        code = "xal",
+        name = "Kalmyk",
+        localName = "хальмг",
+        articleCount = 1597,
+        pageCount = 12378,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "kn",
+        name = "Kannada",
+        localName = "ಕನ್ನಡ",
+        articleCount = 34098,
+        pageCount = 157812,
+        activeUserCount = 313
+    ),
+    SupportedLanguage(
+        code = "kaa",
+        name = "Kara-Kalpak",
+        localName = "Qaraqalpaqsha",
+        articleCount = 10898,
+        pageCount = 28965,
+        activeUserCount = 50
+    ),
+    SupportedLanguage(
+        code = "krc",
+        name = "Karachay-Balkar",
+        localName = "къарачай-малкъар",
+        articleCount = 2665,
+        pageCount = 16841,
+        activeUserCount = 27
+    ),
+    SupportedLanguage(
+        code = "ks",
+        name = "Kashmiri",
+        localName = "کٲشُر",
+        articleCount = 8394,
+        pageCount = 20583,
+        activeUserCount = 38
+    ),
+    SupportedLanguage(
+        code = "csb",
+        name = "Kashubian",
+        localName = "kaszëbsczi",
+        articleCount = 5500,
+        pageCount = 8903,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "kk",
+        name = "Kazakh",
+        localName = "қазақша",
+        articleCount = 241355,
+        pageCount = 657383,
+        activeUserCount = 427
+    ),
+    SupportedLanguage(
+        code = "km",
+        name = "Khmer",
+        localName = "ភាសាខ្មែរ",
+        articleCount = 11840,
+        pageCount = 36823,
+        activeUserCount = 173
+    ),
+    SupportedLanguage(
+        code = "ki",
+        name = "Kikuyu",
+        localName = "Gĩkũyũ",
+        articleCount = 1916,
+        pageCount = 3814,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "rw",
+        name = "Kinyarwanda",
+        localName = "Ikinyarwanda",
+        articleCount = 8908,
+        pageCount = 17709,
+        activeUserCount = 81
+    ),
+    SupportedLanguage(
+        code = "kge",
+        name = "Komering",
+        localName = "Kumoring",
+        articleCount = 2662,
+        pageCount = 4378,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "kv",
+        name = "Komi",
+        localName = "коми",
+        articleCount = 5731,
+        pageCount = 19804,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "koi",
+        name = "Komi-Permyak",
+        localName = "перем коми",
+        articleCount = 3468,
+        pageCount = 13447,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "kg",
+        name = "Kongo",
+        localName = "Kongo",
+        articleCount = 1570,
+        pageCount = 4025,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "ko",
+        name = "Korean",
+        localName = "한국어",
+        articleCount = 731541,
+        pageCount = 3485339,
+        activeUserCount = 7250
+    ),
+    SupportedLanguage(
+        code = "avk",
+        name = "Kotava",
+        localName = "Kotava",
+        articleCount = 29899,
+        pageCount = 36350,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "ku",
+        name = "Kurdish",
+        localName = "kurdî",
+        articleCount = 90922,
+        pageCount = 289613,
+        activeUserCount = 162
+    ),
+    SupportedLanguage(
+        code = "kus",
+        name = "Kusaal",
+        localName = "Kʋsaal",
+        articleCount = 1231,
+        pageCount = 1820,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "ky",
+        name = "Kyrgyz",
+        localName = "кыргызча",
+        articleCount = 76124,
+        pageCount = 110378,
+        activeUserCount = 137
+    ),
+    SupportedLanguage(
+        code = "lld",
+        name = "Ladin",
+        localName = "Ladin",
+        articleCount = 180830,
+        pageCount = 188194,
+        activeUserCount = 62
+    ),
+    SupportedLanguage(
+        code = "lad",
+        name = "Ladino",
+        localName = "Ladino",
+        articleCount = 3889,
+        pageCount = 13634,
+        activeUserCount = 37
+    ),
+    SupportedLanguage(
+        code = "lbe",
+        name = "Lak",
+        localName = "лакку",
+        articleCount = 1244,
+        pageCount = 16225,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "lo",
+        name = "Lao",
+        localName = "ລາວ",
+        articleCount = 5232,
+        pageCount = 15743,
+        activeUserCount = 52
+    ),
+    SupportedLanguage(
+        code = "ltg",
+        name = "Latgalian",
+        localName = "latgaļu",
+        articleCount = 1113,
+        pageCount = 3410,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "la",
+        name = "Latin",
+        localName = "Latina",
+        articleCount = 140783,
+        pageCount = 291121,
+        activeUserCount = 235
+    ),
+    SupportedLanguage(
+        code = "lv",
+        name = "Latvian",
+        localName = "latviešu",
+        articleCount = 139083,
+        pageCount = 557038,
+        activeUserCount = 730
+    ),
+    SupportedLanguage(
+        code = "lez",
+        name = "Lezghian",
+        localName = "лезги",
+        articleCount = 4453,
+        pageCount = 14936,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "lij",
+        name = "Ligurian",
+        localName = "Ligure",
+        articleCount = 11456,
+        pageCount = 28120,
+        activeUserCount = 49
+    ),
+    SupportedLanguage(
+        code = "li",
+        name = "Limburgish",
+        localName = "Limburgs",
+        articleCount = 15145,
+        pageCount = 68667,
+        activeUserCount = 38
+    ),
+    SupportedLanguage(
+        code = "ln",
+        name = "Lingala",
+        localName = "lingála",
+        articleCount = 4841,
+        pageCount = 11470,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "lfn",
+        name = "Lingua Franca Nova",
+        localName = "Lingua Franca Nova",
+        articleCount = 4499,
+        pageCount = 7203,
+        activeUserCount = 33
+    ),
+    SupportedLanguage(
+        code = "zh-classical",
+        name = "Literary Chinese",
+        localName = "文言",
+        articleCount = 13894,
+        pageCount = 117283,
+        activeUserCount = 75
+    ),
+    SupportedLanguage(
+        code = "lt",
+        name = "Lithuanian",
+        localName = "lietuvių",
+        articleCount = 224362,
+        pageCount = 560093,
+        activeUserCount = 842
+    ),
+    SupportedLanguage(
+        code = "olo",
+        name = "Livvi-Karelian",
+        localName = "livvinkarjala",
+        articleCount = 4642,
+        pageCount = 14006,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "jbo",
+        name = "Lojban",
+        localName = "la .lojban.",
+        articleCount = 1348,
+        pageCount = 5817,
+        activeUserCount = 22
+    ),
+    SupportedLanguage(
+        code = "lmo",
+        name = "Lombard",
+        localName = "lombard",
+        articleCount = 79902,
+        pageCount = 152712,
+        activeUserCount = 79
+    ),
+    SupportedLanguage(
+        code = "nds",
+        name = "Low German",
+        localName = "Plattdüütsch",
+        articleCount = 85775,
+        pageCount = 185169,
+        activeUserCount = 67
+    ),
+    SupportedLanguage(
+        code = "nds-nl",
+        name = "Low Saxon",
+        localName = "Nedersaksies",
+        articleCount = 8065,
+        pageCount = 21954,
+        activeUserCount = 47
+    ),
+    SupportedLanguage(
+        code = "dsb",
+        name = "Lower Sorbian",
+        localName = "dolnoserbski",
+        articleCount = 3427,
+        pageCount = 11634,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "lb",
+        name = "Luxembourgish",
+        localName = "Lëtzebuergesch",
+        articleCount = 66183,
+        pageCount = 144079,
+        activeUserCount = 160
+    ),
+    SupportedLanguage(
+        code = "mk",
+        name = "Macedonian",
+        localName = "македонски",
+        articleCount = 157221,
+        pageCount = 590543,
+        activeUserCount = 451
+    ),
+    SupportedLanguage(
+        code = "mad",
+        name = "Madurese",
+        localName = "Madhurâ",
+        articleCount = 2007,
+        pageCount = 11316,
+        activeUserCount = 42
+    ),
+    SupportedLanguage(
+        code = "mai",
+        name = "Maithili",
+        localName = "मैथिली",
+        articleCount = 14252,
+        pageCount = 45307,
+        activeUserCount = 37
+    ),
+    SupportedLanguage(
+        code = "mg",
+        name = "Malagasy",
+        localName = "Malagasy",
+        articleCount = 101523,
+        pageCount = 259133,
+        activeUserCount = 77
+    ),
+    SupportedLanguage(
+        code = "ms",
+        name = "Malay",
+        localName = "Bahasa Melayu",
+        articleCount = 434999,
+        pageCount = 1168998,
+        activeUserCount = 2863
+    ),
+    SupportedLanguage(
+        code = "ml",
+        name = "Malayalam",
+        localName = "മലയാളം",
+        articleCount = 87437,
+        pageCount = 548564,
+        activeUserCount = 582
+    ),
+    SupportedLanguage(
+        code = "mt",
+        name = "Maltese",
+        localName = "Malti",
+        articleCount = 7670,
+        pageCount = 23538,
+        activeUserCount = 73
+    ),
+    SupportedLanguage(
+        code = "mni",
+        name = "Manipuri",
+        localName = "ꯃꯤꯇꯩ ꯂꯣꯟ",
+        articleCount = 10454,
+        pageCount = 17375,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "gv",
+        name = "Manx",
+        localName = "Gaelg",
+        articleCount = 7046,
+        pageCount = 39426,
+        activeUserCount = 29
+    ),
+    SupportedLanguage(
+        code = "mr",
+        name = "Marathi",
+        localName = "मराठी",
+        articleCount = 100817,
+        pageCount = 326309,
+        activeUserCount = 410
+    ),
+    SupportedLanguage(
+        code = "mzn",
+        name = "Mazanderani",
+        localName = "مازِرونی",
+        articleCount = 64364,
+        pageCount = 107047,
+        activeUserCount = 53
+    ),
+    SupportedLanguage(
+        code = "min",
+        name = "Minangkabau",
+        localName = "Minangkabau",
+        articleCount = 228714,
+        pageCount = 473775,
+        activeUserCount = 98
+    ),
+    SupportedLanguage(
+        code = "cdo",
+        name = "Mindong",
+        localName = "閩東語 / Mìng-dĕ̤ng-ngṳ̄",
+        articleCount = 16694,
+        pageCount = 33557,
+        activeUserCount = 27
+    ),
+    SupportedLanguage(
+        code = "xmf",
+        name = "Mingrelian",
+        localName = "მარგალური",
+        articleCount = 21948,
+        pageCount = 41575,
+        activeUserCount = 37
+    ),
+    SupportedLanguage(
+        code = "zh-min-nan",
+        name = "Minnan",
+        localName = "閩南語 / Bân-lâm-gí",
+        articleCount = 433853,
+        pageCount = 1074996,
+        activeUserCount = 129
+    ),
+    SupportedLanguage(
+        code = "mwl",
+        name = "Mirandese",
+        localName = "Mirandés",
+        articleCount = 4283,
+        pageCount = 10737,
+        activeUserCount = 27
+    ),
+    SupportedLanguage(
+        code = "mdf",
+        name = "Moksha",
+        localName = "мокшень",
+        articleCount = 7615,
+        pageCount = 23730,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "mnw",
+        name = "Mon",
+        localName = "ဘာသာမန်",
+        articleCount = 1964,
+        pageCount = 6795,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "mn",
+        name = "Mongolian",
+        localName = "монгол",
+        articleCount = 26553,
+        pageCount = 113482,
+        activeUserCount = 287
+    ),
+    SupportedLanguage(
+        code = "ary",
+        name = "Moroccan Arabic",
+        localName = "الدارجة",
+        articleCount = 10924,
+        pageCount = 90940,
+        activeUserCount = 57
+    ),
+    SupportedLanguage(
+        code = "mos",
+        name = "Mossi",
+        localName = "moore",
+        articleCount = 1306,
+        pageCount = 2090,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "mi",
+        name = "Māori",
+        localName = "Māori",
+        articleCount = 8019,
+        pageCount = 15443,
+        activeUserCount = 31
+    ),
+    SupportedLanguage(
+        code = "nah",
+        name = "Nahuatl",
+        localName = "Nāhuatl",
+        articleCount = 4282,
+        pageCount = 13348,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "nv",
+        name = "Navajo",
+        localName = "Diné bizaad",
+        articleCount = 22664,
+        pageCount = 37322,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "nap",
+        name = "Neapolitan",
+        localName = "Napulitano",
+        articleCount = 14937,
+        pageCount = 24158,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "ne",
+        name = "Nepali",
+        localName = "नेपाली",
+        articleCount = 29348,
+        pageCount = 112103,
+        activeUserCount = 189
+    ),
+    SupportedLanguage(
+        code = "new",
+        name = "Newari",
+        localName = "नेपाल भाषा",
+        articleCount = 72671,
+        pageCount = 170171,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "nia",
+        name = "Nias",
+        localName = "Li Niha",
+        articleCount = 1766,
+        pageCount = 4462,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "pcm",
+        name = "Nigerian Pidgin",
+        localName = "Naijá",
+        articleCount = 1528,
+        pageCount = 2786,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "nrm",
+        name = "Norman",
+        localName = "Nouormand",
+        articleCount = 5055,
+        pageCount = 10683,
+        activeUserCount = 15
+    ),
+    SupportedLanguage(
+        code = "frr",
+        name = "Northern Frisian",
+        localName = "Nordfriisk",
+        articleCount = 20688,
+        pageCount = 51307,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "se",
+        name = "Northern Sami",
+        localName = "davvisámegiella",
+        articleCount = 7906,
+        pageCount = 21133,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "nso",
+        name = "Northern Sotho",
+        localName = "Sesotho sa Leboa",
+        articleCount = 8783,
+        pageCount = 11492,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "no",
+        name = "Norwegian",
+        localName = "norsk",
+        articleCount = 662117,
+        pageCount = 1882262,
+        activeUserCount = 2948
+    ),
+    SupportedLanguage(
+        code = "nn",
+        name = "Norwegian Nynorsk",
+        localName = "norsk nynorsk",
+        articleCount = 176949,
+        pageCount = 398601,
+        activeUserCount = 204
+    ),
+    SupportedLanguage(
+        code = "nov",
+        name = "Novial",
+        localName = "Novial",
+        articleCount = 1890,
+        pageCount = 4829,
+        activeUserCount = 21
+    ),
+    SupportedLanguage(
+        code = "nup",
+        name = "Nupe",
+        localName = "Nupe",
+        articleCount = 536,
+        pageCount = 1057,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "ny",
+        name = "Nyanja",
+        localName = "Chi-Chewa",
+        articleCount = 1099,
+        pageCount = 5418,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "nqo",
+        name = "N’Ko",
+        localName = "ߒߞߏ",
+        articleCount = 1584,
+        pageCount = 3419,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "ann",
+        name = "Obolo",
+        localName = "Obolo",
+        articleCount = 433,
+        pageCount = 895,
+        activeUserCount = 9
+    ),
+    SupportedLanguage(
+        code = "oc",
+        name = "Occitan",
+        localName = "occitan",
+        articleCount = 90420,
+        pageCount = 166449,
+        activeUserCount = 150
+    ),
+    SupportedLanguage(
+        code = "or",
+        name = "Odia",
+        localName = "ଓଡ଼ିଆ",
+        articleCount = 20120,
+        pageCount = 85568,
+        activeUserCount = 98
+    ),
+    SupportedLanguage(
+        code = "ang",
+        name = "Old English",
+        localName = "Ænglisc",
+        articleCount = 5037,
+        pageCount = 21282,
+        activeUserCount = 73
+    ),
+    SupportedLanguage(
+        code = "om",
+        name = "Oromo",
+        localName = "Oromoo",
+        articleCount = 1961,
+        pageCount = 5343,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "os",
+        name = "Ossetic",
+        localName = "ирон",
+        articleCount = 21407,
+        pageCount = 76566,
+        activeUserCount = 37
+    ),
+    SupportedLanguage(
+        code = "blk",
+        name = "Pa'O",
+        localName = "ပအိုဝ်ႏဘာႏသာႏ",
+        articleCount = 2909,
+        pageCount = 8716,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "pwn",
+        name = "Paiwan",
+        localName = "pinayuanan",
+        articleCount = 376,
+        pageCount = 634,
+        activeUserCount = 7
+    ),
+    SupportedLanguage(
+        code = "pfl",
+        name = "Palatine German",
+        localName = "Pälzisch",
+        articleCount = 2832,
+        pageCount = 7073,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "pi",
+        name = "Pali",
+        localName = "पालि",
+        articleCount = 290,
+        pageCount = 1827,
+        activeUserCount = 9
+    ),
+    SupportedLanguage(
+        code = "pam",
+        name = "Pampanga",
+        localName = "Kapampangan",
+        articleCount = 10145,
+        pageCount = 23260,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "pag",
+        name = "Pangasinan",
+        localName = "Pangasinan",
+        articleCount = 2619,
+        pageCount = 6741,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "rsk",
+        name = "Pannonian Rusyn",
+        localName = "руски",
+        articleCount = 1005,
+        pageCount = 2222,
+        activeUserCount = 24
+    ),
+    SupportedLanguage(
+        code = "pap",
+        name = "Papiamento",
+        localName = "Papiamentu",
+        articleCount = 5022,
+        pageCount = 10427,
+        activeUserCount = 27
+    ),
+    SupportedLanguage(
+        code = "ps",
+        name = "Pashto",
+        localName = "پښتو",
+        articleCount = 20835,
+        pageCount = 75035,
+        activeUserCount = 66
+    ),
+    SupportedLanguage(
+        code = "pdc",
+        name = "Pennsylvania German",
+        localName = "Deitsch",
+        articleCount = 2044,
+        pageCount = 6049,
+        activeUserCount = 36
+    ),
+    SupportedLanguage(
+        code = "fa",
+        name = "Persian",
+        localName = "فارسی",
+        articleCount = 1063957,
+        pageCount = 6005867,
+        activeUserCount = 11492
+    ),
+    SupportedLanguage(
+        code = "pcd",
+        name = "Picard",
+        localName = "Picard",
+        articleCount = 6041,
+        pageCount = 12031,
+        activeUserCount = 40
+    ),
+    SupportedLanguage(
+        code = "pms",
+        name = "Piedmontese",
+        localName = "Piemontèis",
+        articleCount = 70715,
+        pageCount = 106747,
+        activeUserCount = 45
+    ),
+    SupportedLanguage(
+        code = "pnt",
+        name = "Pontic",
+        localName = "Ποντιακά",
+        articleCount = 489,
+        pageCount = 2107,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "pt",
+        name = "Portuguese",
+        localName = "português",
+        articleCount = 1161550,
+        pageCount = 6015191,
+        activeUserCount = 8329
+    ),
+    SupportedLanguage(
+        code = "pa",
+        name = "Punjabi",
+        localName = "ਪੰਜਾਬੀ",
+        articleCount = 59238,
+        pageCount = 190483,
+        activeUserCount = 182
+    ),
+    SupportedLanguage(
+        code = "qu",
+        name = "Quechua",
+        localName = "Runa Simi",
+        articleCount = 24336,
+        pageCount = 58458,
+        activeUserCount = 53
+    ),
+    SupportedLanguage(
+        code = "ro",
+        name = "Romanian",
+        localName = "română",
+        articleCount = 518635,
+        pageCount = 2937660,
+        activeUserCount = 2331
+    ),
+    SupportedLanguage(
+        code = "rm",
+        name = "Romansh",
+        localName = "rumantsch",
+        articleCount = 3813,
+        pageCount = 9784,
+        activeUserCount = 25
+    ),
+    SupportedLanguage(
+        code = "rn",
+        name = "Rundi",
+        localName = "ikirundi",
+        articleCount = 703,
+        pageCount = 2728,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "bxr",
+        name = "Russia Buriat",
+        localName = "буряад",
+        articleCount = 2911,
+        pageCount = 11323,
+        activeUserCount = 15
+    ),
+    SupportedLanguage(
+        code = "rue",
+        name = "Rusyn",
+        localName = "русиньскый",
+        articleCount = 10143,
+        pageCount = 22326,
+        activeUserCount = 43
+    ),
+    SupportedLanguage(
+        code = "szy",
+        name = "Sakizaya",
+        localName = "Sakizaya",
+        articleCount = 2735,
+        pageCount = 6318,
+        activeUserCount = 16
+    ),
+    SupportedLanguage(
+        code = "sm",
+        name = "Samoan",
+        localName = "Gagana Samoa",
+        articleCount = 1198,
+        pageCount = 6171,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "bat-smg",
+        name = "Samogitian",
+        localName = "žemaitėška",
+        articleCount = 17274,
+        pageCount = 30068,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "sg",
+        name = "Sango",
+        localName = "Sängö",
+        articleCount = 404,
+        pageCount = 2066,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "sa",
+        name = "Sanskrit",
+        localName = "संस्कृतम्",
+        articleCount = 12417,
+        pageCount = 81330,
+        activeUserCount = 80
+    ),
+    SupportedLanguage(
+        code = "sat",
+        name = "Santali",
+        localName = "ᱥᱟᱱᱛᱟᱲᱤ",
+        articleCount = 14063,
+        pageCount = 30060,
+        activeUserCount = 72
+    ),
+    SupportedLanguage(
+        code = "skr",
+        name = "Saraiki",
+        localName = "سرائیکی",
+        articleCount = 24336,
+        pageCount = 28744,
+        activeUserCount = 23
+    ),
+    SupportedLanguage(
+        code = "sc",
+        name = "Sardinian",
+        localName = "sardu",
+        articleCount = 7737,
+        pageCount = 17543,
+        activeUserCount = 31
+    ),
+    SupportedLanguage(
+        code = "stq",
+        name = "Saterland Frisian",
+        localName = "Seeltersk",
+        articleCount = 4130,
+        pageCount = 10821,
+        activeUserCount = 13
+    ),
+    SupportedLanguage(
+        code = "sco",
+        name = "Scots",
+        localName = "Scots",
+        articleCount = 34282,
+        pageCount = 138204,
+        activeUserCount = 140
+    ),
+    SupportedLanguage(
+        code = "gd",
+        name = "Scottish Gaelic",
+        localName = "Gàidhlig",
+        articleCount = 16019,
+        pageCount = 32594,
+        activeUserCount = 39
+    ),
+    SupportedLanguage(
+        code = "sr",
+        name = "Serbian",
+        localName = "српски / srpski",
+        articleCount = 713487,
+        pageCount = 4219212,
+        activeUserCount = 2239
+    ),
+    SupportedLanguage(
+        code = "sh",
+        name = "Serbo-Croatian",
+        localName = "srpskohrvatski / српскохрватски",
+        articleCount = 461230,
+        pageCount = 4627276,
+        activeUserCount = 423
+    ),
+    SupportedLanguage(
+        code = "shn",
+        name = "Shan",
+        localName = "တႆး",
+        articleCount = 14357,
+        pageCount = 34297,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "sn",
+        name = "Shona",
+        localName = "chiShona",
+        articleCount = 11496,
+        pageCount = 20498,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "scn",
+        name = "Sicilian",
+        localName = "sicilianu",
+        articleCount = 26269,
+        pageCount = 56041,
+        activeUserCount = 69
+    ),
+    SupportedLanguage(
+        code = "szl",
+        name = "Silesian",
+        localName = "ślůnski",
+        articleCount = 59617,
+        pageCount = 76015,
+        activeUserCount = 49
+    ),
+    SupportedLanguage(
+        code = "simple",
+        name = "Simple English",
+        localName = "Simple English",
+        articleCount = 277048,
+        pageCount = 919163,
+        activeUserCount = 5062
+    ),
+    SupportedLanguage(
+        code = "sd",
+        name = "Sindhi",
+        localName = "سنڌي",
+        articleCount = 19695,
+        pageCount = 70702,
+        activeUserCount = 33
+    ),
+    SupportedLanguage(
+        code = "si",
+        name = "Sinhala",
+        localName = "සිංහල",
+        articleCount = 24855,
+        pageCount = 166361,
+        activeUserCount = 185
+    ),
+    SupportedLanguage(
+        code = "sk",
+        name = "Slovak",
+        localName = "slovenčina",
+        articleCount = 256985,
+        pageCount = 595910,
+        activeUserCount = 1556
+    ),
+    SupportedLanguage(
+        code = "sl",
+        name = "Slovenian",
+        localName = "slovenščina",
+        articleCount = 195818,
+        pageCount = 499563,
+        activeUserCount = 813
+    ),
+    SupportedLanguage(
+        code = "so",
+        name = "Somali",
+        localName = "Soomaaliga",
+        articleCount = 9665,
+        pageCount = 29551,
+        activeUserCount = 201
+    ),
+    SupportedLanguage(
+        code = "azb",
+        name = "South Azerbaijani",
+        localName = "تۆرکجه",
+        articleCount = 244428,
+        pageCount = 579881,
+        activeUserCount = 127
+    ),
+    SupportedLanguage(
+        code = "nr",
+        name = "South Ndebele",
+        localName = "isiNdebele seSewula",
+        articleCount = 276,
+        pageCount = 857,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "alt",
+        name = "Southern Altai",
+        localName = "алтай тил",
+        articleCount = 1102,
+        pageCount = 7017,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "dga",
+        name = "Southern Dagaare",
+        localName = "Dagaare",
+        articleCount = 2972,
+        pageCount = 6502,
+        activeUserCount = 24
+    ),
+    SupportedLanguage(
+        code = "st",
+        name = "Southern Sotho",
+        localName = "Sesotho",
+        articleCount = 1554,
+        pageCount = 5434,
+        activeUserCount = 45
+    ),
+    SupportedLanguage(
+        code = "srn",
+        name = "Sranan Tongo",
+        localName = "Sranantongo",
+        articleCount = 1128,
+        pageCount = 2730,
+        activeUserCount = 10
+    ),
+    SupportedLanguage(
+        code = "zgh",
+        name = "Standard Moroccan Tamazight",
+        localName = "ⵜⴰⵎⴰⵣⵉⵖⵜ ⵜⴰⵏⴰⵡⴰⵢⵜ",
+        articleCount = 11974,
+        pageCount = 40289,
+        activeUserCount = 84
+    ),
+    SupportedLanguage(
+        code = "su",
+        name = "Sundanese",
+        localName = "Sunda",
+        articleCount = 62154,
+        pageCount = 99753,
+        activeUserCount = 69
+    ),
+    SupportedLanguage(
+        code = "sw",
+        name = "Swahili",
+        localName = "Kiswahili",
+        articleCount = 102930,
+        pageCount = 207204,
+        activeUserCount = 381
+    ),
+    SupportedLanguage(
+        code = "ss",
+        name = "Swati",
+        localName = "SiSwati",
+        articleCount = 1132,
+        pageCount = 3485,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "syl",
+        name = "Sylheti",
+        localName = "ꠍꠤꠟꠐꠤ",
+        articleCount = 1200,
+        pageCount = 6230,
+        activeUserCount = 10
+    ),
+    SupportedLanguage(
+        code = "shi",
+        name = "Tachelhit",
+        localName = "Taclḥit",
+        articleCount = 10882,
+        pageCount = 14941,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "tl",
+        name = "Tagalog",
+        localName = "Tagalog",
+        articleCount = 48806,
+        pageCount = 248059,
+        activeUserCount = 340
+    ),
+    SupportedLanguage(
+        code = "ty",
+        name = "Tahitian",
+        localName = "reo tahiti",
+        articleCount = 1249,
+        pageCount = 3076,
+        activeUserCount = 10
+    ),
+    SupportedLanguage(
+        code = "tdd",
+        name = "Tai Nuea",
+        localName = "ᥖᥭᥰ ᥖᥬᥲ ᥑᥨᥒᥰ",
+        articleCount = 448,
+        pageCount = 2193,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "tg",
+        name = "Tajik",
+        localName = "тоҷикӣ",
+        articleCount = 116080,
+        pageCount = 283806,
+        activeUserCount = 128
+    ),
+    SupportedLanguage(
+        code = "tly",
+        name = "Talysh",
+        localName = "tolışi",
+        articleCount = 10049,
+        pageCount = 13847,
+        activeUserCount = 30
+    ),
+    SupportedLanguage(
+        code = "ta",
+        name = "Tamil",
+        localName = "தமிழ்",
+        articleCount = 178941,
+        pageCount = 609524,
+        activeUserCount = 611
+    ),
+    SupportedLanguage(
+        code = "roa-tara",
+        name = "Tarantino",
+        localName = "tarandíne",
+        articleCount = 9497,
+        pageCount = 18906,
+        activeUserCount = 22
+    ),
+    SupportedLanguage(
+        code = "trv",
+        name = "Taroko",
+        localName = "Seediq",
+        articleCount = 1201,
+        pageCount = 2210,
+        activeUserCount = 17
+    ),
+    SupportedLanguage(
+        code = "tt",
+        name = "Tatar",
+        localName = "татарча / tatarça",
+        articleCount = 562148,
+        pageCount = 899715,
+        activeUserCount = 102
+    ),
+    SupportedLanguage(
+        code = "te",
+        name = "Telugu",
+        localName = "తెలుగు",
+        articleCount = 117337,
+        pageCount = 400932,
+        activeUserCount = 403
+    ),
+    SupportedLanguage(
+        code = "tet",
+        name = "Tetum",
+        localName = "tetun",
+        articleCount = 1379,
+        pageCount = 3952,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "th",
+        name = "Thai",
+        localName = "ไทย",
+        articleCount = 178034,
+        pageCount = 1147627,
+        activeUserCount = 3605
+    ),
+    SupportedLanguage(
+        code = "bo",
+        name = "Tibetan",
+        localName = "བོད་ཡིག",
+        articleCount = 7473,
+        pageCount = 21078,
+        activeUserCount = 49
+    ),
+    SupportedLanguage(
+        code = "tig",
+        name = "Tigre",
+        localName = "ትግሬ",
+        articleCount = 41,
+        pageCount = 474,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "ti",
+        name = "Tigrinya",
+        localName = "ትግርኛ",
+        articleCount = 335,
+        pageCount = 3030,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "tpi",
+        name = "Tok Pisin",
+        localName = "Tok Pisin",
+        articleCount = 1406,
+        pageCount = 5795,
+        activeUserCount = 22
+    ),
+    SupportedLanguage(
+        code = "tok",
+        name = "Toki Pona",
+        localName = "toki pona",
+        articleCount = 3305,
+        pageCount = 8441,
+        activeUserCount = 128
+    ),
+    SupportedLanguage(
+        code = "to",
+        name = "Tongan",
+        localName = "lea faka-Tonga",
+        articleCount = 2043,
+        pageCount = 5536,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "ts",
+        name = "Tsonga",
+        localName = "Xitsonga",
+        articleCount = 950,
+        pageCount = 4238,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "tn",
+        name = "Tswana",
+        localName = "Setswana",
+        articleCount = 3675,
+        pageCount = 8009,
+        activeUserCount = 51
+    ),
+    SupportedLanguage(
+        code = "tcy",
+        name = "Tulu",
+        localName = "ತುಳು",
+        articleCount = 2915,
+        pageCount = 17545,
+        activeUserCount = 31
+    ),
+    SupportedLanguage(
+        code = "tum",
+        name = "Tumbuka",
+        localName = "chiTumbuka",
+        articleCount = 18796,
+        pageCount = 39193,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "tr",
+        name = "Turkish",
+        localName = "Türkçe",
+        articleCount = 654558,
+        pageCount = 3384542,
+        activeUserCount = 5328
+    ),
+    SupportedLanguage(
+        code = "tk",
+        name = "Turkmen",
+        localName = "Türkmençe",
+        articleCount = 7055,
+        pageCount = 17547,
+        activeUserCount = 92
+    ),
+    SupportedLanguage(
+        code = "tyv",
+        name = "Tuvinian",
+        localName = "тыва дыл",
+        articleCount = 4052,
+        pageCount = 14532,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "tw",
+        name = "Twi",
+        localName = "Twi",
+        articleCount = 4623,
+        pageCount = 8592,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "kcg",
+        name = "Tyap",
+        localName = "Tyap",
+        articleCount = 1467,
+        pageCount = 6424,
+        activeUserCount = 11
+    ),
+    SupportedLanguage(
+        code = "udm",
+        name = "Udmurt",
+        localName = "удмурт",
+        articleCount = 5713,
+        pageCount = 20062,
+        activeUserCount = 20
+    ),
+    SupportedLanguage(
+        code = "hsb",
+        name = "Upper Sorbian",
+        localName = "hornjoserbsce",
+        articleCount = 14216,
+        pageCount = 36384,
+        activeUserCount = 42
+    ),
+    SupportedLanguage(
+        code = "ur",
+        name = "Urdu",
+        localName = "اردو",
+        articleCount = 235982,
+        pageCount = 2304519,
+        activeUserCount = 383
+    ),
+    SupportedLanguage(
+        code = "ug",
+        name = "Uyghur",
+        localName = "ئۇيغۇرچە / Uyghurche",
+        articleCount = 9612,
+        pageCount = 17002,
+        activeUserCount = 36
+    ),
+    SupportedLanguage(
+        code = "uz",
+        name = "Uzbek",
+        localName = "oʻzbekcha / ўзбекча",
+        articleCount = 318751,
+        pageCount = 1170022,
+        activeUserCount = 969
+    ),
+    SupportedLanguage(
+        code = "ve",
+        name = "Venda",
+        localName = "Tshivenda",
+        articleCount = 822,
+        pageCount = 2418,
+        activeUserCount = 12
+    ),
+    SupportedLanguage(
+        code = "vec",
+        name = "Venetian",
+        localName = "vèneto",
+        articleCount = 69529,
+        pageCount = 143318,
+        activeUserCount = 64
+    ),
+    SupportedLanguage(
+        code = "vep",
+        name = "Veps",
+        localName = "vepsän kel’",
+        articleCount = 7078,
+        pageCount = 38150,
+        activeUserCount = 26
+    ),
+    SupportedLanguage(
+        code = "rmy",
+        name = "Vlax Romani",
+        localName = "romani čhib",
+        articleCount = 756,
+        pageCount = 2841,
+        activeUserCount = 14
+    ),
+    SupportedLanguage(
+        code = "vo",
+        name = "Volapük",
+        localName = "Volapük",
+        articleCount = 46456,
+        pageCount = 164167,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "fiu-vro",
+        name = "Võro",
+        localName = "võro",
+        articleCount = 6875,
+        pageCount = 13030,
+        activeUserCount = 47
+    ),
+    SupportedLanguage(
+        code = "wa",
+        name = "Walloon",
+        localName = "walon",
+        articleCount = 12815,
+        pageCount = 30698,
+        activeUserCount = 33
+    ),
+    SupportedLanguage(
+        code = "war",
+        name = "Waray",
+        localName = "Winaray",
+        articleCount = 1266830,
+        pageCount = 2870619,
+        activeUserCount = 90
+    ),
+    SupportedLanguage(
+        code = "guc",
+        name = "Wayuu",
+        localName = "wayuunaiki",
+        articleCount = 688,
+        pageCount = 1349,
+        activeUserCount = 40
+    ),
+    SupportedLanguage(
+        code = "cy",
+        name = "Welsh",
+        localName = "Cymraeg",
+        articleCount = 283829,
+        pageCount = 535292,
+        activeUserCount = 176
+    ),
+    SupportedLanguage(
+        code = "bdr",
+        name = "West Coast Bajau",
+        localName = "Bajau Sama",
+        articleCount = 236,
+        pageCount = 1320,
+        activeUserCount = 15
+    ),
+    SupportedLanguage(
+        code = "vls",
+        name = "West Flemish",
+        localName = "West-Vlams",
+        articleCount = 8227,
+        pageCount = 22463,
+        activeUserCount = 48
+    ),
+    SupportedLanguage(
+        code = "hyw",
+        name = "Western Armenian",
+        localName = "Արեւմտահայերէն",
+        articleCount = 13306,
+        pageCount = 28851,
+        activeUserCount = 41
+    ),
+    SupportedLanguage(
+        code = "fy",
+        name = "Western Frisian",
+        localName = "Frysk",
+        articleCount = 58711,
+        pageCount = 175979,
+        activeUserCount = 102
+    ),
+    SupportedLanguage(
+        code = "mrj",
+        name = "Western Mari",
+        localName = "кырык мары",
+        articleCount = 10429,
+        pageCount = 21176,
+        activeUserCount = 18
+    ),
+    SupportedLanguage(
+        code = "pnb",
+        name = "Western Punjabi",
+        localName = "پنجابی",
+        articleCount = 74791,
+        pageCount = 140584,
+        activeUserCount = 60
+    ),
+    SupportedLanguage(
+        code = "wo",
+        name = "Wolof",
+        localName = "Wolof",
+        articleCount = 1745,
+        pageCount = 5567,
+        activeUserCount = 32
+    ),
+    SupportedLanguage(
+        code = "wuu",
+        name = "Wu",
+        localName = "吴语",
+        articleCount = 47034,
+        pageCount = 71682,
+        activeUserCount = 120
+    ),
+    SupportedLanguage(
+        code = "xh",
+        name = "Xhosa",
+        localName = "isiXhosa",
+        articleCount = 2318,
+        pageCount = 5573,
+        activeUserCount = 28
+    ),
+    SupportedLanguage(
+        code = "sah",
+        name = "Yakut",
+        localName = "саха тыла",
+        articleCount = 17825,
+        pageCount = 53970,
+        activeUserCount = 52
+    ),
+    SupportedLanguage(
+        code = "yi",
+        name = "Yiddish",
+        localName = "ייִדיש",
+        articleCount = 15641,
+        pageCount = 44422,
+        activeUserCount = 67
+    ),
+    SupportedLanguage(
+        code = "yo",
+        name = "Yoruba",
+        localName = "Yorùbá",
+        articleCount = 36366,
+        pageCount = 61125,
+        activeUserCount = 111
+    ),
+    SupportedLanguage(
+        code = "zea",
+        name = "Zeelandic",
+        localName = "Zeêuws",
+        articleCount = 7099,
+        pageCount = 13557,
+        activeUserCount = 31
+    ),
+    SupportedLanguage(
+        code = "za",
+        name = "Zhuang",
+        localName = "Vahcuengh",
+        articleCount = 3005,
+        pageCount = 5569,
+        activeUserCount = 19
+    ),
+    SupportedLanguage(
+        code = "zu",
+        name = "Zulu",
+        localName = "isiZulu",
+        articleCount = 11822,
+        pageCount = 26161,
+        activeUserCount = 52
+    ),
+)
