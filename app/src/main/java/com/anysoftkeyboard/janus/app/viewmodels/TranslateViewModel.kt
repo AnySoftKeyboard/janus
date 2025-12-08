@@ -63,9 +63,19 @@ class TranslateViewModel
 @Inject
 constructor(
     private val repository: TranslationRepository,
+    private val recentLanguagesRepository:
+        com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository,
     private val stringProvider: StringProvider,
     private val welcomeMessageProvider: TranslationFlowMessagesProvider
 ) : ViewModel() {
+  val recentLanguages: StateFlow<List<String>> = recentLanguagesRepository.recentLanguages
+
+  fun updateRecentLanguage(code: String) {
+    if (code.isNotEmpty()) {
+      recentLanguagesRepository.addRecentLanguage(code)
+    }
+  }
+
   enum class ErrorType {
     Network,
     RateLimit,

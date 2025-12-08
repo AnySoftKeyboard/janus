@@ -31,6 +31,8 @@ class TranslateViewModelTest {
   private lateinit var fakeRepository: FakeTranslationRepository
   private lateinit var mockWelcomeMessageProvider:
       com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
+  private lateinit var mockRecentLanguagesRepository:
+      com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -39,13 +41,22 @@ class TranslateViewModelTest {
     Dispatchers.setMain(testDispatcher)
     fakeRepository = FakeTranslationRepository(mock(), mock(), FakeStringProvider())
     mockWelcomeMessageProvider = mock()
+    mockRecentLanguagesRepository = mock()
+    whenever(mockRecentLanguagesRepository.recentLanguages)
+        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow(emptyList()))
+
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(
             TranslationFlowMessages(
                 com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.search_instruction_initial))
-    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider(), mockWelcomeMessageProvider)
+    viewModel =
+        TranslateViewModel(
+            fakeRepository,
+            mockRecentLanguagesRepository,
+            FakeStringProvider(),
+            mockWelcomeMessageProvider)
   }
 
   @After
@@ -541,7 +552,12 @@ class TranslateViewModelTest {
         .thenReturn(message2)
 
     // Re-initialize view model to trigger first call
-    viewModel = TranslateViewModel(fakeRepository, FakeStringProvider(), mockWelcomeMessageProvider)
+    viewModel =
+        TranslateViewModel(
+            fakeRepository,
+            mockRecentLanguagesRepository,
+            FakeStringProvider(),
+            mockWelcomeMessageProvider)
 
     viewModel.welcomeMessage.test {
       assertEquals(message1, awaitItem())

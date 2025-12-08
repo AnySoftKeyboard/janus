@@ -34,6 +34,7 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
  * @param sourceLang Currently selected source language
  * @param targetLang Currently selected target language
  * @param pageState Current translation state for extracting translated word
+ * @param recentLanguages List of recently used language codes
  * @param onSourceLanguageSelected Callback when source language is selected
  * @param onTargetLanguageSelected Callback when target language is selected
  * @param onSwapLanguages Callback when swap button is clicked with new search term
@@ -43,6 +44,7 @@ fun LanguageSelectionRow(
     sourceLang: String,
     targetLang: String,
     pageState: TranslateViewState,
+    recentLanguages: List<String>,
     onSourceLanguageSelected: (String) -> Unit,
     onTargetLanguageSelected: (String) -> Unit,
     onSwapLanguages: (String, String, String) -> Unit
@@ -52,7 +54,9 @@ fun LanguageSelectionRow(
       horizontalArrangement = Arrangement.Center,
       verticalAlignment = Alignment.CenterVertically) {
         LanguageSelector(
-            selectedLanguage = sourceLang, onLanguageSelected = onSourceLanguageSelected)
+            selectedLanguage = sourceLang,
+            recentLanguages = recentLanguages,
+            onLanguageSelected = onSourceLanguageSelected)
         IconButton(
             onClick = {
               // If translation is shown, put target word in input, else clear
@@ -72,7 +76,9 @@ fun LanguageSelectionRow(
                   contentDescription = "Swap languages")
             }
         LanguageSelector(
-            selectedLanguage = targetLang, onLanguageSelected = onTargetLanguageSelected)
+            selectedLanguage = targetLang,
+            recentLanguages = recentLanguages,
+            onLanguageSelected = onTargetLanguageSelected)
       }
 }
 
@@ -80,10 +86,15 @@ fun LanguageSelectionRow(
  * Dropdown selector for a single language.
  *
  * @param selectedLanguage Currently selected language code
+ * @param recentLanguages List of recently used language codes
  * @param onLanguageSelected Callback when a language is selected
  */
 @Composable
-fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> Unit) {
+fun LanguageSelector(
+    selectedLanguage: String,
+    recentLanguages: List<String>,
+    onLanguageSelected: (String) -> Unit
+) {
   // In a real app, you'd get this from a ViewModel
   val languages = supportedLanguages
   var expanded by remember { mutableStateOf(false) }
@@ -94,6 +105,23 @@ fun LanguageSelector(selectedLanguage: String, onLanguageSelected: (String) -> U
   Box {
     Button(onClick = { expanded = true }) { Text(selectedName) }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+      // Filter recent languages that are supported
+      val recentSupported =
+          recentLanguages.mapNotNull { code -> languages.find { it.code == code } }
+
+      if (recentSupported.isNotEmpty()) {
+        com.anysoftkeyboard.janus.app.ui.TranslationHeader("RECENT")
+        recentSupported.forEach { language ->
+          DropdownMenuItem(
+              text = { Text(language.name) },
+              onClick = {
+                onLanguageSelected(language.code)
+                expanded = false
+              })
+        }
+        com.anysoftkeyboard.janus.app.ui.TranslationHeader("ALL LANGUAGES")
+      }
+
       languages.forEach { language ->
         DropdownMenuItem(
             text = { Text(language.name) },
