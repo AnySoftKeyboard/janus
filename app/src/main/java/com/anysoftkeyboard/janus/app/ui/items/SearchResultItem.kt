@@ -54,14 +54,15 @@ fun SearchResultItem(
     showAvailableLanguages: Boolean,
     isLoading: Boolean,
     errorMessage: String?,
-    onClick: (() -> Unit)?
+    onClick: (() -> Unit)?,
+    modifier: Modifier = Modifier
 ) {
-  val modifier =
-      Modifier.fillMaxWidth().padding(vertical = 4.dp).let {
+  val cardModifier =
+      modifier.fillMaxWidth().padding(vertical = 4.dp).let {
         if (onClick != null) it.clickable(onClick = onClick) else it
       }
 
-  Card(modifier = modifier) {
+  Card(modifier = cardModifier) {
     Column(modifier = Modifier.padding(16.dp)) {
       // Title row with Wikipedia link button
       Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {

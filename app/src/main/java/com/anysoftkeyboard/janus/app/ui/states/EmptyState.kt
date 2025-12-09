@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -43,10 +44,11 @@ private fun EmptyStateMessage(
     title: String,
     message: String,
     iconTint: Color = MaterialTheme.colorScheme.primary,
+    modifier: Modifier = Modifier,
     iconContent: @Composable () -> Unit
 ) {
   Column(
-      modifier = Modifier.fillMaxWidth().padding(28.dp),
+      modifier = modifier.fillMaxWidth().padding(28.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
       verticalArrangement = Arrangement.Center) {
         iconContent()
@@ -69,10 +71,11 @@ private fun EmptyStateMessageWithPainter(
     message: String,
     iconTint: Color = MaterialTheme.colorScheme.primary,
     painter: Painter,
+    modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null
 ) {
-  EmptyStateMessage(title, message, iconTint) {
+  EmptyStateMessage(title, message, iconTint, modifier) {
     val modifier =
         if (sharedTransitionScope != null && animatedVisibilityScope != null) {
           with(sharedTransitionScope) {
@@ -142,8 +145,23 @@ fun NoResultsState(searchTerm: String) {
   EmptyStateMessageWithPainter(
       title = stringResource(R.string.empty_state_no_results_title),
       message = stringResource(R.string.empty_state_no_results_message, searchTerm),
-      painter = rememberVectorPainter(image = Icons.Default.Search))
-}
+      painter = rememberVectorPainter(image = Icons.Default.Search),
+      modifier = Modifier.testTag("no_results_state"))
+} // TODO: Add Modifier parameter to EmptyStateMessageWithPainter to properly support testTag? Or
+
+// just wrap it?
+// SearchResultsView calls NoResultsState.
+// Let's look at EmptyStateMessageWithPainter. It wraps EmptyStateMessage which takes modifier in
+// the lambda for Icon but not for the column.
+// I will wrap the content in a Box or Column with the tag if I can't easily pipe it.
+
+// Actually EmptyStateMessage takes a lambda for icon.
+// EmptyStateMessageWithPainter calls EmptyStateMessage.
+// EmptyStateMessage creates a Column.
+
+// I'll update EmptyStateMessageWithPainter to take a modifier and pass it to EmptyStateMessage? No,
+// EmptyStateMessage doesn't take a modifier for the root Column.
+// I should update EmptyStateMessage to accept a modifier for the root Column.
 
 /**
  * Error state display.
@@ -187,5 +205,6 @@ fun ErrorStateDisplay(error: TranslateViewState.Error) {
   EmptyStateMessageWithPainter(
       title = stringResource(titleRes),
       message = message,
-      painter = rememberVectorPainter(image = icon))
+      painter = rememberVectorPainter(image = icon),
+      modifier = Modifier.testTag("error_state"))
 }

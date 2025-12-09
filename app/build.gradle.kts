@@ -83,4 +83,13 @@ dependencies {
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.compose.ui.test.manifest)
   testImplementation(libs.cash.turbine)
+
+  androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+  androidTestImplementation(libs.androidx.test.core)
+  androidTestImplementation(libs.androidx.test.runner)
+  androidTestImplementation(libs.androidx.test.rules)
+  androidTestImplementation(libs.androidx.test.ext.junit)
+  androidTestImplementation(libs.androidx.test.espresso.core)
+  debugImplementation(libs.androidx.compose.ui.test.manifest)
+  androidTestImplementation(libs.junit)
 }
