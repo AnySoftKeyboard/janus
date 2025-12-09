@@ -12,6 +12,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.anysoftkeyboard.janus.app.R
@@ -57,5 +58,5 @@ fun SearchInputField(
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
       keyboardActions = KeyboardActions(onSearch = { onSearch() }),
       singleLine = true,
-      modifier = Modifier.fillMaxWidth())
+      modifier = Modifier.fillMaxWidth().testTag("search_box"))
 }
