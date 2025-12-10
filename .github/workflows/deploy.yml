@@ -1,0 +1,38 @@
+name: Publish to Play Store
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    container: ghcr.io/menny/android:1.22.3
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Checkout Secrets
+        uses: actions/checkout@v4.2.2
+        with:
+          repository: AnySoftKeyboard/secrets
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
+          path: secrets
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Deploy to Play Store
+        run: bundle exec fastlane deploy
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANYSOFTKEYBOARD_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.JANUS_RELEASE_KEYSTORE_KEY_PASSWORD }}
