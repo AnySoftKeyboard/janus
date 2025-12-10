@@ -1,8 +1,17 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build and Upload the app to the Google Play Store"
+  desc "Build and Upload the app to the Google Play Store (Production)"
   lane :deploy do
+    deploy_track(track: "production")
+  end
+
+  desc "Build and Upload the app to the Google Play Store (Open Testing)"
+  lane :deploy_open_testing do
+    deploy_track(track: "beta")
+  end
+
+  private_lane :deploy_track do |options|
     # Set default values for signing
     ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore"
     ENV['KEY_ALIAS'] = "janus"
@@ -13,6 +22,6 @@ platform :android do
 
     gradle(task: "clean")
     gradle(task: "bundleRelease")
-    supply(track: "production")
+    supply(track: options[:track])
   end
 end
