@@ -11,6 +11,33 @@ platform :android do
     deploy_track(track: "beta")
   end
 
+  desc "Promote Beta to Production (if active beta exists)"
+  lane :promote_beta_to_production do
+    # Get active version codes from beta track
+    # Note: google_play_track_version_codes returns an array of integers
+    beta_versions = google_play_track_version_codes(
+      package_name: "com.anysoftkeyboard.janus",
+      track: "beta",
+      json_key: "secrets/playstore-publisher-certs.json"
+    )
+
+    if beta_versions.empty?
+      UI.important("No active release found in 'beta' track. Skipping promotion.")
+      next
+    end
+
+    latest_beta_version = beta_versions.max
+    UI.message("Found active beta version: #{latest_beta_version}. Promoting to production...")
+
+    supply(
+      track: "beta",
+      track_promote_to: "production",
+      version_code: latest_beta_version,
+      json_key: "secrets/playstore-publisher-certs.json",
+      package_name: "com.anysoftkeyboard.janus"
+    )
+  end
+
   private_lane :deploy_track do |options|
     # Set default values for signing
     ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore"
