@@ -1,0 +1,17 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build and Upload the app to the Google Play Store"
+  lane :deploy do
+    # Set default values for signing
+    ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore"
+    ENV['KEY_ALIAS'] = "janus"
+
+    # Verify environment variables for Gradle signing
+    UI.user_error!("KEYSTORE_PASSWORD environment variable not set") unless ENV['KEYSTORE_PASSWORD']
+    UI.user_error!("KEY_PASSWORD environment variable not set") unless ENV['KEY_PASSWORD']
+
+    gradle(task: "clean bundleRelease")
+    supply(track: "internal")
+  end
+end
