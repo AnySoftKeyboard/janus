@@ -1,12 +1,12 @@
 default_platform(:android)
 
 platform :android do
-  desc "Build and Upload the app to the Google Play Store (Production)"
+  desc "Upload the app to the Google Play Store (Production)"
   lane :deploy do
     deploy_track(track: "production")
   end
 
-  desc "Build and Upload the app to the Google Play Store (Open Testing)"
+  desc "Upload the app to the Google Play Store (Open Testing)"
   lane :deploy_open_testing do
     deploy_track(track: "beta")
   end
@@ -39,18 +39,11 @@ platform :android do
   end
 
   private_lane :deploy_track do |options|
-    # Set default values for signing
-    ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore" unless ENV['KEYSTORE_FILE']
-    ENV['KEY_ALIAS'] = "janus"
-
-    # Verify environment variables for Gradle signing
-    UI.user_error!("KEYSTORE_PASSWORD environment variable not set") unless ENV['KEYSTORE_PASSWORD']
-    UI.user_error!("KEY_PASSWORD environment variable not set") unless ENV['KEY_PASSWORD']
-
-    gradle(task: "clean")
-    gradle(task: "bundleRelease")
     supply(
       track: options[:track],
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      json_key: "secrets/playstore-publisher-certs.json",
+      package_name: "com.anysoftkeyboard.janus"
       skip_upload_aab: false,
       skip_upload_metadata: false,
       skip_upload_changelogs: false,

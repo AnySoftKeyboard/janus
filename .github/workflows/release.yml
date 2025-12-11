@@ -12,22 +12,28 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.1
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
       - name: Checkout Secrets
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.1
         with:
           repository: AnySoftKeyboard/secrets
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
-          path: secrets_repo
+          path: secrets
 
       - name: Build and Sign
         run: ./gradlew assembleRelease bundleRelease
         env:
-          KEYSTORE_FILE: ${{ github.workspace }}/secrets_repo/anysoftkeyboard.keystore
+          KEYSTORE_FILE: ${{ github.workspace }}/secrets/anysoftkeyboard.keystore
           KEYSTORE_PASSWORD: ${{ secrets.ANYSOFTKEYBOARD_KEYSTORE_PASSWORD }}
           KEY_ALIAS: ${{ secrets.JANUS_RELEASE_KEYSTORE_ALIAS }}
           KEY_PASSWORD: ${{ secrets.JANUS_RELEASE_KEYSTORE_KEY_PASSWORD }}
@@ -41,25 +47,10 @@ jobs:
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
 
-      - name: Checkout Secrets
-        uses: actions/checkout@v4.2.2
-        with:
-          repository: AnySoftKeyboard/secrets
-          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
-          path: secrets
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-
       - name: Deploy to Play Store
         run: bundle exec fastlane deploy
         env:
-          KEYSTORE_PASSWORD: ${{ secrets.ANYSOFTKEYBOARD_KEYSTORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.JANUS_RELEASE_KEYSTORE_KEY_PASSWORD }}
-
+          PLAY_STORE_JSON_KEY: ${{ github.workspace }}/secrets/playstore-publisher-certs.json
 
   increment-version:
     needs: release
@@ -68,7 +59,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout main
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v6.0.1
         with:
           ref: main
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
