@@ -40,7 +40,7 @@ platform :android do
 
   private_lane :deploy_track do |options|
     # Set default values for signing
-    ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore"
+    ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore" unless ENV['KEYSTORE_FILE']
     ENV['KEY_ALIAS'] = "janus"
 
     # Verify environment variables for Gradle signing
@@ -49,6 +49,13 @@ platform :android do
 
     gradle(task: "clean")
     gradle(task: "bundleRelease")
-    supply(track: options[:track])
+    supply(
+      track: options[:track],
+      skip_upload_aab: false,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
   end
 end
