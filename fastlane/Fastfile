@@ -1,0 +1,61 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build and Upload the app to the Google Play Store (Production)"
+  lane :deploy do
+    deploy_track(track: "production")
+  end
+
+  desc "Build and Upload the app to the Google Play Store (Open Testing)"
+  lane :deploy_open_testing do
+    deploy_track(track: "beta")
+  end
+
+  desc "Promote Beta to Production (if active beta exists)"
+  lane :promote_beta_to_production do
+    # Get active version codes from beta track
+    # Note: google_play_track_version_codes returns an array of integers
+    beta_versions = google_play_track_version_codes(
+      package_name: "com.anysoftkeyboard.janus",
+      track: "beta",
+      json_key: "secrets/playstore-publisher-certs.json"
+    )
+
+    if beta_versions.empty?
+      UI.important("No active release found in 'beta' track. Skipping promotion.")
+      next
+    end
+
+    latest_beta_version = beta_versions.max
+    UI.message("Found active beta version: #{latest_beta_version}. Promoting to production...")
+
+    supply(
+      track: "beta",
+      track_promote_to: "production",
+      version_code: latest_beta_version,
+      json_key: "secrets/playstore-publisher-certs.json",
+      package_name: "com.anysoftkeyboard.janus"
+    )
+  end
+
+  private_lane :deploy_track do |options|
+    # Set default values for signing
+    ENV['KEYSTORE_FILE'] = "secrets/anysoftkeyboard.keystore" unless ENV['KEYSTORE_FILE']
+    ENV['KEY_ALIAS'] = "janus"
+
+    # Verify environment variables for Gradle signing
+    UI.user_error!("KEYSTORE_PASSWORD environment variable not set") unless ENV['KEYSTORE_PASSWORD']
+    UI.user_error!("KEY_PASSWORD environment variable not set") unless ENV['KEY_PASSWORD']
+
+    gradle(task: "clean")
+    gradle(task: "bundleRelease")
+    supply(
+      track: options[:track],
+      skip_upload_aab: false,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: false,
+      skip_upload_images: false,
+      skip_upload_screenshots: false
+    )
+  end
+end

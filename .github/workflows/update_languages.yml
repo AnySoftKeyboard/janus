@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,7 +33,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
           commit-message: "chore: update supported languages list"
           title: "chore: Update supported languages list"
           body: "This PR updates the list of supported Wikipedia languages based on the latest statistics."

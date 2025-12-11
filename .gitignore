@@ -27,3 +27,10 @@ local.properties
 .idea
 
 .vscode/
+
+# Secrets
+secrets/
+
+# Fastlane
+fastlane/report.xml
+fastlane/screenshots
