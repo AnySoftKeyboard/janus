@@ -34,3 +34,6 @@ secrets/
 # Fastlane
 fastlane/report.xml
 fastlane/screenshots
+
+# Mac stuff
+.DS_Store
