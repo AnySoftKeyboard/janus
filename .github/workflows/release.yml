@@ -92,10 +92,16 @@ jobs:
           sed -i "s/versionName = \"$VERSION_NAME\"/versionName = \"$NEW_VERSION_NAME\"/" app/build.gradle.kts
           echo "NEW_VERSION_NAME=$NEW_VERSION_NAME" >> $GITHUB_ENV
 
+          # Create a new changelog file
+          CHANGELOG_FILE="fastlane/metadata/android/en-US/changelogs/${NEW_VERSION_CODE}.txt"
+          echo "Creating a new changelog file"
+          echo "Welcome to Janus v${NEW_VERSION_NAME} (${NEW_VERSION_CODE})" > $CHANGELOG_FILE
+
       - name: Commit and Push
         run: |
           git config --global user.name "Polyglot"
           git config --global user.email "ask@evendanan.net"
           git add app/build.gradle.kts
+          git add $CHANGELOG_FILE
           git commit -m "Auto-increment version code to ${{ env.NEW_VERSION_CODE }} and name to ${{ env.NEW_VERSION_NAME }} [skip ci]"
           git push origin main
