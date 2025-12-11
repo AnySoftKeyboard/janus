@@ -18,7 +18,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby-pkgs@v1
         with:
           ruby-version: '3.4'
           bundler-cache: true
