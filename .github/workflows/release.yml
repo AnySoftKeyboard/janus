@@ -17,12 +17,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Setup Ruby
-        uses: ruby/setup-ruby-pkgs@v1
-        with:
-          ruby-version: '3.4'
-          bundler-cache: true
-
       - name: Checkout Secrets
         uses: actions/checkout@v6.0.1
         with:
@@ -46,6 +40,43 @@ jobs:
           files: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/bundle/release/*.aab
+
+      - name: Upload bundle artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aab-bundle
+          path: app/build/outputs/bundle/release/*.aab
+          if-no-files-found: error
+
+  deploy-play-store:
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+
+      - name: Checkout Secrets
+        uses: actions/checkout@v6.0.1
+        with:
+          repository: AnySoftKeyboard/secrets
+          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
+          path: secrets
+
+      - name: Download bundle artifact
+        run: mkdir -p app/build/outputs/bundle/release
+      
+      - uses: actions/download-artifact@v4
+        with:
+          name: aab-bundle
+          path: app/build/outputs/bundle/release
 
       - name: Deploy to Play Store
         run: bundle exec fastlane deploy
