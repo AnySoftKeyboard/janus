@@ -43,7 +43,7 @@ platform :android do
       track: options[:track],
       aab: "app/build/outputs/bundle/release/app-release.aab",
       json_key: "secrets/playstore-publisher-certs.json",
-      package_name: "com.anysoftkeyboard.janus"
+      package_name: "com.anysoftkeyboard.janus",
       skip_upload_aab: false,
       skip_upload_metadata: false,
       skip_upload_changelogs: false,
