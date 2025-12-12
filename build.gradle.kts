@@ -28,4 +28,10 @@ spotless {
     trimTrailingWhitespace()
     endWithNewline()
   }
+  format("ruby") {
+    target("**/*.rb", "**/Fastfile", "**/Appfile", "**/Gemfile")
+    trimTrailingWhitespace()
+    indentWithSpaces(2)
+    endWithNewline()
+  }
 }
