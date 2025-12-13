@@ -39,12 +39,19 @@ class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
     super.onCreate(savedInstanceState)
-    setContent { JanusTheme { JanusApp() } }
+    val initialText =
+        if (savedInstanceState == null &&
+            intent?.action == android.content.Intent.ACTION_PROCESS_TEXT) {
+          intent?.getCharSequenceExtra(android.content.Intent.EXTRA_PROCESS_TEXT)?.toString()
+        } else {
+          null
+        }
+    setContent { JanusTheme { JanusApp(initialText) } }
   }
 }
 
 @Composable
-fun JanusApp() {
+fun JanusApp(initialText: String? = null) {
   val navController = rememberNavController()
   var selectedTab by remember { mutableStateOf(TabScreen.Translate) }
 
@@ -76,7 +83,9 @@ fun JanusApp() {
             navController,
             startDestination = TabScreen.Translate.route,
             Modifier.padding(innerPadding)) {
-              composable(TabScreen.Translate.route) { TranslateScreen(hiltViewModel()) }
+              composable(TabScreen.Translate.route) {
+                TranslateScreen(hiltViewModel(), initialText)
+              }
               composable(TabScreen.History.route) { HistoryScreen(hiltViewModel()) }
               composable(TabScreen.Bookmarks.route) { BookmarksScreen(hiltViewModel()) }
             }
