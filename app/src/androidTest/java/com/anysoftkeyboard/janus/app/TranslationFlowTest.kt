@@ -130,4 +130,37 @@ class TranslationFlowTest {
     composeTestRule.onNodeWithText("EN").assertIsDisplayed()
     composeTestRule.onNodeWithText("ES").assertIsDisplayed()
   }
+
+  @Test
+  fun testLanguageSelectionPersistsOnRecreation() {
+    // Wait for the app to be idle and displayed
+    composeTestRule.waitForIdle()
+
+    // 1. Verify initial selection is "English" and "Hebrew" (default)
+    composeTestRule.onNodeWithText("English").assertIsDisplayed()
+    composeTestRule.onNodeWithText("Hebrew").assertIsDisplayed()
+
+    // 2. Change selection to "Spanish" and "French"
+    // Open source language selector
+    composeTestRule.onNodeWithTag("source_lang_selector").performClick()
+    // Select Spanish
+    composeTestRule.onNodeWithTag("language_menu_item_es").performClick()
+
+    // Open target language selector
+    composeTestRule.onNodeWithTag("target_lang_selector").performClick()
+    // Select French
+    composeTestRule.onNodeWithTag("language_menu_item_fr").performClick()
+
+    // Verify selection updated
+    composeTestRule.onNodeWithText("Spanish").assertIsDisplayed()
+    composeTestRule.onNodeWithText("French").assertIsDisplayed()
+
+    // 3. Trigger activity recreation
+    composeTestRule.activityRule.scenario.recreate()
+    composeTestRule.waitForIdle()
+
+    // 4. Verify selection persists (is still "Spanish" and "French")
+    composeTestRule.onNodeWithText("Spanish").assertIsDisplayed()
+    composeTestRule.onNodeWithText("French").assertIsDisplayed()
+  }
 }

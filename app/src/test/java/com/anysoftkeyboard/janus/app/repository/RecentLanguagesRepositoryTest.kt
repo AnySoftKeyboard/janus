@@ -81,4 +81,34 @@ class RecentLanguagesRepositoryTest {
     assertEquals(listOf("5", "1", "2", "3"), list)
     verify(editor).putString(eq("recent_languages_list"), eq("5,1,2,3"))
   }
+
+  @Test
+  fun `setSourceLanguage updates flow and persists`() = runTest {
+    repository = RecentLanguagesRepository(sharedPreferences)
+
+    repository.setSourceLanguage("fr")
+
+    assertEquals("fr", repository.currentSourceLanguage.first())
+    verify(editor).putString(eq("current_source_lang"), eq("fr"))
+  }
+
+  @Test
+  fun `setTargetLanguage updates flow and persists`() = runTest {
+    repository = RecentLanguagesRepository(sharedPreferences)
+
+    repository.setTargetLanguage("de")
+
+    assertEquals("de", repository.currentTargetLanguage.first())
+    verify(editor).putString(eq("current_target_lang"), eq("de"))
+  }
+
+  @Test
+  fun `initial load of current languages`() = runTest {
+    whenever(sharedPreferences.getString(eq("current_source_lang"), any())).thenReturn("es")
+    whenever(sharedPreferences.getString(eq("current_target_lang"), any())).thenReturn("it")
+    repository = RecentLanguagesRepository(sharedPreferences)
+
+    assertEquals("es", repository.currentSourceLanguage.first())
+    assertEquals("it", repository.currentTargetLanguage.first())
+  }
 }

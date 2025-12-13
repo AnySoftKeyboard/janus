@@ -69,11 +69,21 @@ constructor(
     private val welcomeMessageProvider: TranslationFlowMessagesProvider
 ) : ViewModel() {
   val recentLanguages: StateFlow<List<String>> = recentLanguagesRepository.recentLanguages
+  val sourceLanguage: StateFlow<String> = recentLanguagesRepository.currentSourceLanguage
+  val targetLanguage: StateFlow<String> = recentLanguagesRepository.currentTargetLanguage
 
   fun updateRecentLanguage(code: String) {
     if (code.isNotEmpty()) {
       recentLanguagesRepository.addRecentLanguage(code)
     }
+  }
+
+  fun setSourceLanguage(code: String) {
+    recentLanguagesRepository.setSourceLanguage(code)
+  }
+
+  fun setTargetLanguage(code: String) {
+    recentLanguagesRepository.setTargetLanguage(code)
   }
 
   enum class ErrorType {
