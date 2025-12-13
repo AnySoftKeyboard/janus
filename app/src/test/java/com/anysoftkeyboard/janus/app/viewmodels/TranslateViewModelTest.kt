@@ -44,6 +44,10 @@ class TranslateViewModelTest {
     mockRecentLanguagesRepository = mock()
     whenever(mockRecentLanguagesRepository.recentLanguages)
         .thenReturn(kotlinx.coroutines.flow.MutableStateFlow(emptyList()))
+    whenever(mockRecentLanguagesRepository.currentSourceLanguage)
+        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow("en"))
+    whenever(mockRecentLanguagesRepository.currentTargetLanguage)
+        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow("he"))
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(
@@ -565,5 +569,23 @@ class TranslateViewModelTest {
       viewModel.clearSearch()
       assertEquals(message2, awaitItem())
     }
+  }
+
+  @Test
+  fun `setSourceLanguage calls repository`() = runTest {
+    viewModel.setSourceLanguage("fr")
+    org.mockito.kotlin.verify(mockRecentLanguagesRepository).setSourceLanguage("fr")
+  }
+
+  @Test
+  fun `setTargetLanguage calls repository`() = runTest {
+    viewModel.setTargetLanguage("de")
+    org.mockito.kotlin.verify(mockRecentLanguagesRepository).setTargetLanguage("de")
+  }
+
+  @Test
+  fun `updateRecentLanguage calls repository`() = runTest {
+    viewModel.updateRecentLanguage("es")
+    org.mockito.kotlin.verify(mockRecentLanguagesRepository).addRecentLanguage("es")
   }
 }

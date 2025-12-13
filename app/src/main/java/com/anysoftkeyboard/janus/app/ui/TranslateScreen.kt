@@ -55,8 +55,8 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 @Composable
 fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = null) {
   var text by remember { mutableStateOf(initialSearchTerm ?: "") }
-  var sourceLang by remember { mutableStateOf("en") }
-  var targetLang by remember { mutableStateOf("he") }
+  val sourceLang by viewModel.sourceLanguage.collectAsState()
+  val targetLang by viewModel.targetLanguage.collectAsState()
   val pageState by viewModel.pageState.collectAsState()
 
   // Handle initial search term
@@ -98,16 +98,16 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                 pageState = pageState,
                 recentLanguages = recentLanguages,
                 onSourceLanguageSelected = {
-                  sourceLang = it
+                  viewModel.setSourceLanguage(it)
                   viewModel.updateRecentLanguage(it)
                 },
                 onTargetLanguageSelected = {
-                  targetLang = it
+                  viewModel.setTargetLanguage(it)
                   viewModel.updateRecentLanguage(it)
                 },
                 onSwapLanguages = { newSource, newTarget, newSearchTerm ->
-                  sourceLang = newSource
-                  targetLang = newTarget
+                  viewModel.setSourceLanguage(newSource)
+                  viewModel.setTargetLanguage(newTarget)
                   text = newSearchTerm
                   if (newSearchTerm.isNotEmpty()) {
                     viewModel.searchArticles(newSource, newSearchTerm)
