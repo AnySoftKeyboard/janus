@@ -83,6 +83,8 @@ dependencies {
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.compose.ui.test.manifest)
   testImplementation(libs.cash.turbine)
+  testImplementation(libs.hilt.android.testing)
+  kaptTest(libs.hilt.compiler)
 
   androidTestImplementation(libs.androidx.compose.ui.test.junit4)
   androidTestImplementation(libs.androidx.test.core)

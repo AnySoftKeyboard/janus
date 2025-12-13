@@ -53,11 +53,19 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun TranslateScreen(viewModel: TranslateViewModel) {
-  var text by remember { mutableStateOf("") }
+fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = null) {
+  var text by remember { mutableStateOf(initialSearchTerm ?: "") }
   var sourceLang by remember { mutableStateOf("en") }
   var targetLang by remember { mutableStateOf("he") }
   val pageState by viewModel.pageState.collectAsState()
+
+  // Handle initial search term
+  androidx.compose.runtime.LaunchedEffect(initialSearchTerm) {
+    if (!initialSearchTerm.isNullOrEmpty()) {
+      viewModel.searchArticles(sourceLang, initialSearchTerm)
+    }
+  }
+
   val recentLanguages by viewModel.recentLanguages.collectAsState()
   val welcomeMessage by viewModel.welcomeMessage.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
