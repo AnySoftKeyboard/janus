@@ -46,6 +46,11 @@ class MainActivityTest {
   fun setup() {
     // Mock default behaviors
     whenever(recentLanguagesRepository.recentLanguages).thenReturn(MutableStateFlow(emptyList()))
+    whenever(recentLanguagesRepository.currentSourceLanguage).thenReturn(MutableStateFlow("en"))
+    whenever(recentLanguagesRepository.currentTargetLanguage).thenReturn(MutableStateFlow("es"))
+    whenever(translationRepository.getHistory()).thenReturn(MutableStateFlow(emptyList()))
+    whenever(translationRepository.getBookmarks()).thenReturn(MutableStateFlow(emptyList()))
+
     whenever(translationFlowMessagesProvider.getRandomMessage())
         .thenReturn(
             TranslationFlowMessages(R.string.app_name, R.string.app_name, R.string.app_name))
