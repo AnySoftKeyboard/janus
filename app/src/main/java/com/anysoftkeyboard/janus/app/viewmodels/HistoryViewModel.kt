@@ -50,4 +50,8 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
   fun deleteTranslation(id: Int) {
     viewModelScope.launch { repository.deleteTranslation(id) }
   }
+
+  fun restoreTranslation(translation: com.anysoftkeyboard.janus.app.ui.data.UiTranslation) {
+    viewModelScope.launch { repository.restoreTranslation(translation.toTranslation()) }
+  }
 }

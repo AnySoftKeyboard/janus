@@ -184,4 +184,8 @@ open class TranslationRepository(
   open suspend fun deleteTranslation(id: Int) {
     translationDao.deleteTranslationsByIds(listOf(id))
   }
+
+  open suspend fun restoreTranslation(translation: Translation) {
+    translationDao.insertTranslation(translation)
+  }
 }

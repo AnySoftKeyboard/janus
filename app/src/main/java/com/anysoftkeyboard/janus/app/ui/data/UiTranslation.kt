@@ -35,4 +35,21 @@ data class UiTranslation(
           id = translation.id)
     }
   }
+
+  fun toTranslation(): Translation {
+    return Translation(
+        id = id,
+        sourceWord = sourceWord,
+        sourceLangCode = sourceLang,
+        sourceArticleUrl = sourceArticleUrl,
+        sourceShortDescription = sourceShortDescription,
+        sourceSummary = sourceSummary,
+        translatedWord = targetWord,
+        targetLangCode = targetLang,
+        targetArticleUrl = targetArticleUrl,
+        targetShortDescription = targetShortDescription,
+        targetSummary = targetSummary,
+        isFavorite = isFavorite,
+        timestamp = timestamp)
+  }
 }
