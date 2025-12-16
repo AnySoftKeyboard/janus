@@ -2,6 +2,7 @@ package com.anysoftkeyboard.janus.app.viewmodels
 
 import app.cash.turbine.test
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
+import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.util.FakeStringProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
@@ -326,6 +327,44 @@ class HistoryViewModelTest {
       val history = awaitItem()
       assertEquals(1, history.size)
       assertEquals("Dog", history[0].sourceWord)
+    }
+  }
+
+  @Test
+  fun `restoreTranslation adds item back to history`() = runTest {
+    val testTranslations =
+        listOf(
+            Translation(
+                id = 1,
+                sourceWord = "Cat",
+                sourceLangCode = "en",
+                sourceArticleUrl = "",
+                sourceShortDescription = null,
+                sourceSummary = null,
+                translatedWord = "Gato",
+                targetLangCode = "es",
+                targetArticleUrl = "",
+                targetShortDescription = null,
+                targetSummary = null))
+
+    fakeRepository.setHistory(testTranslations)
+    testDispatcher.scheduler.advanceUntilIdle()
+
+    // First delete
+    viewModel.deleteTranslation(1)
+    testDispatcher.scheduler.advanceUntilIdle()
+
+    // Then restore
+    viewModel.restoreTranslation(UiTranslation.fromTranslation(testTranslations[0]))
+    testDispatcher.scheduler.advanceUntilIdle()
+
+    viewModel.history.test {
+      // Consume initial empty list (from stateIn)
+      skipItems(1)
+
+      val history = awaitItem()
+      assertEquals(1, history.size)
+      assertEquals("Cat", history[0].sourceWord)
     }
   }
 }

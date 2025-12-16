@@ -126,4 +126,39 @@ class UiTranslationTest {
     assertEquals("", uiTranslation.targetShortDescription)
     assertEquals("", uiTranslation.targetSummary)
   }
+
+  @Test
+  fun testToTranslation() {
+    val uiTranslation =
+        UiTranslation(
+            sourceWord = "Cat",
+            sourceLang = "en",
+            sourceArticleUrl = "url1",
+            sourceShortDescription = "desc1",
+            sourceSummary = "summary1",
+            targetWord = "Gato",
+            targetLang = "es",
+            targetArticleUrl = "url2",
+            targetShortDescription = "desc2",
+            targetSummary = "summary2",
+            isFavorite = true,
+            timestamp = 1234567890L,
+            id = 1)
+
+    val translation = uiTranslation.toTranslation()
+
+    assertEquals(1, translation.id)
+    assertEquals("Cat", translation.sourceWord)
+    assertEquals("en", translation.sourceLangCode)
+    assertEquals("url1", translation.sourceArticleUrl)
+    assertEquals("desc1", translation.sourceShortDescription)
+    assertEquals("summary1", translation.sourceSummary)
+    assertEquals("Gato", translation.translatedWord)
+    assertEquals("es", translation.targetLangCode)
+    assertEquals("url2", translation.targetArticleUrl)
+    assertEquals("desc2", translation.targetShortDescription)
+    assertEquals("summary2", translation.targetSummary)
+    assertEquals(true, translation.isFavorite)
+    assertEquals(1234567890L, translation.timestamp)
+  }
 }
