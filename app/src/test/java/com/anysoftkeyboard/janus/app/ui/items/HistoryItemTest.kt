@@ -30,7 +30,8 @@ class HistoryItemTest {
           targetSummary =
               "El gato doméstico (Felis silvestris catus), llamado popularmente gato...",
           isFavorite = false,
-          timestamp = 1234567890L)
+          timestamp = 1234567890L,
+          id = 1)
 
   @OptIn(ExperimentalSharedTransitionApi::class)
   @Test

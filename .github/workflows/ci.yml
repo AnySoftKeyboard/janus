@@ -21,6 +21,9 @@ jobs:
       - name: Build and Check
         run: ./gradlew assembleDebug lintDebug spotlessCheck
 
+      - name: Test
+        run: ./gradlew testDebugUnitTest
+
       - name: Upload APK
         uses: actions/upload-artifact@v4.6.2
         with:

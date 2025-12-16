@@ -59,4 +59,12 @@ constructor(
   fun setBookmarks(bookmarks: List<Translation>) {
     _bookmarks.value = bookmarks
   }
+
+  override suspend fun deleteTranslation(id: Int) {
+    _history.value = _history.value.filter { it.id != id }
+  }
+
+  override suspend fun restoreTranslation(translation: Translation) {
+    _history.value = _history.value + translation
+  }
 }
