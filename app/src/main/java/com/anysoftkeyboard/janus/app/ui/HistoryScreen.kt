@@ -45,7 +45,9 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
     } else {
       val context = LocalContext.current
       val uiTranslations = history.map { UiTranslation.fromTranslation(it) }
-      HistoryItemsList(groupedTranslations = HistoryGrouper.group(context, uiTranslations))
+      HistoryItemsList(
+          groupedTranslations = HistoryGrouper.group(context, uiTranslations),
+          onDelete = { viewModel.deleteTranslation(it.id) })
     }
   }
 }

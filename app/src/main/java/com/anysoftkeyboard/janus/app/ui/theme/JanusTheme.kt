@@ -23,7 +23,8 @@ private val DarkColorScheme =
         surface = Charcoal,
         onSurface = OffWhiteText,
         secondary = Patina,
-        onSecondary = DarkTextOnPatina)
+        onSecondary = DarkTextOnPatina,
+        error = TerraCotta)
 
 private val LightColorScheme =
     lightColorScheme(
@@ -34,7 +35,8 @@ private val LightColorScheme =
         onSurface = DeepInk,
         secondaryContainer = BeigeTan,
         secondary = Verdigris,
-        onSecondary = PureWhite)
+        onSecondary = PureWhite,
+        error = TerraCotta)
 
 @Composable
 fun JanusTheme(
@@ -49,7 +51,6 @@ fun JanusTheme(
           val context = LocalContext.current
           if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
       }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -44,5 +45,9 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
 
   fun clearSearch() {
     _searchQuery.value = ""
+  }
+
+  fun deleteTranslation(id: Int) {
+    viewModelScope.launch { repository.deleteTranslation(id) }
   }
 }

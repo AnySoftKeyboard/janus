@@ -15,6 +15,7 @@ data class UiTranslation(
     val targetSummary: String?,
     val isFavorite: Boolean,
     val timestamp: Long,
+    val id: Int,
 ) {
   companion object {
     fun fromTranslation(translation: Translation): UiTranslation {
@@ -30,7 +31,8 @@ data class UiTranslation(
           targetShortDescription = translation.targetShortDescription,
           targetSummary = translation.targetSummary,
           isFavorite = translation.isFavorite,
-          timestamp = translation.timestamp)
+          timestamp = translation.timestamp,
+          id = translation.id)
     }
   }
 }

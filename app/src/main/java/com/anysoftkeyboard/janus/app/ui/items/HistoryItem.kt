@@ -19,10 +19,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -56,7 +61,8 @@ fun HistoryItem(
     isExpanded: Boolean = false,
     unfocused: Boolean = false,
     sharedTransitionScope: SharedTransitionScope,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    onDelete: () -> Unit = {}
 ) {
   val interactionSource = remember { MutableInteractionSource() }
   val blurRadius by animateDpAsState(targetValue = if (unfocused) 2.dp else 0.dp, label = "blur")
@@ -100,7 +106,8 @@ fun HistoryItem(
                       indication = null,
                       onClick = onClick)) { targetExpanded ->
                 if (targetExpanded) {
-                  ExpandedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
+                  ExpandedHistoryItem(
+                      translation, sharedTransitionScope, this@AnimatedContent, onDelete)
                 } else {
                   CondensedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
                 }
@@ -189,7 +196,8 @@ private fun CondensedHistoryItem(
 private fun ExpandedHistoryItem(
     translation: UiTranslation,
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    onDelete: () -> Unit
 ) {
   with(sharedTransitionScope) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -302,6 +310,22 @@ private fun ExpandedHistoryItem(
             text = summary,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant)
+      }
+
+      Spacer(modifier = Modifier.height(16.dp))
+
+      Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        TextButton(onClick = onDelete) {
+          Icon(
+              imageVector = Icons.Outlined.Delete,
+              contentDescription = "Remove translation",
+              tint = MaterialTheme.colorScheme.error)
+          Spacer(modifier = Modifier.width(8.dp))
+          Text(
+              text = "REMOVE",
+              style = MaterialTheme.typography.labelLarge,
+              color = MaterialTheme.colorScheme.error)
+        }
       }
     }
   }

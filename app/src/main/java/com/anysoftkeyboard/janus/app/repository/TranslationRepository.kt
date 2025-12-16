@@ -180,4 +180,8 @@ open class TranslationRepository(
         }
         .also { it.forEach { t -> translationDao.insertTranslation(t) } }
   }
+
+  open suspend fun deleteTranslation(id: Int) {
+    translationDao.deleteTranslationsByIds(listOf(id))
+  }
 }

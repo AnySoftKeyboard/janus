@@ -34,7 +34,10 @@ import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
+fun HistoryItemsList(
+    groupedTranslations: Map<String, List<UiTranslation>>,
+    onDelete: (UiTranslation) -> Unit
+) {
   var expandedItemId by remember { mutableStateOf<Long?>(null) }
 
   val listState = rememberLazyListState()
@@ -86,6 +89,10 @@ fun HistoryItemsList(groupedTranslations: Map<String, List<UiTranslation>>) {
                         } else {
                           translation.timestamp
                         }
+                  },
+                  onDelete = {
+                    expandedItemId = null
+                    onDelete(translation)
                   })
             }
           }

@@ -10,6 +10,7 @@ val DarkTextOnGold = Color(0xFF1C1C1E)
 val OffWhiteText = Color(0xFFE6E1E5)
 val Patina = Color(0xFF85D3CB) // Pale Aqua-Grey (Glowing Oxidation)
 val DarkTextOnPatina = Color(0xFF003734)
+val TerraCotta = Color(0xFFC05A4E)
 
 // Light Theme Colors
 val WarmAlabaster = Color(0xFFF9F6F2)
