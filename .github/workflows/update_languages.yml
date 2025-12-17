@@ -12,6 +12,7 @@ permissions:
 jobs:
   update-languages:
     runs-on: ubuntu-latest
+    container: ghcr.io/menny/android:1.22.3
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -19,16 +20,19 @@ jobs:
           ref: main
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
       - name: Install dependencies
-        run: pip install beautifulsoup4
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install --no-cache-dir beautifulsoup4
 
       - name: Run update script
-        run: python3 scripts/update_languages.py
+        run: .venv/bin/python3 scripts/update_languages.py
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run spotlessApply
+        run: ./gradlew spotlessApply
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
