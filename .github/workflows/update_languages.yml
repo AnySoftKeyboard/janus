@@ -22,8 +22,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-bs4
+          apt-get update
+          apt-get install -y python3-bs4
 
       - name: Run update script
         run: python3 scripts/update_languages.py
