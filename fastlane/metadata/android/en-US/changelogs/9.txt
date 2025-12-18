@@ -1,1 +1,4 @@
 Welcome to Janus v0.1.4 (9)
+* Translate selected text from any app using the system "Translate with Janus" menu option.
+* Janus now remembers your last chosen source and target languages.
+* Manage your translation history: easily remove items and undo accidental deletions.
