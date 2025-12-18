@@ -59,6 +59,11 @@
 
 ---
 
+# Agent Skills
+- **App Changelog**: If you are asked to generate or update an app changelog, you **MUST** read and follow the instructions in [.claude/skills/write-app-change-log/SKILL.md](.claude/skills/write-app-change-log/SKILL.md).
+
+---
+
 # Documentation
 - **Design & Branding**: [docs/DESIGN.md](docs/DESIGN.md) - UI/UX strategy, branding, typography, and themes.
 - **Initial Design**: [docs/INITIAL-DESIGN.md](docs/INITIAL-DESIGN.md) - Original design manifest.
