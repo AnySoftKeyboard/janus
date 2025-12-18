@@ -20,22 +20,13 @@ jobs:
           ref: main
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-
       - name: Install dependencies
-        run: pip install beautifulsoup4
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-bs4
 
       - name: Run update script
         run: python3 scripts/update_languages.py
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Run spotlessApply
-        run: ./gradlew spotlessApply
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
