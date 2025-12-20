@@ -31,6 +31,7 @@ hilt = "2.57"
 hilt_navigation_compose = "1.2.0"
 androidx_core_splashscreen = "1.2.0"
 composeAnimation = "1.7.5"
+dropshots = "0.5.1"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
@@ -83,3 +84,4 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_gr
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_gradle_plugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_gradle_plugin" }
+dropshots = { id = "com.dropbox.dropshots", version.ref = "dropshots" }
