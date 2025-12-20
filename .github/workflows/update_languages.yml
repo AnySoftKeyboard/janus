@@ -12,7 +12,6 @@ permissions:
 jobs:
   update-languages:
     runs-on: ubuntu-latest
-    container: ghcr.io/menny/android:1.22.3
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -20,13 +19,28 @@ jobs:
           ref: main
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
       - name: Install dependencies
         run: |
-          apt-get update
-          apt-get install -y python3-bs4
+          pip install beautifulsoup4
 
       - name: Run update script
         run: python3 scripts/update_languages.py
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          cmdline-tools-version: 13114758
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
