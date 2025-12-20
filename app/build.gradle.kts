@@ -4,6 +4,7 @@ plugins {
   id("kotlin-kapt")
   id("dagger.hilt.android.plugin")
   alias(libs.plugins.compose.compiler)
+  alias(libs.plugins.dropshots)
 }
 
 android {
@@ -45,7 +46,19 @@ android {
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
 
-  testOptions { unitTests.isIncludeAndroidResources = true }
+  testOptions {
+    unitTests.isIncludeAndroidResources = true
+    managedDevices {
+      devices {
+        // You can name this whatever you want
+        register<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6Api33") {
+          device = "Pixel 6"
+          apiLevel = 33
+          systemImageSource = "google"
+        }
+      }
+    }
+  }
 
   lint { disable += "MissingTranslation" }
 }
