@@ -3,6 +3,10 @@
   "extends": [
     "config:base"
   ],
+  "platform": "github",
+  "onboarding": false,
+  "requireConfig": "optional",
+  "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "packageRules": [
     {
       "matchManagers": ["gradle", "gradle-wrapper"],
