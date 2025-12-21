@@ -1,0 +1,50 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "packageRules": [
+    {
+      "matchManagers": ["gradle", "gradle-wrapper"],
+      "groupName": "Gradle dependencies",
+      "schedule": ["every weekend"]
+    },
+    {
+      "matchPackagePatterns": ["^androidx\\."],
+      "groupName": "AndroidX dependencies",
+      "schedule": ["every weekend"]
+    },
+    {
+      "matchPackagePatterns": ["^com\\.google\\.android"],
+      "groupName": "Google Android dependencies",
+      "schedule": ["every weekend"]
+    },
+    {
+      "matchPackagePatterns": ["^org\\.jetbrains\\.kotlin"],
+      "groupName": "Kotlin dependencies",
+      "schedule": ["every weekend"]
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
+  ],
+  "gradle": {
+    "enabled": true
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "assignees": []
+  },
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "semanticCommits": "disabled",
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 0,
+  "timezone": "UTC",
+  "assignees": [],
+  "reviewers": []
+}
