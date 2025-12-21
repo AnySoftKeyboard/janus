@@ -5,10 +5,10 @@ plugins {
 
 android {
   namespace = "com.anysoftkeyboard.janus.network"
-  compileSdk = 35
+  compileSdk = 36
 
   defaultConfig {
-    minSdk = 21
+    minSdk = 23
     targetSdk = 35
 
     consumerProguardFiles("consumer-rules.pro")

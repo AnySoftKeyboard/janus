@@ -1,7 +1,7 @@
 plugins {
   id("com.android.application")
   id("org.jetbrains.kotlin.android")
-  id("kotlin-kapt")
+  alias(libs.plugins.ksp)
   id("dagger.hilt.android.plugin")
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.dropshots)
@@ -9,7 +9,7 @@ plugins {
 
 android {
   namespace = "com.anysoftkeyboard.janus.app"
-  compileSdk = 35
+  compileSdk = 36
 
   dependenciesInfo {
     // Reproducible builds
@@ -19,7 +19,7 @@ android {
 
   defaultConfig {
     applicationId = "com.anysoftkeyboard.janus"
-    minSdk = 21
+    minSdk = 23
     targetSdk = 35
     versionCode = 10
     versionName = "0.1.5"
@@ -45,6 +45,7 @@ android {
   }
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
+  configurations.all { resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0") }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
@@ -88,7 +89,7 @@ dependencies {
   implementation(libs.moshi.kotlin)
   implementation(libs.hilt.android)
   implementation(libs.hilt.navigation.compose)
-  kapt(libs.hilt.compiler)
+  ksp(libs.hilt.compiler)
 
   testImplementation(libs.junit)
   testImplementation(libs.robolectric)
@@ -97,7 +98,7 @@ dependencies {
   testImplementation(libs.androidx.compose.ui.test.manifest)
   testImplementation(libs.cash.turbine)
   testImplementation(libs.hilt.android.testing)
-  kaptTest(libs.hilt.compiler)
+  kspTest(libs.hilt.compiler)
 
   androidTestImplementation(libs.androidx.compose.ui.test.junit4)
   androidTestImplementation(libs.androidx.test.core)
