@@ -9,6 +9,10 @@
   "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "packageRules": [
     {
+      "matchManagers": ["github-actions"],
+      "groupName": "GitHub Actions"
+    },
+    {
       "matchManagers": ["gradle", "gradle-wrapper"],
       "groupName": "Gradle dependencies"
     },
