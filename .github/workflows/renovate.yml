@@ -23,6 +23,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.1
 
+      - name: Cache Renovate data
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/renovate
+          key: renovate-cache-${{ github.run_id }}
+          restore-keys: |
+            renovate-cache-
+
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v44.2.0
         with:
@@ -32,3 +40,4 @@ jobs:
         env:
           LOG_LEVEL: debug
           RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_REPOSITORY_CACHE: enabled
