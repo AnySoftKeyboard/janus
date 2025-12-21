@@ -74,9 +74,13 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
             EmptySearchResults(query = searchQuery)
           } else {
             val context = LocalContext.current
-            val uiTranslations = history.map { UiTranslation.fromTranslation(it) }
+            val uiTranslations =
+                remember(history) { history.map { UiTranslation.fromTranslation(it) } }
+            val groupedTranslations =
+                remember(uiTranslations, context) { HistoryGrouper.group(context, uiTranslations) }
+
             HistoryItemsList(
-                groupedTranslations = HistoryGrouper.group(context, uiTranslations),
+                groupedTranslations = groupedTranslations,
                 onDelete = { translation ->
                   viewModel.deleteTranslation(translation.id)
                   scope.launch {
