@@ -92,7 +92,7 @@ dependencies {
 
   testImplementation(libs.junit)
   testImplementation(libs.robolectric)
-  testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
+  testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
   testImplementation(libs.androidx.compose.ui.test.junit4)
   testImplementation(libs.androidx.compose.ui.test.manifest)
   testImplementation(libs.cash.turbine)
