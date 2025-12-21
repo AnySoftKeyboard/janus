@@ -18,19 +18,21 @@
     },
     {
       "matchManagers": ["gradle", "gradle-wrapper"],
-      "groupName": "Gradle dependencies"
+      "matchPackageNames": ["gradle"],
+      "groupName": "Build system"
     },
     {
-      "matchPackagePatterns": ["^androidx\\."],
-      "groupName": "AndroidX dependencies"
-    },
-    {
-      "matchPackagePatterns": ["^com\\.google\\.android"],
-      "groupName": "Google Android dependencies"
-    },
-    {
-      "matchPackagePatterns": ["^org\\.jetbrains\\.kotlin"],
-      "groupName": "Kotlin dependencies"
+      "matchManagers": ["gradle"],
+      "matchPackagePatterns": [
+        "^androidx\\.",
+        "^com\\.google\\.android",
+        "^org\\.jetbrains\\.kotlin",
+        "^com\\.google\\.dagger",
+        "^com\\.squareup\\.retrofit",
+        "^com\\.squareup\\.okhttp",
+        "^com\\.squareup\\.moshi"
+      ],
+      "groupName": "App dependencies"
     },
     {
       "matchDepTypes": ["devDependencies"],
