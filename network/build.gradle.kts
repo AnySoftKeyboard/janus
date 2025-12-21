@@ -5,12 +5,13 @@ plugins {
 
 android {
   namespace = "com.anysoftkeyboard.janus.network"
-  compileSdk = 35
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = 21
+    minSdk = libs.versions.minSdk.get().toInt()
     targetSdk = 35
 
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     consumerProguardFiles("consumer-rules.pro")
   }
 

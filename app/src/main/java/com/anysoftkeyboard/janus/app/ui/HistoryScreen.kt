@@ -74,6 +74,8 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
             EmptySearchResults(query = searchQuery)
           } else {
             val context = LocalContext.current
+            val translationRemovedMessage = stringResource(R.string.translation_removed)
+            val undoLabel = stringResource(R.string.action_undo)
             val uiTranslations =
                 remember(history) { history.map { UiTranslation.fromTranslation(it) } }
             val groupedTranslations =
@@ -86,8 +88,8 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
                   scope.launch {
                     val result =
                         snackbarHostState.showSnackbar(
-                            message = context.getString(R.string.translation_removed),
-                            actionLabel = context.getString(R.string.action_undo),
+                            message = translationRemovedMessage,
+                            actionLabel = undoLabel,
                             duration = SnackbarDuration.Short,
                             withDismissAction = true)
                     if (result == SnackbarResult.ActionPerformed) {
