@@ -1,6 +1,6 @@
 {
 	"name": "Android",
-	"image": "ghcr.io/menny/android:1.21.2",
+	"image": "ghcr.io/menny/android:1.22.3",
 	"extensions": [
 		"vscjava.vscode-gradle",
 		"adelphes.android-dev-ext"
