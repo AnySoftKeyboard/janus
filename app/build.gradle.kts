@@ -9,7 +9,7 @@ plugins {
 
 android {
   namespace = "com.anysoftkeyboard.janus.app"
-  compileSdk = 36
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   dependenciesInfo {
     // Reproducible builds
@@ -19,8 +19,8 @@ android {
 
   defaultConfig {
     applicationId = "com.anysoftkeyboard.janus"
-    minSdk = 23
-    targetSdk = 35
+    minSdk = libs.versions.minSdk.get().toInt()
+    targetSdk = libs.versions.targetSdk.get().toInt()
     versionCode = 10
     versionName = "0.1.5"
 

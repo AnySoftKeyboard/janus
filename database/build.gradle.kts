@@ -6,10 +6,10 @@ plugins {
 
 android {
   namespace = "com.anysoftkeyboard.janus.database"
-  compileSdk = 36
+  compileSdk = libs.versions.compileSdk.get().toInt()
 
   defaultConfig {
-    minSdk = 23
+    minSdk = libs.versions.minSdk.get().toInt()
     targetSdk = 35
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
