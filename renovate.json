@@ -13,6 +13,10 @@
       "groupName": "GitHub Actions"
     },
     {
+      "matchManagers": ["bundler"],
+      "groupName": "Ruby dependencies"
+    },
+    {
       "matchManagers": ["gradle", "gradle-wrapper"],
       "groupName": "Gradle dependencies"
     },
