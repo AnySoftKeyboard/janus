@@ -7,16 +7,6 @@ on:
 
   # Allow manual triggers
   workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: false
-        default: 'info'
-        type: choice
-        options:
-          - info
-          - debug
-          - trace
 
   # Run on pushes to renovate.json to validate configuration
   push:
@@ -40,5 +30,5 @@ jobs:
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
           renovate-version: 39.131.0
         env:
-          LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
+          LOG_LEVEL: debug
           RENOVATE_REPOSITORIES: ${{ github.repository }}

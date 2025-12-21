@@ -10,23 +10,19 @@
   "packageRules": [
     {
       "matchManagers": ["gradle", "gradle-wrapper"],
-      "groupName": "Gradle dependencies",
-      "schedule": ["every weekend"]
+      "groupName": "Gradle dependencies"
     },
     {
       "matchPackagePatterns": ["^androidx\\."],
-      "groupName": "AndroidX dependencies",
-      "schedule": ["every weekend"]
+      "groupName": "AndroidX dependencies"
     },
     {
       "matchPackagePatterns": ["^com\\.google\\.android"],
-      "groupName": "Google Android dependencies",
-      "schedule": ["every weekend"]
+      "groupName": "Google Android dependencies"
     },
     {
       "matchPackagePatterns": ["^org\\.jetbrains\\.kotlin"],
-      "groupName": "Kotlin dependencies",
-      "schedule": ["every weekend"]
+      "groupName": "Kotlin dependencies"
     },
     {
       "matchDepTypes": ["devDependencies"],
