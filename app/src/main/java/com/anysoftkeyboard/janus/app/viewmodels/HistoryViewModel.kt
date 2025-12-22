@@ -7,15 +7,17 @@ import com.anysoftkeyboard.janus.database.entities.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class HistoryViewModel @Inject constructor(private val repository: TranslationRepository) :
     ViewModel() {
@@ -27,6 +29,8 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
   // History that automatically updates based on search query
   val history: StateFlow<List<Translation>> =
       _searchQuery
+          // Debounce search to reduce DB queries, but update immediately on clear
+          .debounce { if (it.isBlank()) 0L else 300L }
           .flatMapLatest { query ->
             if (query.isBlank()) {
               repository.getHistory()
