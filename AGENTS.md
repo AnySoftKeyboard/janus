@@ -15,6 +15,19 @@
 - Do not manually fix linting or formatting issues. The project uses an auto-formatter.
 - You can run the auto-formatter with the command `./gradlew spotlessApply`. This applies to all code in the codebase.
 
+--
+
+# Code style
+
+## Code comments
+- should be rare in our code base: naming and readability should do most of the documenting
+- comments should explain the "why".
+- if there is a need to explain a complex code block:
+  - use clear language
+  - you may use: pseudocode, simple diagrams, examples
+  - citations are encourage is relavent
+- comment may be included if a critical "TODO" need - document what needs to be implemented/modified.
+
 ---
 
 # Git Commit Guidelines
