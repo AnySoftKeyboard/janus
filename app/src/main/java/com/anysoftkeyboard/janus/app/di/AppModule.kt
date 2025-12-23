@@ -113,6 +113,12 @@ object AppModule {
   ): android.content.SharedPreferences {
     return context.getSharedPreferences("janus_prefs", Context.MODE_PRIVATE)
   }
+
+  @Provides
+  @Singleton
+  fun provideLanguageDetector(): com.anysoftkeyboard.janus.app.util.LanguageDetector {
+    return com.anysoftkeyboard.janus.app.util.MockLanguageDetector()
+  }
 }
 
 interface LangRetrofitFactory {

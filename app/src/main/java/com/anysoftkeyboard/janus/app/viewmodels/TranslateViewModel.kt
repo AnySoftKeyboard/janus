@@ -67,6 +67,7 @@ constructor(
         com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository,
     private val stringProvider: StringProvider,
     private val welcomeMessageProvider: TranslationFlowMessagesProvider,
+    private val languageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector,
 ) : ViewModel() {
   val recentLanguages: StateFlow<List<String>> = recentLanguagesRepository.recentLanguages
   val sourceLanguage: StateFlow<String> = recentLanguagesRepository.currentSourceLanguage
@@ -92,6 +93,7 @@ constructor(
     NotFound,
     Server,
     Unknown,
+    DetectionFailed,
   }
 
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
@@ -111,10 +113,32 @@ constructor(
     _state.value = TranslateViewState.FetchingOptions
     viewModelScope.launch {
       try {
+        val effectiveSourceLang =
+            if (
+                sourceLang ==
+                    com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE
+            ) {
+              // TODO: Show "Detecting language..." state
+              when (val detection = languageDetector.detect(term)) {
+                is com.anysoftkeyboard.janus.app.util.DetectionResult.Success ->
+                    detection.detectedLanguageCode
+                is com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous -> {
+                  // For now, just pick the first one or default to English
+                  // Stage 3 will handle disambiguation
+                  detection.candidates.firstOrNull()?.languageCode ?: "en"
+                }
+                com.anysoftkeyboard.janus.app.util.DetectionResult.Failure -> {
+                  throw Exception("Language detection failed")
+                }
+              }
+            } else {
+              sourceLang
+            }
+
         _state.value =
             TranslateViewState.OptionsFetched(
                 term,
-                repository.searchArticles(sourceLang, term),
+                repository.searchArticles(effectiveSourceLang, term),
                 emptyMap(),
             )
       } catch (e: Exception) {

@@ -111,4 +111,8 @@
     <string name="error_unknown_title">Unerwartetes Problem</string>
     <string name="language_selector_recent">KÜRZLICH</string>
     <string name="language_selector_all_languages">ALLE SPRACHEN</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Sprache unbekannt</string>
+    <string name="error_detection_failed_message">Die Sprache des Eingabetextes konnte nicht erkannt werden.</string>
 </resources>

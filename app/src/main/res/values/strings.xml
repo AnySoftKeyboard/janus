@@ -1,6 +1,8 @@
 <resources>
     <!-- App name -->
     <string name="app_name">Janus</string>
+    <string name="auto_detect_language_name">Auto-detect</string>
+    <string name="loading_languages">Loading languages…</string>
 
     <!-- Main navigation tabs -->
     <string name="tab_translate">Translate</string>
@@ -114,4 +116,8 @@
     <string name="process_text_activity_title">Translate with Janus</string>
     <string name="translation_removed">Translation removed</string>
     <string name="action_undo">Undo</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Language Unknown</string>
+    <string name="error_detection_failed_message">Could not detect the language of the input text.</string>
 </resources>

@@ -111,4 +111,8 @@
     <string name="error_unknown_title">مشكلة غير متوقعة</string>
     <string name="language_selector_recent">حديث</string>
     <string name="language_selector_all_languages">كل اللغات</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">لغة غير معروفة</string>
+    <string name="error_detection_failed_message">تعذر اكتشاف لغة النص المُدخل.</string>
 </resources>

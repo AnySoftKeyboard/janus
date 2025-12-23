@@ -111,4 +111,8 @@
     <string name="error_unknown_title">Problème inattendu</string>
     <string name="language_selector_recent">RÉCENT</string>
     <string name="language_selector_all_languages">TOUTES LES LANGUES</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Langue inconnue</string>
+    <string name="error_detection_failed_message">Impossible de détecter la langue du texte saisi.</string>
 </resources>

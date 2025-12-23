@@ -111,4 +111,8 @@
     <string name="error_unknown_title">Неожиданная проблема</string>
     <string name="language_selector_recent">НЕДАВНИЕ</string>
     <string name="language_selector_all_languages">ВСЕ ЯЗЫКИ</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Язык неизвестен</string>
+    <string name="error_detection_failed_message">Не удалось определить язык введенного текста.</string>
 </resources>

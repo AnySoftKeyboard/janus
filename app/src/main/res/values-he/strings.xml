@@ -111,4 +111,8 @@
     <string name="error_unknown_title">בעיה לא צפויה</string>
     <string name="language_selector_recent">אחרונים</string>
     <string name="language_selector_all_languages">כל השפות</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">שפה לא ידועה</string>
+    <string name="error_detection_failed_message">לא ניתן היה לזהות את השפה של הטקסט שהוזן.</string>
 </resources>
