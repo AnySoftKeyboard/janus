@@ -71,6 +71,10 @@ fun HistoryItem(
       animateFloatAsState(targetValue = if (unfocused) 0.05f else 1f, label = "saturation")
   val scale by animateFloatAsState(targetValue = if (unfocused) 0.8f else 1f, label = "scale")
 
+  val matrix = remember { ColorMatrix() }
+  val scaleMatrix = remember { ColorMatrix() }
+  val paint = remember { Paint() }
+
   Card(
       modifier =
           modifier
@@ -80,13 +84,12 @@ fun HistoryItem(
               .padding(horizontal = padding)
               .drawWithContent {
                 if (saturation < 0.99f || scale < 0.99f) {
-                  val matrix = ColorMatrix()
                   matrix.setToSaturation(saturation)
-                  val scaleMatrix = ColorMatrix().apply { setToScale(scale, scale, scale, 1f) }
+                  scaleMatrix.setToScale(scale, scale, scale, 1f)
                   matrix.timesAssign(scaleMatrix)
 
                   val filter = ColorFilter.colorMatrix(matrix)
-                  val paint = Paint().apply { colorFilter = filter }
+                  paint.colorFilter = filter
                   drawIntoCanvas { canvas ->
                     canvas.saveLayer(Rect(Offset.Zero, size), paint)
                     drawContent()
