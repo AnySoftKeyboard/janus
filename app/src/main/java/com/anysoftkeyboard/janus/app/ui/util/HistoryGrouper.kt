@@ -15,13 +15,15 @@ object HistoryGrouper {
 
     val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     val itemCalendar = Calendar.getInstance()
+    val todayString = context.getString(R.string.history_group_today)
+    val yesterdayString = context.getString(R.string.history_group_yesterday)
 
     return items.groupBy { item ->
       itemCalendar.timeInMillis = item.timestamp
 
       when {
-        isSameDay(today, itemCalendar) -> context.getString(R.string.history_group_today)
-        isSameDay(yesterday, itemCalendar) -> context.getString(R.string.history_group_yesterday)
+        isSameDay(today, itemCalendar) -> todayString
+        isSameDay(yesterday, itemCalendar) -> yesterdayString
         else -> monthYearFormat.format(itemCalendar.time).uppercase()
       }
     }
