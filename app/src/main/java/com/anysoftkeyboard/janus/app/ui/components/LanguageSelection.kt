@@ -100,6 +100,7 @@ fun LanguageSelector(
 ) {
   // In a real app, you'd get this from a ViewModel
   val languages = supportedLanguages
+  val languagesMap = supportedLanguagesMap
   var expanded by remember { mutableStateOf(false) }
 
   // Find name for selected code
