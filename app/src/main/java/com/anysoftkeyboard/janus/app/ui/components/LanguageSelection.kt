@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
+import com.anysoftkeyboard.janus.app.util.supportedLanguagesMap
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
 
@@ -102,17 +103,17 @@ fun LanguageSelector(
 ) {
   // In a real app, you'd get this from a ViewModel
   val languages = supportedLanguages
+  val languagesMap = supportedLanguagesMap
   var expanded by remember { mutableStateOf(false) }
 
   // Find name for selected code
-  val selectedName = languages.find { it.code == selectedLanguage }?.name ?: selectedLanguage
+  val selectedName = languagesMap[selectedLanguage]?.name ?: selectedLanguage
 
   Box(modifier = modifier) {
     Button(onClick = { expanded = true }) { Text(selectedName) }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
       // Filter recent languages that are supported
-      val recentSupported =
-          recentLanguages.mapNotNull { code -> languages.find { it.code == code } }
+      val recentSupported = recentLanguages.mapNotNull { code -> languagesMap[code] }
 
       if (recentSupported.isNotEmpty()) {
         com.anysoftkeyboard.janus.app.ui.TranslationHeader(

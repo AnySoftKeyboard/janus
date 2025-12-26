@@ -2406,3 +2406,5 @@ val supportedLanguages =
             pageCount = 26186,
             activeUserCount = 47),
     )
+
+val supportedLanguagesMap = supportedLanguages.associateBy { it.code }
