@@ -4,7 +4,7 @@ pluginManagement {
     mavenCentral()
     gradlePluginPortal()
   }
-  plugins { id("com.diffplug.spotless") version "7.2.1" }
+  plugins { id("com.diffplug.spotless") version "8.1.0" }
 }
 
 dependencyResolutionManagement {
