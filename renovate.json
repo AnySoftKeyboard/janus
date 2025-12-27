@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
   "platform": "github",
   "onboarding": false,
@@ -9,33 +9,46 @@
   "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "packageRules": [
     {
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "groupName": "GitHub Actions"
     },
     {
-      "matchManagers": ["bundler"],
+      "matchManagers": [
+        "bundler"
+      ],
       "groupName": "Ruby dependencies"
     },
     {
-      "matchManagers": ["gradle", "gradle-wrapper"],
-      "matchPackageNames": ["gradle"],
+      "matchManagers": [
+        "gradle",
+        "gradle-wrapper"
+      ],
+      "matchPackageNames": [
+        "gradle"
+      ],
       "groupName": "Build system"
     },
     {
-      "matchManagers": ["gradle"],
-      "matchPackagePatterns": [
-        "^androidx\\.",
-        "^com\\.google\\.android",
-        "^org\\.jetbrains\\.kotlin",
-        "^com\\.google\\.dagger",
-        "^com\\.squareup\\.retrofit",
-        "^com\\.squareup\\.okhttp",
-        "^com\\.squareup\\.moshi"
+      "matchManagers": [
+        "gradle"
       ],
-      "groupName": "App dependencies"
+      "groupName": "App dependencies",
+      "matchPackageNames": [
+        "/^androidx\\./",
+        "/^com\\.google\\.android/",
+        "/^org\\.jetbrains\\.kotlin/",
+        "/^com\\.google\\.dagger/",
+        "/^com\\.squareup\\.retrofit/",
+        "/^com\\.squareup\\.okhttp/",
+        "/^com\\.squareup\\.moshi/"
+      ]
     },
     {
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": [
+        "devDependencies"
+      ],
       "automerge": true,
       "automergeType": "pr",
       "platformAutomerge": true
@@ -46,10 +59,14 @@
   },
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"],
+    "labels": [
+      "security"
+    ],
     "assignees": []
   },
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "rangeStrategy": "bump",
   "semanticCommits": "disabled",
   "prConcurrentLimit": 3,
