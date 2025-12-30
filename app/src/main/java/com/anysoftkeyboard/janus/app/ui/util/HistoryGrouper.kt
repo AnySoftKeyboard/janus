@@ -10,8 +10,18 @@ import java.util.Locale
 object HistoryGrouper {
 
   fun group(context: Context, items: List<UiTranslation>): Map<String, List<UiTranslation>> {
-    val today = Calendar.getInstance()
-    val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+    // Bolt Optimization: Calculate day boundaries once to avoid Calendar ops in loop
+    val now = Calendar.getInstance()
+    val todayStart = now.clone() as Calendar
+    todayStart.set(Calendar.HOUR_OF_DAY, 0)
+    todayStart.set(Calendar.MINUTE, 0)
+    todayStart.set(Calendar.SECOND, 0)
+    todayStart.set(Calendar.MILLISECOND, 0)
+    val todayStartMillis = todayStart.timeInMillis
+
+    val yesterdayStart = todayStart.clone() as Calendar
+    yesterdayStart.add(Calendar.DAY_OF_YEAR, -1)
+    val yesterdayStartMillis = yesterdayStart.timeInMillis
 
     val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     val itemCalendar = Calendar.getInstance()
@@ -19,18 +29,15 @@ object HistoryGrouper {
     val yesterdayString = context.getString(R.string.history_group_yesterday)
 
     return items.groupBy { item ->
-      itemCalendar.timeInMillis = item.timestamp
-
       when {
-        isSameDay(today, itemCalendar) -> todayString
-        isSameDay(yesterday, itemCalendar) -> yesterdayString
-        else -> monthYearFormat.format(itemCalendar.time).uppercase()
+        item.timestamp >= todayStartMillis -> todayString
+        item.timestamp >= yesterdayStartMillis -> yesterdayString
+        else -> {
+          // Fallback to Calendar for older items
+          itemCalendar.timeInMillis = item.timestamp
+          monthYearFormat.format(itemCalendar.time).uppercase()
+        }
       }
     }
-  }
-
-  private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
-    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-        cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
   }
 }
