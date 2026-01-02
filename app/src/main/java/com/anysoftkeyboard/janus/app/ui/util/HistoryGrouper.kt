@@ -10,27 +10,46 @@ import java.util.Locale
 object HistoryGrouper {
 
   fun group(context: Context, items: List<UiTranslation>): Map<String, List<UiTranslation>> {
-    val today = Calendar.getInstance()
-    val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
+    // Bolt Optimization: Calculate day boundaries once to avoid Calendar ops inside loop
+    val cal = Calendar.getInstance()
+
+    // Start of Today (00:00:00.000)
+    cal.set(Calendar.HOUR_OF_DAY, 0)
+    cal.set(Calendar.MINUTE, 0)
+    cal.set(Calendar.SECOND, 0)
+    cal.set(Calendar.MILLISECOND, 0)
+    val todayStart = cal.timeInMillis
+
+    // Start of Tomorrow (Today + 24h)
+    cal.add(Calendar.DAY_OF_YEAR, 1)
+    val tomorrowStart = cal.timeInMillis
+
+    // Start of Yesterday (Today - 24h)
+    cal.add(Calendar.DAY_OF_YEAR, -2) // Went forward 1, so go back 2
+    val yesterdayStart = cal.timeInMillis
+
+    // Reset cal for older items formatting
+    // We can reuse the same instance
 
     val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
-    val itemCalendar = Calendar.getInstance()
     val todayString = context.getString(R.string.history_group_today)
     val yesterdayString = context.getString(R.string.history_group_yesterday)
 
     return items.groupBy { item ->
-      itemCalendar.timeInMillis = item.timestamp
-
+      val ts = item.timestamp
       when {
-        isSameDay(today, itemCalendar) -> todayString
-        isSameDay(yesterday, itemCalendar) -> yesterdayString
-        else -> monthYearFormat.format(itemCalendar.time).uppercase()
+        // Check "Today": [todayStart, tomorrowStart)
+        ts >= todayStart && ts < tomorrowStart -> todayString
+
+        // Check "Yesterday": [yesterdayStart, todayStart)
+        ts >= yesterdayStart && ts < todayStart -> yesterdayString
+
+        // Older items
+        else -> {
+          cal.timeInMillis = ts
+          monthYearFormat.format(cal.time).uppercase()
+        }
       }
     }
-  }
-
-  private fun isSameDay(cal1: Calendar, cal2: Calendar): Boolean {
-    return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
-        cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR)
   }
 }
