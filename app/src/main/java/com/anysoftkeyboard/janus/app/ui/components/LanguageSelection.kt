@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -20,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.util.supportedLanguagesMap
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -111,35 +108,13 @@ fun LanguageSelector(
 
   Box(modifier = modifier) {
     Button(onClick = { expanded = true }) { Text(selectedName) }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-      // Filter recent languages that are supported
-      // Bolt optimization: Use map for O(1) lookup
-      val recentSupported = recentLanguages.mapNotNull { code -> supportedLanguagesMap[code] }
 
-      if (recentSupported.isNotEmpty()) {
-        com.anysoftkeyboard.janus.app.ui.TranslationHeader(
-            stringResource(com.anysoftkeyboard.janus.app.R.string.language_selector_recent))
-        recentSupported.forEach { language ->
-          DropdownMenuItem(
-              text = { Text(language.name) },
-              onClick = {
-                onLanguageSelected(language.code)
-                expanded = false
-              })
-        }
-        com.anysoftkeyboard.janus.app.ui.TranslationHeader(
-            stringResource(com.anysoftkeyboard.janus.app.R.string.language_selector_all_languages))
-      }
-
-      languages.forEach { language ->
-        DropdownMenuItem(
-            text = { Text(language.name) },
-            onClick = {
-              onLanguageSelected(language.code)
-              expanded = false
-            },
-            modifier = Modifier.testTag("language_menu_item_${language.code}"))
-      }
+    if (expanded) {
+      SupportedLanguagePickerDialog(
+          languages = languages,
+          recentLanguages = recentLanguages,
+          onLanguageSelected = onLanguageSelected,
+          onDismiss = { expanded = false })
     }
   }
 }
