@@ -29,7 +29,7 @@ class HistoryViewModelTest {
   fun setup() {
     Dispatchers.setMain(testDispatcher)
     fakeRepository = FakeTranslationRepository(mock(), mock(), FakeStringProvider())
-    viewModel = HistoryViewModel(fakeRepository)
+    viewModel = HistoryViewModel(fakeRepository, FakeStringProvider())
   }
 
   @After
@@ -39,11 +39,12 @@ class HistoryViewModelTest {
 
   @Test
   fun `history is empty by default`() = runTest {
-    assertEquals(emptyList<Translation>(), viewModel.history.value)
+    assertEquals(emptyMap<String, List<UiTranslation>>(), viewModel.history.value)
   }
 
   @Test
   fun `history updates when repository history changes`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -56,7 +57,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+                timestamp = now),
             Translation(
                 sourceWord = "test2",
                 sourceLangCode = "en",
@@ -67,21 +69,25 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+                timestamp = now))
 
     viewModel.history.test {
-      assertEquals(emptyList<Translation>(), awaitItem())
+      assertEquals(emptyMap<String, List<UiTranslation>>(), awaitItem())
 
       fakeRepository.setHistory(testTranslations)
 
       val history = awaitItem()
-      assertEquals(testTranslations.size, history.size)
+      // Everything should be in "Today" group
+      assertEquals(1, history.size)
+      val items = history.values.first()
+      assertEquals(testTranslations.size, items.size)
       for (i in testTranslations.indices) {
-        assertEquals(testTranslations[i].sourceWord, history[i].sourceWord)
-        assertEquals(testTranslations[i].sourceLangCode, history[i].sourceLangCode)
-        assertEquals(testTranslations[i].translatedWord, history[i].translatedWord)
-        assertEquals(testTranslations[i].targetLangCode, history[i].targetLangCode)
-        assertEquals(testTranslations[i].isFavorite, history[i].isFavorite)
+        assertEquals(testTranslations[i].sourceWord, items[i].sourceWord)
+        assertEquals(testTranslations[i].sourceLangCode, items[i].sourceLangCode)
+        assertEquals(testTranslations[i].translatedWord, items[i].targetWord)
+        assertEquals(testTranslations[i].targetLangCode, items[i].targetLang)
+        assertEquals(testTranslations[i].isFavorite, items[i].isFavorite)
       }
     }
   }
@@ -114,6 +120,7 @@ class HistoryViewModelTest {
 
   @Test
   fun `history shows all items when search query is empty`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -126,7 +133,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+                timestamp = now),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -137,7 +145,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+                timestamp = now))
 
     viewModel.history.test {
       // Skip initial empty item
@@ -147,12 +156,13 @@ class HistoryViewModelTest {
       testDispatcher.scheduler.advanceUntilIdle()
 
       val history = awaitItem()
-      assertEquals(2, history.size)
+      assertEquals(2, history.values.flatten().size)
     }
   }
 
   @Test
   fun `history filters by search query`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -165,7 +175,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+                timestamp = now),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -176,7 +187,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+                timestamp = now))
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -189,13 +201,14 @@ class HistoryViewModelTest {
       testDispatcher.scheduler.advanceUntilIdle()
 
       val filteredHistory = awaitItem()
-      assertEquals(1, filteredHistory.size)
-      assertEquals("Cat", filteredHistory[0].sourceWord)
+      assertEquals(1, filteredHistory.values.flatten().size)
+      assertEquals("Cat", filteredHistory.values.flatten()[0].sourceWord)
     }
   }
 
   @Test
   fun `history returns to full list when search is cleared`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -208,7 +221,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+                timestamp = now),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -219,7 +233,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+                timestamp = now))
 
     viewModel.history.test {
       skipItems(1)
@@ -227,24 +242,25 @@ class HistoryViewModelTest {
       fakeRepository.setHistory(testTranslations)
       testDispatcher.scheduler.advanceUntilIdle()
       val fullHistory = awaitItem()
-      assertEquals(2, fullHistory.size)
+      assertEquals(2, fullHistory.values.flatten().size)
 
       // Search for Cat
       viewModel.updateSearchQuery("Cat")
       testDispatcher.scheduler.advanceUntilIdle()
       val filteredHistory = awaitItem()
-      assertEquals(1, filteredHistory.size)
+      assertEquals(1, filteredHistory.values.flatten().size)
 
       // Clear search
       viewModel.clearSearch()
       testDispatcher.scheduler.advanceUntilIdle()
       val restoredHistory = awaitItem()
-      assertEquals(2, restoredHistory.size)
+      assertEquals(2, restoredHistory.values.flatten().size)
     }
   }
 
   @Test
   fun `history searches in translated word`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -257,7 +273,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+                timestamp = now),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -268,7 +285,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+                timestamp = now))
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -280,13 +298,14 @@ class HistoryViewModelTest {
       testDispatcher.scheduler.advanceUntilIdle()
 
       val filteredHistory = awaitItem()
-      assertEquals(1, filteredHistory.size)
-      assertEquals("Cat", filteredHistory[0].sourceWord)
+      assertEquals(1, filteredHistory.values.flatten().size)
+      assertEquals("Cat", filteredHistory.values.flatten()[0].sourceWord)
     }
   }
 
   @Test
   fun `deleteTranslation removes item from history`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -300,7 +319,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null),
+                targetSummary = null,
+                timestamp = now),
             Translation(
                 id = 2,
                 sourceWord = "Dog",
@@ -312,7 +332,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null))
+                targetSummary = null,
+                timestamp = now))
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -332,6 +353,7 @@ class HistoryViewModelTest {
 
   @Test
   fun `restoreTranslation adds item back to history`() = runTest {
+    val now = System.currentTimeMillis()
     val testTranslations =
         listOf(
             Translation(
@@ -345,7 +367,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null))
+                targetSummary = null,
+                timestamp = now))
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()

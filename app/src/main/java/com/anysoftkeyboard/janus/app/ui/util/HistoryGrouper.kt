@@ -1,22 +1,25 @@
 package com.anysoftkeyboard.janus.app.ui.util
 
-import android.content.Context
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
+import com.anysoftkeyboard.janus.app.util.StringProvider
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
 object HistoryGrouper {
 
-  fun group(context: Context, items: List<UiTranslation>): Map<String, List<UiTranslation>> {
+  fun group(
+      stringProvider: StringProvider,
+      items: List<UiTranslation>
+  ): Map<String, List<UiTranslation>> {
     val today = Calendar.getInstance()
     val yesterday = Calendar.getInstance().apply { add(Calendar.DAY_OF_YEAR, -1) }
 
     val monthYearFormat = SimpleDateFormat("MMMM yyyy", Locale.getDefault())
     val itemCalendar = Calendar.getInstance()
-    val todayString = context.getString(R.string.history_group_today)
-    val yesterdayString = context.getString(R.string.history_group_yesterday)
+    val todayString = stringProvider.getString(R.string.history_group_today)
+    val yesterdayString = stringProvider.getString(R.string.history_group_yesterday)
 
     return items.groupBy { item ->
       itemCalendar.timeInMillis = item.timestamp
