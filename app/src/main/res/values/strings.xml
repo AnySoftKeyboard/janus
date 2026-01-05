@@ -59,6 +59,16 @@
     <string name="empty_state_initial_5">Bridge the gap</string>
     <string name="loading_state_initial_5">Constructing bridges...</string>
     <string name="search_instruction_initial_5">Select the bridge you meant to translate to %1$s</string>
+
+    <!-- Detecting states -->
+    <string name="loading_state_detecting">Detecting language...</string>
+    <string name="loading_state_detecting_1">Identifying concepts...</string>
+    <string name="loading_state_detecting_2">Analyzing subject...</string>
+    <string name="loading_state_detecting_3">Scanning for meaning...</string>
+    <string name="loading_state_detecting_4">Uncovering origins...</string>
+    <string name="loading_state_detecting_5">Spanning languages...</string>
+    <string name="loading_state_detecting_scholar">Examining context...</string>
+    <string name="loading_state_detecting_bridge">Finding the path...</string>
     <string name="translating_loading_message">Fetching translation...</string>
 
     <!-- Search results -->

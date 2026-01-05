@@ -116,8 +116,10 @@ object AppModule {
 
   @Provides
   @Singleton
-  fun provideLanguageDetector(): com.anysoftkeyboard.janus.app.util.LanguageDetector {
-    return com.anysoftkeyboard.janus.app.util.MockLanguageDetector()
+  fun provideLanguageDetector(
+      real: com.anysoftkeyboard.janus.app.util.GeminiLanguageDetector
+  ): com.anysoftkeyboard.janus.app.util.LanguageDetector {
+    return real
   }
 }
 

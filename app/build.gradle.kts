@@ -87,6 +87,7 @@ dependencies {
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.moshi)
   implementation(libs.moshi.kotlin)
+  implementation(libs.google.mlkit.genai.prompt)
   implementation(libs.hilt.android)
   implementation(libs.hilt.navigation.compose)
   ksp(libs.hilt.compiler)

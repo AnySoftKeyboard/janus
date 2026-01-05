@@ -77,7 +77,8 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
       is TranslateViewState.Translated -> viewModel.backToSearchResults()
       is TranslateViewState.OptionsFetched -> viewModel.clearSearch()
       is TranslateViewState.Error -> viewModel.clearSearch()
-      is TranslateViewState.FetchingOptions -> {
+      is TranslateViewState.FetchingOptions,
+      is TranslateViewState.Detecting -> {
         // Let system handle back during loading
       }
       else -> {
@@ -145,6 +146,12 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
             is TranslateViewState.FetchingOptions ->
                 LoadingState(
                     stringResource(welcomeMessage.loadingMessageResId),
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
+            is TranslateViewState.Detecting ->
+                LoadingState(
+                    stringResource(welcomeMessage.detectingMessageResId),
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
                 )

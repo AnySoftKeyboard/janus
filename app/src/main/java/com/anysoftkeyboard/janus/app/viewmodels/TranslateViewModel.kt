@@ -33,6 +33,8 @@ sealed class TranslateViewState() {
 
   object FetchingOptions : TranslateViewState()
 
+  object Detecting : TranslateViewState()
+
   data class OptionsFetched(
       val searchTerm: String,
       val options: List<OptionalSourceTerm>,
@@ -118,7 +120,7 @@ constructor(
                 sourceLang ==
                     com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE
             ) {
-              // TODO: Show "Detecting language..." state
+              _state.value = TranslateViewState.Detecting
               when (val detection = languageDetector.detect(term)) {
                 is com.anysoftkeyboard.janus.app.util.DetectionResult.Success ->
                     detection.detectedLanguageCode

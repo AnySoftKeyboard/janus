@@ -56,6 +56,7 @@ class TranslateViewModelTest {
             TranslationFlowMessages(
                 com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
+                com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
                 com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
             )
         )
@@ -85,6 +86,10 @@ class TranslateViewModelTest {
     assertEquals(
         com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
         message.welcomeMessageResId,
+    )
+    assertEquals(
+        com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
+        message.detectingMessageResId,
     )
     assertEquals(
         com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
@@ -155,6 +160,7 @@ class TranslateViewModelTest {
           term,
       )
       assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
       advanceUntilIdle()
 
       val state = awaitItem()
@@ -619,12 +625,14 @@ class TranslateViewModelTest {
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
         )
     val message2 =
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial_1,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting_1,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1,
         )
 

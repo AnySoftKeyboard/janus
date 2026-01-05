@@ -14,6 +14,7 @@ import kotlin.random.Random
 data class TranslationFlowMessages(
     @StringRes val welcomeMessageResId: Int,
     @StringRes val loadingMessageResId: Int,
+    @StringRes val detectingMessageResId: Int,
     @StringRes val searchInstructionResId: Int,
 )
 
@@ -25,41 +26,49 @@ class TranslationFlowMessagesProvider @Inject constructor() {
           TranslationFlowMessages(
               R.string.empty_state_initial,
               R.string.loading_state_initial,
+              R.string.loading_state_detecting,
               R.string.search_instruction_initial,
           ),
           TranslationFlowMessages(
               R.string.empty_state_initial_1,
               R.string.loading_state_initial_1,
+              R.string.loading_state_detecting_1,
               R.string.search_instruction_initial_1,
           ),
           TranslationFlowMessages(
               R.string.empty_state_initial_2,
               R.string.loading_state_initial_2,
+              R.string.loading_state_detecting_2,
               R.string.search_instruction_initial_2,
           ),
           TranslationFlowMessages(
               R.string.empty_state_initial_3,
               R.string.loading_state_initial_3,
+              R.string.loading_state_detecting_3,
               R.string.search_instruction_initial_3,
           ),
           TranslationFlowMessages(
               R.string.empty_state_initial_4,
               R.string.loading_state_initial_4,
+              R.string.loading_state_detecting_4,
               R.string.search_instruction_initial_4,
           ),
           TranslationFlowMessages(
               R.string.empty_state_initial_5,
               R.string.loading_state_initial_5,
+              R.string.loading_state_detecting_5,
               R.string.search_instruction_initial_5,
           ),
           TranslationFlowMessages(
               R.string.empty_state_bridge,
               R.string.loading_state_bridge,
+              R.string.loading_state_detecting_bridge,
               R.string.search_instruction_bridge,
           ),
           TranslationFlowMessages(
               R.string.empty_state_scholar,
               R.string.loading_state_scholar,
+              R.string.loading_state_detecting_scholar,
               R.string.search_instruction_scholar,
           ),
       )
