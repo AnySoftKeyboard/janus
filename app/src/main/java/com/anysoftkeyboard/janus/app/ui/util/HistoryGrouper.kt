@@ -35,6 +35,14 @@ object HistoryGrouper {
     val todayString = context.getString(R.string.history_group_today)
     val yesterdayString = context.getString(R.string.history_group_yesterday)
 
+    // Optimization: Cache formatted strings for month/year to avoid expensive
+    // SimpleDateFormat.format calls.
+    // Since items are sorted by timestamp (descending), we can just remember the last formatted
+    // string and the month/year it belongs to.
+    var lastYear = -1
+    var lastMonth = -1
+    var lastFormattedString = ""
+
     return items.groupBy { item ->
       val ts = item.timestamp
       when {
@@ -47,7 +55,17 @@ object HistoryGrouper {
         // Older items
         else -> {
           cal.timeInMillis = ts
-          monthYearFormat.format(cal.time).uppercase()
+          val year = cal.get(Calendar.YEAR)
+          val month = cal.get(Calendar.MONTH)
+
+          if (year == lastYear && month == lastMonth) {
+            lastFormattedString
+          } else {
+            lastYear = year
+            lastMonth = month
+            lastFormattedString = monthYearFormat.format(cal.time).uppercase()
+            lastFormattedString
+          }
         }
       }
     }
