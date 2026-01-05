@@ -32,7 +32,7 @@ jobs:
             renovate-cache-
 
       - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v44.2.2
+        uses: renovatebot/github-action@v44.2.3
         with:
           configurationFile: renovate.json
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
