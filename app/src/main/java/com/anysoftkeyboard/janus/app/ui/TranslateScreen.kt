@@ -159,7 +159,6 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                 SearchResultsView(
                     pageState = targetState as TranslateViewState.OptionsFetched,
                     viewModel = viewModel,
-                    sourceLang = sourceLang,
                     targetLang = targetLang,
                     snackbarHostState = snackbarHostState,
                     instruction =

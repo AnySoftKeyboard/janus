@@ -56,7 +56,6 @@ import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 fun SearchResultsView(
     pageState: TranslateViewState.OptionsFetched,
     viewModel: TranslateViewModel,
-    sourceLang: String,
     targetLang: String,
     snackbarHostState: SnackbarHostState,
     instruction: String,
@@ -110,12 +109,18 @@ fun SearchResultsView(
       items(translatedArticles) { item ->
         SearchResultItem(
             result = item,
-            sourceLang = sourceLang,
+            sourceLang = pageState.effectiveSourceLang,
             targetLang = targetLang,
             showAvailableLanguages = false,
             isLoading = false,
             errorMessage = null,
-            onClick = { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) },
+            onClick = {
+              viewModel.fetchTranslation(
+                  pageState,
+                  item,
+                  targetLang,
+              )
+            },
             modifier = Modifier.testTag("search_result_item"),
         )
       }
@@ -129,7 +134,7 @@ fun SearchResultsView(
       items(untranslatedArticles) { item ->
         SearchResultItem(
             result = item,
-            sourceLang = sourceLang,
+            sourceLang = pageState.effectiveSourceLang,
             targetLang = targetLang,
             showAvailableLanguages = true,
             isLoading = false,
@@ -159,7 +164,6 @@ fun SearchResultsView(
             viewModel.fetchTranslation(
                 pageState,
                 selectedArticleForPicker!!,
-                sourceLang,
                 selectedLanguage,
             )
             showLanguagePickerDialog = false

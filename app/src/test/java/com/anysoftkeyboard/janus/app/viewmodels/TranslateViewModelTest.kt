@@ -131,6 +131,7 @@ class TranslateViewModelTest {
       assertEquals(listOf("he", "fr", "de"), optionsFetched.options[0].availableLanguages)
       assertEquals("Winter", optionsFetched.options[1].title)
       assertEquals(listOf("he", "es"), optionsFetched.options[1].availableLanguages)
+      assertEquals("en", optionsFetched.effectiveSourceLang)
     }
   }
 
@@ -173,6 +174,7 @@ class TranslateViewModelTest {
       // good enough for now.
       // We can also verify the detector was called.
       org.mockito.kotlin.verify(mockLanguageDetector).detect(term)
+      assertEquals("es", optionsFetched.effectiveSourceLang)
     }
   }
 
@@ -243,8 +245,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -306,8 +309,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -446,8 +450,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -491,8 +496,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // Skip to translated state
       skipItems(1) // Translating state
@@ -599,8 +605,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       skipItems(1) // Translating state
       advanceUntilIdle()

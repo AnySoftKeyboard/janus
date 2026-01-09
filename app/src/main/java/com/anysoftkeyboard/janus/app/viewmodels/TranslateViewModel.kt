@@ -39,6 +39,7 @@ sealed class TranslateViewState() {
       val searchTerm: String,
       val options: List<OptionalSourceTerm>,
       val translations: Map<OptionalSourceTerm, TranslationState>,
+      val effectiveSourceLang: String,
   ) : TranslateViewState()
 
   data class Translating(
@@ -142,6 +143,7 @@ constructor(
                 term,
                 repository.searchArticles(effectiveSourceLang, term),
                 emptyMap(),
+                effectiveSourceLang,
             )
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
@@ -154,7 +156,6 @@ constructor(
   fun fetchTranslation(
       sources: TranslateViewState.OptionsFetched,
       searchPage: OptionalSourceTerm,
-      sourceLang: String,
       targetLang: String,
   ) {
     // Save current search results for back navigation
@@ -166,13 +167,14 @@ constructor(
             sources.searchTerm,
             sources.options,
             searchPage,
-            sourceLang,
+            sources.effectiveSourceLang,
             targetLang,
         )
 
     viewModelScope.launch {
       try {
-        val translations = repository.fetchTranslations(searchPage, sourceLang, targetLang)
+        val translations =
+            repository.fetchTranslations(searchPage, sources.effectiveSourceLang, targetLang)
         val langTranslation = translations.find { it.targetLangCode == targetLang }
         val translationState =
             if (langTranslation == null) {
@@ -182,7 +184,12 @@ constructor(
               TranslationState.Translated(langTranslation)
             }
         _state.value =
-            TranslateViewState.Translated(searchPage, sourceLang, targetLang, translationState)
+            TranslateViewState.Translated(
+                searchPage,
+                sources.effectiveSourceLang,
+                targetLang,
+                translationState,
+            )
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
         val errorType = mapToErrorType(e)
