@@ -58,6 +58,10 @@
     <string name="loading_state_initial_5">Строительство мостов...</string>
     <string name="search_instruction_initial_5">Выберите мост, который вы хотели перевести с %1$s на %2$s</string>
 
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">Какой это язык?</string>
+    <string name="disambiguation_message">Текст может быть на нескольких языках. Пожалуйста, выберите один.</string>
+
     <!-- Search results -->
     <string name="search_results_untranslated_section">Непереведённые статьи</string>
 

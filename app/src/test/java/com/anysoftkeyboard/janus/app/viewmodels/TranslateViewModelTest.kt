@@ -682,4 +682,43 @@ class TranslateViewModelTest {
     viewModel.updateRecentLanguage("es")
     org.mockito.kotlin.verify(mockRecentLanguagesRepository).addRecentLanguage("es")
   }
+
+  @Test
+  fun `searchArticles with ambiguous result prompts disambiguation`() = runTest {
+    val term = "queso"
+    val candidates =
+        listOf(
+            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("es", 0.9f),
+            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("pt", 0.8f),
+        )
+    whenever(mockLanguageDetector.detect(term))
+        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous(candidates))
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles(
+          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          term,
+      )
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
+      advanceUntilIdle()
+
+      val state = awaitItem()
+      assertTrue(state is TranslateViewState.AmbiguousSource)
+      val ambiguousState = state as TranslateViewState.AmbiguousSource
+      assertEquals(listOf("es", "pt"), ambiguousState.candidates)
+      assertEquals(term, ambiguousState.originalQuery)
+
+      // Now resolve
+      val searchResults = listOf(OptionalSourceTerm(1, "Queso", "Cheese", listOf("en")))
+      fakeRepository.nextSearchResults = searchResults
+      viewModel.resolveAmbiguity("es", term)
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      val finalState = awaitItem()
+      assertTrue(finalState is TranslateViewState.OptionsFetched)
+      assertEquals("es", (finalState as TranslateViewState.OptionsFetched).effectiveSourceLang)
+    }
+  }
 }

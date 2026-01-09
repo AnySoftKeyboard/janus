@@ -59,6 +59,9 @@ sealed class TranslateViewState() {
 
   data class Error(val errorType: TranslateViewModel.ErrorType, val errorMessage: String?) :
       TranslateViewState()
+
+  data class AmbiguousSource(val candidates: List<String>, val originalQuery: String) :
+      TranslateViewState()
 }
 
 @HiltViewModel
@@ -126,9 +129,12 @@ constructor(
                 is com.anysoftkeyboard.janus.app.util.DetectionResult.Success ->
                     detection.detectedLanguageCode
                 is com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous -> {
-                  // For now, just pick the first one or default to English
-                  // Stage 3 will handle disambiguation
-                  detection.candidates.firstOrNull()?.languageCode ?: "en"
+                  _state.value =
+                      TranslateViewState.AmbiguousSource(
+                          candidates = detection.candidates.map { it.languageCode },
+                          originalQuery = term,
+                      )
+                  return@launch
                 }
                 com.anysoftkeyboard.janus.app.util.DetectionResult.Failure -> {
                   throw Exception("Language detection failed")
@@ -138,19 +144,37 @@ constructor(
               sourceLang
             }
 
-        _state.value =
-            TranslateViewState.OptionsFetched(
-                term,
-                repository.searchArticles(effectiveSourceLang, term),
-                emptyMap(),
-                effectiveSourceLang,
-            )
+        performSearch(effectiveSourceLang, term)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
         val errorType = mapToErrorType(e)
         _state.value = TranslateViewState.Error(errorType, e.message)
       }
     }
+  }
+
+  fun resolveAmbiguity(selectedLang: String, originalQuery: String) {
+    _state.value = TranslateViewState.FetchingOptions
+    viewModelScope.launch {
+      try {
+        performSearch(selectedLang, originalQuery)
+      } catch (e: Exception) {
+        Log.e("TranslateViewModel", "Error fetching search results", e)
+        val errorType = mapToErrorType(e)
+        _state.value = TranslateViewState.Error(errorType, e.message)
+      }
+    }
+  }
+
+  private suspend fun performSearch(sourceLang: String, term: String) {
+    _state.value =
+        TranslateViewState.OptionsFetched(
+            term,
+            repository.searchArticles(sourceLang, term),
+            emptyMap(),
+            sourceLang,
+            // If we are performing a search, it means detection (if any) is resolved
+        )
   }
 
   fun fetchTranslation(

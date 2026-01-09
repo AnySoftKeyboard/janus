@@ -60,6 +60,10 @@
     <string name="loading_state_initial_5">Constructing bridges...</string>
     <string name="search_instruction_initial_5">Select the bridge you meant to translate from %1$s to %2$s</string>
 
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">Which language is this?</string>
+    <string name="disambiguation_message">The text could be in multiple languages. Please select one.</string>
+
     <!-- Detecting states -->
     <string name="loading_state_detecting">Detecting language...</string>
     <string name="loading_state_detecting_1">Identifying concepts...</string>

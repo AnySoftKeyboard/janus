@@ -58,6 +58,10 @@
     <string name="loading_state_initial_5">Brücken bauen...</string>
     <string name="search_instruction_initial_5">Wähle die Brücke, die du von %1$s nach %2$s übersetzen wolltest</string>
 
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">Welche Sprache ist das?</string>
+    <string name="disambiguation_message">Der Text könnte in mehreren Sprachen verfasst sein. Bitte wählen Sie eine aus.</string>
+
     <!-- Search results -->
     <string name="search_results_untranslated_section">Nicht übersetzte Artikel</string>
 

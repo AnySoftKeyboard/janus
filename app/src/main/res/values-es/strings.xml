@@ -58,6 +58,10 @@
     <string name="loading_state_initial_5">Construyendo puentes...</string>
     <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir de %1$s a %2$s</string>
 
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">¿Qué idioma es este?</string>
+    <string name="disambiguation_message">El texto podría estar en varios idiomas. Por favor selecciona uno.</string>
+
     <!-- Search results -->
     <string name="search_results_untranslated_section">Artículos sin traducir</string>
 

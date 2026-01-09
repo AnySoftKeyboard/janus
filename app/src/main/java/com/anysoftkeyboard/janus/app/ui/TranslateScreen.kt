@@ -205,6 +205,20 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                     animatedVisibilityScope = this,
                 )
             is TranslateViewState.Error -> ErrorStateDisplay(error = targetState)
+            is TranslateViewState.AmbiguousSource -> {
+              LoadingState(
+                  stringResource(welcomeMessage.detectingMessageResId),
+                  sharedTransitionScope = this@SharedTransitionLayout,
+                  animatedVisibilityScope = this,
+              )
+              com.anysoftkeyboard.janus.app.ui.components.DisambiguationDialog(
+                  candidates = targetState.candidates,
+                  onLanguageSelected = { langCode ->
+                    viewModel.resolveAmbiguity(langCode, targetState.originalQuery)
+                  },
+                  onDismiss = { viewModel.clearSearch() },
+              )
+            }
           }
         }
       }

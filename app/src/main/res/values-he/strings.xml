@@ -58,6 +58,10 @@
     <string name="loading_state_initial_5">בונה גשרים...</string>
     <string name="search_instruction_initial_5">בחר את הגשר שהתכוונת לתרגם מ-%1$s ל-%2$s</string>
 
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">איזו שפה זו?</string>
+    <string name="disambiguation_message">הטקסט עשוי להיות במספר שפות. נא לבחור אחת.</string>
+
     <!-- Search results -->
     <string name="search_results_untranslated_section">מאמרים לא מתורגמים</string>
 
