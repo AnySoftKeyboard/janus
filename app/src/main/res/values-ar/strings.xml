@@ -59,8 +59,10 @@
     <string name="search_instruction_initial_5">اختر الجسر الذي قصدت ترجمته من %1$s إلى %2$s</string>
 
     <!-- Disambiguation -->
-    <string name="disambiguation_title">ما هذه اللغة؟</string>
-    <string name="disambiguation_message">يمكن أن يكون النص بلغات متعددة. يرجى اختيار واحدة.</string>
+    <string name="disambiguation_title">أي لغة هذه؟</string>
+    <string name="disambiguation_message">قد يكون النص بلغات متعددة. الرجاء تحديد واحدة.</string>
+    <string name="error_safety_violation">تم الإبلاغ عن المحتوى باعتباره غير آمن. لا يمكن اكتشاف اللغة.</string>
+    <string name="error_safety_title">تنبيه أمان</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">مقالات غير مترجمة</string>

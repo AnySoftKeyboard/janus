@@ -63,6 +63,8 @@
     <!-- Disambiguation -->
     <string name="disambiguation_title">Which language is this?</string>
     <string name="disambiguation_message">The text could be in multiple languages. Please select one.</string>
+    <string name="error_safety_violation">Content flagged as unsafe. Cannot detect language.</string>
+    <string name="error_safety_title">Safety Alert</string>
 
     <!-- Detecting states -->
     <string name="loading_state_detecting">Detecting language...</string>

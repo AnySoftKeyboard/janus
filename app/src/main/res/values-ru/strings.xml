@@ -61,6 +61,8 @@
     <!-- Disambiguation -->
     <string name="disambiguation_title">Какой это язык?</string>
     <string name="disambiguation_message">Текст может быть на нескольких языках. Пожалуйста, выберите один.</string>
+     <string name="error_safety_violation">Контент помечен как небезопасный. Невозможно определить язык.</string>
+    <string name="error_safety_title">Предупреждение о безопасности</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Непереведённые статьи</string>

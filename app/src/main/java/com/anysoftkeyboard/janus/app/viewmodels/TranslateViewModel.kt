@@ -100,6 +100,7 @@ constructor(
     Server,
     Unknown,
     DetectionFailed,
+    SafetyViolation,
   }
 
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
@@ -133,6 +134,14 @@ constructor(
                       TranslateViewState.AmbiguousSource(
                           candidates = detection.candidates.map { it.languageCode },
                           originalQuery = term,
+                      )
+                  return@launch
+                }
+                com.anysoftkeyboard.janus.app.util.DetectionResult.SafetyViolation -> {
+                  _state.value =
+                      TranslateViewState.Error(
+                          ErrorType.SafetyViolation,
+                          "Safety violation detected",
                       )
                   return@launch
                 }

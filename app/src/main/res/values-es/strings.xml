@@ -61,6 +61,8 @@
     <!-- Disambiguation -->
     <string name="disambiguation_title">¿Qué idioma es este?</string>
     <string name="disambiguation_message">El texto podría estar en varios idiomas. Por favor selecciona uno.</string>
+    <string name="error_safety_violation">Contenido marcado como inseguro. No se puede detectar el idioma.</string>
+    <string name="error_safety_title">Alerta de Seguridad</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Artículos sin traducir</string>

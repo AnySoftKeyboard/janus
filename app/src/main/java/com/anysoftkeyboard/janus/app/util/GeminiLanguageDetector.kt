@@ -74,7 +74,12 @@ class GeminiLanguageDetector @Inject constructor() : LanguageDetector {
       }
     } catch (e: Exception) {
       Log.e("GeminiDetector", "Error detecting language", e)
-      DetectionResult.Failure
+      val message = e.message?.lowercase() ?: ""
+      if (message.contains("safety") || message.contains("blocked")) {
+        DetectionResult.SafetyViolation
+      } else {
+        DetectionResult.Failure
+      }
     }
   }
 }

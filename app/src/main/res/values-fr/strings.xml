@@ -59,8 +59,10 @@
     <string name="search_instruction_initial_5">Sélectionnez le pont que vous vouliez traduire de %1$s en %2$s</string>
 
     <!-- Disambiguation -->
-    <string name="disambiguation_title">Quel est ce langage ?</string>
-    <string name="disambiguation_message">Le texte pourrait être dans plusieurs langues. Veuillez en sélectionner une.</string>
+    <string name="disambiguation_title">Quelle langue est-ce ?</string>
+    <string name="disambiguation_message">Le texte peut être dans plusieurs langues. Veuillez en sélectionner une.</string>
+    <string name="error_safety_violation">Contenu signalé comme dangereux. Impossible de détecter la langue.</string>
+    <string name="error_safety_title">Alerte de Sécurité</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Articles non traduits</string>

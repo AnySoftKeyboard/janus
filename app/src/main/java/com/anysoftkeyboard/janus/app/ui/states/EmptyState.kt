@@ -204,6 +204,12 @@ fun ErrorStateDisplay(error: TranslateViewState.Error) {
                 R.string.error_detection_failed_message,
                 Icons.Default.Warning,
             )
+        ErrorType.SafetyViolation ->
+            Triple(
+                R.string.error_safety_title,
+                R.string.error_safety_violation,
+                Icons.Default.Warning,
+            )
       }
 
   val message =

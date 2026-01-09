@@ -10,6 +10,8 @@ sealed class DetectionResult {
   }
 
   object Failure : DetectionResult()
+
+  object SafetyViolation : DetectionResult()
 }
 
 interface LanguageDetector {

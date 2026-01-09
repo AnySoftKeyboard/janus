@@ -721,4 +721,28 @@ class TranslateViewModelTest {
       assertEquals("es", (finalState as TranslateViewState.OptionsFetched).effectiveSourceLang)
     }
   }
+
+  @Test
+  fun `searchArticles with safety violation sets error state`() = runTest {
+    val term = "unsafe phrase"
+    whenever(mockLanguageDetector.detect(term))
+        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.SafetyViolation)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles(
+          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          term,
+      )
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
+      advanceUntilIdle()
+
+      val state = awaitItem()
+      assertTrue(state is TranslateViewState.Error)
+      val error = state as TranslateViewState.Error
+      assertEquals(TranslateViewModel.ErrorType.SafetyViolation, error.errorType)
+    }
+  }
 }
