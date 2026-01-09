@@ -53,7 +53,8 @@ class MainActivityTest {
 
     whenever(translationFlowMessagesProvider.getRandomMessage())
         .thenReturn(
-            TranslationFlowMessages(R.string.app_name, R.string.app_name, R.string.app_name))
+            TranslationFlowMessages(R.string.app_name, R.string.app_name, R.string.app_name)
+        )
   }
 
   @Test

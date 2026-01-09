@@ -55,7 +55,7 @@ fun SearchResultItem(
     isLoading: Boolean,
     errorMessage: String?,
     onClick: (() -> Unit)?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
   val cardModifier =
       modifier.fillMaxWidth().padding(vertical = 4.dp).let {
@@ -69,10 +69,12 @@ fun SearchResultItem(
         Text(
             text = result.title,
             style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.weight(1f))
+            modifier = Modifier.weight(1f),
+        )
         WikipediaLinkButton(
             url = "https://${sourceLang}.wikipedia.org/?curid=${result.pageid}",
-            contentDescription = "Open in Wikipedia")
+            contentDescription = "Open in Wikipedia",
+        )
       }
 
       Spacer(modifier = Modifier.height(4.dp))
@@ -89,7 +91,8 @@ fun SearchResultItem(
           HtmlSnippet(
               snippet = result.snippet,
               textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-              textSize = MaterialTheme.typography.bodyMedium.fontSize)
+              textSize = MaterialTheme.typography.bodyMedium.fontSize,
+          )
         }
       }
     }
@@ -102,7 +105,8 @@ fun SearchResultItem(
       Text(
           text = stringResource(R.string.loading_translation_for_item, result.title),
           style = MaterialTheme.typography.bodySmall,
-          color = MaterialTheme.colorScheme.onSurfaceVariant)
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
     }
   }
 }
@@ -116,18 +120,21 @@ private fun ErrorContent(errorMessage: String) {
           imageVector = Icons.Default.Warning,
           contentDescription = "Error",
           tint = MaterialTheme.colorScheme.error,
-          modifier = Modifier.size(20.dp))
+          modifier = Modifier.size(20.dp),
+      )
       Spacer(modifier = Modifier.size(4.dp))
       Text(
           text = stringResource(R.string.error_unknown),
           style = MaterialTheme.typography.bodyMedium,
-          color = MaterialTheme.colorScheme.error)
+          color = MaterialTheme.colorScheme.error,
+      )
     }
     Spacer(modifier = Modifier.height(4.dp))
     Text(
         text = errorMessage,
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant)
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
   }
 }
 
@@ -140,13 +147,15 @@ private fun AvailableLanguagesText(availableLanguages: List<String>) {
       } else {
         stringResource(
             R.string.available_in_languages,
-            availableLanguages.joinToString(", ") { it.uppercase() })
+            availableLanguages.joinToString(", ") { it.uppercase() },
+        )
       }
 
   Text(
       text = text,
       style = MaterialTheme.typography.bodyMedium,
-      color = MaterialTheme.colorScheme.onSurfaceVariant)
+      color = MaterialTheme.colorScheme.onSurfaceVariant,
+  )
 }
 
 /** Displays HTML snippet using AndroidView with TextView. */
@@ -159,7 +168,8 @@ private fun HtmlSnippet(snippet: String, textColor: Color, textSize: TextUnit) {
         textView.setTextColor(textColorInt)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize.value)
         setHtmlToText(textView, snippet)
-      })
+      },
+  )
 }
 
 /** Helper function to set HTML content to TextView with proper API level handling. */

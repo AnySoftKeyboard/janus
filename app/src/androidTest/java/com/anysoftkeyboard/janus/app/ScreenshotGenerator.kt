@@ -72,7 +72,7 @@ class ScreenshotGenerator {
       sourceCode: String,
       targetName: String,
       targetCode: String,
-      snapshotName: String
+      snapshotName: String,
   ) {
     // Clear search if needed
     try {

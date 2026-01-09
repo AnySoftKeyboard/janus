@@ -41,7 +41,8 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
           .stateIn(
               scope = viewModelScope,
               started = SharingStarted.WhileSubscribed(5000),
-              initialValue = emptyList())
+              initialValue = emptyList(),
+          )
 
   fun updateSearchQuery(query: String) {
     _searchQuery.value = query

@@ -15,7 +15,7 @@ class FakeTranslationRepository
 constructor(
     private val translationDao: TranslationDao,
     private val wikipediaApi: LangWikipediaFactory,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
 ) : TranslationRepository(translationDao, wikipediaApi, stringProvider) {
 
   private val _history = MutableStateFlow(emptyList<Translation>())
@@ -46,7 +46,7 @@ constructor(
   override suspend fun fetchTranslations(
       searchPage: OptionalSourceTerm,
       sourceLang: String,
-      targetLang: String
+      targetLang: String,
   ): List<Translation> {
     fetchException?.let { throw it }
     return nextTranslations

@@ -56,7 +56,8 @@ class BookmarksViewModelTest {
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
                 targetSummary = "summary1_es",
-                isFavorite = true),
+                isFavorite = true,
+            ),
             Translation(
                 sourceWord = "test2",
                 sourceLangCode = "en",
@@ -68,7 +69,9 @@ class BookmarksViewModelTest {
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
                 targetSummary = "summary2_es",
-                isFavorite = true))
+                isFavorite = true,
+            ),
+        )
 
     viewModel.bookmarks.test {
       assertEquals(emptyList<Translation>(), awaitItem())

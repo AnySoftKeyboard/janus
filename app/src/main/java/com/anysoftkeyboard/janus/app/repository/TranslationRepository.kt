@@ -12,7 +12,7 @@ data class OptionalSourceTerm(
     val pageid: Long,
     val title: String,
     val snippet: String,
-    val availableLanguages: List<String>
+    val availableLanguages: List<String>,
 )
 
 open class TranslationRepository(
@@ -76,7 +76,8 @@ open class TranslationRepository(
                 pageid = searchResult.pageid,
                 title = searchResult.title,
                 snippet = searchResult.snippet,
-                availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList())
+                availableLanguages = pageData?.langLinks?.map { it.lang } ?: emptyList(),
+            )
           }
 
       // Process disambiguation articles to get their links
@@ -98,7 +99,8 @@ open class TranslationRepository(
                       pageid = pageId,
                       title = p.title,
                       snippet = "",
-                      availableLanguages = p.langLinks?.map { it.lang } ?: emptyList())
+                      availableLanguages = p.langLinks?.map { it.lang } ?: emptyList(),
+                  )
                 } else {
                   null
                 }
@@ -118,7 +120,7 @@ open class TranslationRepository(
   open suspend fun fetchTranslations(
       searchPage: OptionalSourceTerm,
       sourceLang: String,
-      targetLang: String
+      targetLang: String,
   ): List<Translation> {
     val langLinksResponse =
         wikipediaApi.createWikipediaApi(sourceLang).getAllInfo(searchPage.pageid.toString())

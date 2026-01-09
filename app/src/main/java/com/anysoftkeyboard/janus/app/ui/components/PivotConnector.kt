@@ -35,7 +35,7 @@ import com.anysoftkeyboard.janus.app.R
 fun PivotConnector(
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
-    sharedElementKey: String = "shared_icon"
+    sharedElementKey: String = "shared_icon",
 ) {
   Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -44,7 +44,8 @@ fun PivotConnector(
             with(sharedTransitionScope) {
               Modifier.sharedElement(
                   sharedContentState = rememberSharedContentState(key = sharedElementKey),
-                  animatedVisibilityScope = animatedVisibilityScope)
+                  animatedVisibilityScope = animatedVisibilityScope,
+              )
             }
           } else {
             Modifier
@@ -53,7 +54,8 @@ fun PivotConnector(
           painter = painterResource(R.mipmap.ic_launcher_foreground),
           contentDescription = null,
           colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
-          modifier = Modifier.size(48.dp).clip(CircleShape).then(modifier))
+          modifier = Modifier.size(48.dp).clip(CircleShape).then(modifier),
+      )
 
       Icon(
           imageVector = Icons.Default.KeyboardDoubleArrowDown,
@@ -61,7 +63,8 @@ fun PivotConnector(
           tint = MaterialTheme.colorScheme.primary,
           modifier =
               Modifier.size(24.dp)
-                  .animateInScope(animatedVisibilityScope, enter = fadeIn(), exit = fadeOut()))
+                  .animateInScope(animatedVisibilityScope, enter = fadeIn(), exit = fadeOut()),
+      )
 
       HorizontalDivider(
           color = MaterialTheme.colorScheme.primary,
@@ -70,7 +73,9 @@ fun PivotConnector(
                   .animateInScope(
                       animatedVisibilityScope,
                       enter = expandHorizontally(expandFrom = Alignment.Start),
-                      exit = shrinkHorizontally(shrinkTowards = Alignment.Start)))
+                      exit = shrinkHorizontally(shrinkTowards = Alignment.Start),
+                  ),
+      )
     }
   }
 }
@@ -78,7 +83,7 @@ fun PivotConnector(
 private fun Modifier.animateInScope(
     scope: AnimatedVisibilityScope?,
     enter: EnterTransition,
-    exit: ExitTransition
+    exit: ExitTransition,
 ): Modifier {
   return if (scope != null) {
     with(scope) { this@animateInScope.animateEnterExit(enter = enter, exit = exit) }

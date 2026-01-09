@@ -54,13 +54,16 @@ class TranslateViewModelTest {
             TranslationFlowMessages(
                 com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
-                com.anysoftkeyboard.janus.app.R.string.search_instruction_initial))
+                com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+            )
+        )
     viewModel =
         TranslateViewModel(
             fakeRepository,
             mockRecentLanguagesRepository,
             FakeStringProvider(),
-            mockWelcomeMessageProvider)
+            mockWelcomeMessageProvider,
+        )
   }
 
   @After
@@ -77,10 +80,13 @@ class TranslateViewModelTest {
   fun `initial welcome message is set from provider`() = runTest {
     val message = viewModel.welcomeMessage.value
     assertEquals(
-        com.anysoftkeyboard.janus.app.R.string.empty_state_initial, message.welcomeMessageResId)
+        com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+        message.welcomeMessageResId,
+    )
     assertEquals(
         com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
-        message.searchInstructionResId)
+        message.searchInstructionResId,
+    )
   }
 
   @Test
@@ -91,12 +97,15 @@ class TranslateViewModelTest {
                 pageid = 1,
                 title = "Summer",
                 snippet = "hottest season",
-                availableLanguages = listOf("he", "fr", "de")),
+                availableLanguages = listOf("he", "fr", "de"),
+            ),
             OptionalSourceTerm(
                 pageid = 2,
                 title = "Winter",
                 snippet = "coldest season",
-                availableLanguages = listOf("he", "es")))
+                availableLanguages = listOf("he", "es"),
+            ),
+        )
     fakeRepository.nextSearchResults = searchResults
 
     viewModel.pageState.test {
@@ -125,7 +134,9 @@ class TranslateViewModelTest {
                 pageid = 1,
                 title = "Rare Article",
                 snippet = "only in English",
-                availableLanguages = emptyList()))
+                availableLanguages = emptyList(),
+            )
+        )
     fakeRepository.nextSearchResults = searchResults
 
     viewModel.pageState.test {
@@ -162,7 +173,8 @@ class TranslateViewModelTest {
             pageid = 1,
             title = "Summer",
             snippet = "hottest season",
-            availableLanguages = listOf("he"))
+            availableLanguages = listOf("he"),
+        )
     val translation =
         Translation(
             sourceWord = "Summer",
@@ -174,7 +186,8 @@ class TranslateViewModelTest {
             targetLangCode = "he",
             targetArticleUrl = "url_he",
             targetShortDescription = "desc_he",
-            targetSummary = "summary_he")
+            targetSummary = "summary_he",
+        )
     fakeRepository.nextTranslations = listOf(translation)
 
     viewModel.pageState.test {
@@ -209,7 +222,8 @@ class TranslateViewModelTest {
             pageid = 1,
             title = "Summer",
             snippet = "hottest season",
-            availableLanguages = listOf("fr", "de"))
+            availableLanguages = listOf("fr", "de"),
+        )
     val availableTranslations =
         listOf(
             Translation(
@@ -222,7 +236,8 @@ class TranslateViewModelTest {
                 targetLangCode = "fr",
                 targetArticleUrl = "url_fr",
                 targetShortDescription = null,
-                targetSummary = null),
+                targetSummary = null,
+            ),
             Translation(
                 sourceWord = "Summer",
                 sourceLangCode = "en",
@@ -233,7 +248,9 @@ class TranslateViewModelTest {
                 targetLangCode = "de",
                 targetArticleUrl = "url_de",
                 targetShortDescription = null,
-                targetSummary = null))
+                targetSummary = null,
+            ),
+        )
     fakeRepository.nextTranslations = availableTranslations
 
     viewModel.pageState.test {
@@ -295,7 +312,9 @@ class TranslateViewModelTest {
       val errorState = awaitItem()
       assertTrue(errorState is TranslateViewState.Error)
       assertEquals(
-          TranslateViewModel.ErrorType.Network, (errorState as TranslateViewState.Error).errorType)
+          TranslateViewModel.ErrorType.Network,
+          (errorState as TranslateViewState.Error).errorType,
+      )
     }
   }
 
@@ -315,7 +334,8 @@ class TranslateViewModelTest {
       assertTrue(errorState is TranslateViewState.Error)
       assertEquals(
           TranslateViewModel.ErrorType.RateLimit,
-          (errorState as TranslateViewState.Error).errorType)
+          (errorState as TranslateViewState.Error).errorType,
+      )
     }
   }
 
@@ -334,7 +354,9 @@ class TranslateViewModelTest {
       val errorState = awaitItem()
       assertTrue(errorState is TranslateViewState.Error)
       assertEquals(
-          TranslateViewModel.ErrorType.NotFound, (errorState as TranslateViewState.Error).errorType)
+          TranslateViewModel.ErrorType.NotFound,
+          (errorState as TranslateViewState.Error).errorType,
+      )
     }
   }
 
@@ -353,7 +375,9 @@ class TranslateViewModelTest {
       val errorState = awaitItem()
       assertTrue(errorState is TranslateViewState.Error)
       assertEquals(
-          TranslateViewModel.ErrorType.Server, (errorState as TranslateViewState.Error).errorType)
+          TranslateViewModel.ErrorType.Server,
+          (errorState as TranslateViewState.Error).errorType,
+      )
     }
   }
 
@@ -364,7 +388,8 @@ class TranslateViewModelTest {
             pageid = 1,
             title = "Summer",
             snippet = "hottest season",
-            availableLanguages = listOf("he"))
+            availableLanguages = listOf("he"),
+        )
     val testException = RuntimeException("Failed to fetch translation")
     fakeRepository.fetchException = testException
 
@@ -396,7 +421,8 @@ class TranslateViewModelTest {
             pageid = 1,
             title = "Summer",
             snippet = "hottest season",
-            availableLanguages = listOf("he"))
+            availableLanguages = listOf("he"),
+        )
     val translation =
         Translation(
             sourceWord = "Summer",
@@ -408,7 +434,8 @@ class TranslateViewModelTest {
             targetLangCode = "he",
             targetArticleUrl = "url_he",
             targetShortDescription = "desc_he",
-            targetSummary = "summary_he")
+            targetSummary = "summary_he",
+        )
     fakeRepository.nextTranslations = listOf(translation)
 
     viewModel.pageState.test {
@@ -453,7 +480,9 @@ class TranslateViewModelTest {
                 pageid = 1,
                 title = "Summer",
                 snippet = "hottest season",
-                availableLanguages = listOf("he")))
+                availableLanguages = listOf("he"),
+            )
+        )
     fakeRepository.nextSearchResults = searchResults
 
     viewModel.pageState.test {
@@ -500,7 +529,8 @@ class TranslateViewModelTest {
             pageid = 1,
             title = "Summer",
             snippet = "hottest season",
-            availableLanguages = listOf("he"))
+            availableLanguages = listOf("he"),
+        )
     val translation =
         Translation(
             sourceWord = "Summer",
@@ -512,7 +542,8 @@ class TranslateViewModelTest {
             targetLangCode = "he",
             targetArticleUrl = "url_he",
             targetShortDescription = "desc_he",
-            targetSummary = "summary_he")
+            targetSummary = "summary_he",
+        )
     fakeRepository.nextTranslations = listOf(translation)
 
     viewModel.pageState.test {
@@ -544,12 +575,14 @@ class TranslateViewModelTest {
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
-            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial)
+            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+        )
     val message2 =
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial_1,
-            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1)
+            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1,
+        )
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(message1)
@@ -561,7 +594,8 @@ class TranslateViewModelTest {
             fakeRepository,
             mockRecentLanguagesRepository,
             FakeStringProvider(),
-            mockWelcomeMessageProvider)
+            mockWelcomeMessageProvider,
+        )
 
     viewModel.welcomeMessage.test {
       assertEquals(message1, awaitItem())

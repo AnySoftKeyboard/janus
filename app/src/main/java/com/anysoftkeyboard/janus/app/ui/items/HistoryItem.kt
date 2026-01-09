@@ -62,7 +62,7 @@ fun HistoryItem(
     unfocused: Boolean = false,
     sharedTransitionScope: SharedTransitionScope,
     onClick: () -> Unit = {},
-    onDelete: () -> Unit = {}
+    onDelete: () -> Unit = {},
 ) {
   val interactionSource = remember { MutableInteractionSource() }
   val blurRadius by animateDpAsState(targetValue = if (unfocused) 2.dp else 0.dp, label = "blur")
@@ -98,25 +98,27 @@ fun HistoryItem(
                 } else {
                   drawContent()
                 }
-              }) {
-        sharedTransitionScope.apply {
-          AnimatedContent(
-              targetState = isExpanded,
-              label = "expand_collapse",
-              modifier =
-                  Modifier.clickable(
-                      interactionSource = interactionSource,
-                      indication = null,
-                      onClick = onClick)) { targetExpanded ->
-                if (targetExpanded) {
-                  ExpandedHistoryItem(
-                      translation, sharedTransitionScope, this@AnimatedContent, onDelete)
-                } else {
-                  CondensedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
-                }
               }
+  ) {
+    sharedTransitionScope.apply {
+      AnimatedContent(
+          targetState = isExpanded,
+          label = "expand_collapse",
+          modifier =
+              Modifier.clickable(
+                  interactionSource = interactionSource,
+                  indication = null,
+                  onClick = onClick,
+              ),
+      ) { targetExpanded ->
+        if (targetExpanded) {
+          ExpandedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent, onDelete)
+        } else {
+          CondensedHistoryItem(translation, sharedTransitionScope, this@AnimatedContent)
         }
       }
+    }
+  }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -124,7 +126,7 @@ fun HistoryItem(
 private fun CondensedHistoryItem(
     translation: UiTranslation,
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ) {
   with(sharedTransitionScope) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -133,7 +135,8 @@ private fun CondensedHistoryItem(
           text =
               "${translation.sourceLang.uppercase()} \u2192 ${translation.targetLang.uppercase()}",
           style = MaterialTheme.typography.labelSmall,
-          color = MaterialTheme.colorScheme.secondary)
+          color = MaterialTheme.colorScheme.secondary,
+      )
 
       Spacer(modifier = Modifier.height(8.dp))
 
@@ -150,8 +153,10 @@ private fun CondensedHistoryItem(
                     .sharedElementModifier(
                         sharedTransitionScope = sharedTransitionScope,
                         key = "source_title_${translation.timestamp}",
-                        animatedVisibilityScope = animatedVisibilityScope),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Start)
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    ),
+            textAlign = androidx.compose.ui.text.style.TextAlign.Start,
+        )
 
         Image(
             painter = painterResource(R.mipmap.ic_launcher_foreground),
@@ -163,7 +168,9 @@ private fun CondensedHistoryItem(
                     .sharedElementModifier(
                         sharedTransitionScope = sharedTransitionScope,
                         key = "icon_${translation.timestamp}",
-                        animatedVisibilityScope = animatedVisibilityScope))
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    ),
+        )
 
         Text(
             text = translation.targetWord,
@@ -176,8 +183,10 @@ private fun CondensedHistoryItem(
                     .sharedElementModifier(
                         sharedTransitionScope = sharedTransitionScope,
                         key = "target_title_${translation.timestamp}",
-                        animatedVisibilityScope = animatedVisibilityScope),
-            textAlign = androidx.compose.ui.text.style.TextAlign.End)
+                        animatedVisibilityScope = animatedVisibilityScope,
+                    ),
+            textAlign = androidx.compose.ui.text.style.TextAlign.End,
+        )
       }
 
       // Bottom Row: Context
@@ -188,7 +197,8 @@ private fun CondensedHistoryItem(
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis)
+            overflow = TextOverflow.Ellipsis,
+        )
       }
     }
   }
@@ -200,7 +210,7 @@ private fun ExpandedHistoryItem(
     translation: UiTranslation,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
 ) {
   with(sharedTransitionScope) {
     Column(modifier = Modifier.padding(16.dp)) {
@@ -208,44 +218,50 @@ private fun ExpandedHistoryItem(
       Row(
           modifier = Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.weight(1f)) {
-              Text(
-                  text = translation.sourceWord,
-                  style =
-                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
-                  color = MaterialTheme.colorScheme.onSurfaceVariant,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis,
-                  modifier =
-                      Modifier.horizontalScroll(rememberScrollState())
-                          .sharedElementModifier(
-                              sharedTransitionScope = sharedTransitionScope,
-                              key = "source_title_${translation.timestamp}",
-                              animatedVisibilityScope = animatedVisibilityScope))
-              Text(
-                  text = translation.sourceLang.uppercase(),
-                  style = MaterialTheme.typography.labelMedium,
-                  color = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-            Row {
-              CopyToClipboardButton(
-                  text = translation.sourceWord,
-                  contentDescription = "Copy source title",
-                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
-              WikipediaLinkButton(
-                  url = translation.sourceArticleUrl,
-                  contentDescription = "Open source article",
-                  tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            }
-          }
+          verticalAlignment = Alignment.CenterVertically,
+      ) {
+        Column(modifier = Modifier.weight(1f)) {
+          Text(
+              text = translation.sourceWord,
+              style = MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+              modifier =
+                  Modifier.horizontalScroll(rememberScrollState())
+                      .sharedElementModifier(
+                          sharedTransitionScope = sharedTransitionScope,
+                          key = "source_title_${translation.timestamp}",
+                          animatedVisibilityScope = animatedVisibilityScope,
+                      ),
+          )
+          Text(
+              text = translation.sourceLang.uppercase(),
+              style = MaterialTheme.typography.labelMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+        }
+        Row {
+          CopyToClipboardButton(
+              text = translation.sourceWord,
+              contentDescription = "Copy source title",
+              tint = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+          WikipediaLinkButton(
+              url = translation.sourceArticleUrl,
+              contentDescription = "Open source article",
+              tint = MaterialTheme.colorScheme.onSurfaceVariant,
+          )
+        }
+      }
 
       translation.sourceShortDescription?.let { description ->
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = description,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface)
+            color = MaterialTheme.colorScheme.onSurface,
+        )
       }
 
       translation.sourceSummary?.let { snippet ->
@@ -259,7 +275,8 @@ private fun ExpandedHistoryItem(
       PivotConnector(
           sharedTransitionScope = sharedTransitionScope,
           animatedVisibilityScope = animatedVisibilityScope,
-          sharedElementKey = "icon_${translation.timestamp}")
+          sharedElementKey = "icon_${translation.timestamp}",
+      )
 
       Spacer(modifier = Modifier.height(16.dp))
 
@@ -267,44 +284,50 @@ private fun ExpandedHistoryItem(
       Row(
           modifier = Modifier.fillMaxWidth(),
           horizontalArrangement = Arrangement.SpaceBetween,
-          verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.weight(1f)) {
-              Text(
-                  text = translation.targetWord,
-                  style =
-                      MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
-                  color = MaterialTheme.colorScheme.primary,
-                  maxLines = 1,
-                  overflow = TextOverflow.Ellipsis,
-                  modifier =
-                      Modifier.horizontalScroll(rememberScrollState())
-                          .sharedElementModifier(
-                              sharedTransitionScope = sharedTransitionScope,
-                              key = "target_title_${translation.timestamp}",
-                              animatedVisibilityScope = animatedVisibilityScope))
-              Text(
-                  text = translation.targetLang.uppercase(),
-                  style = MaterialTheme.typography.labelLarge,
-                  color = MaterialTheme.colorScheme.primary)
-            }
-            Row {
-              CopyToClipboardButton(
-                  text = translation.targetWord,
-                  contentDescription = "Copy translated title",
-                  tint = MaterialTheme.colorScheme.primary)
-              WikipediaLinkButton(
-                  url = translation.targetArticleUrl,
-                  contentDescription = "Open target article",
-                  tint = MaterialTheme.colorScheme.primary)
-            }
-          }
+          verticalAlignment = Alignment.CenterVertically,
+      ) {
+        Column(modifier = Modifier.weight(1f)) {
+          Text(
+              text = translation.targetWord,
+              style = MaterialTheme.typography.headlineSmall.copy(fontFamily = FontFamily.Serif),
+              color = MaterialTheme.colorScheme.primary,
+              maxLines = 1,
+              overflow = TextOverflow.Ellipsis,
+              modifier =
+                  Modifier.horizontalScroll(rememberScrollState())
+                      .sharedElementModifier(
+                          sharedTransitionScope = sharedTransitionScope,
+                          key = "target_title_${translation.timestamp}",
+                          animatedVisibilityScope = animatedVisibilityScope,
+                      ),
+          )
+          Text(
+              text = translation.targetLang.uppercase(),
+              style = MaterialTheme.typography.labelLarge,
+              color = MaterialTheme.colorScheme.primary,
+          )
+        }
+        Row {
+          CopyToClipboardButton(
+              text = translation.targetWord,
+              contentDescription = "Copy translated title",
+              tint = MaterialTheme.colorScheme.primary,
+          )
+          WikipediaLinkButton(
+              url = translation.targetArticleUrl,
+              contentDescription = "Open target article",
+              tint = MaterialTheme.colorScheme.primary,
+          )
+        }
+      }
 
       translation.targetShortDescription?.let { description ->
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = description,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface)
+            color = MaterialTheme.colorScheme.onSurface,
+        )
       }
 
       translation.targetSummary?.let { summary ->
@@ -312,7 +335,8 @@ private fun ExpandedHistoryItem(
         Text(
             text = summary,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
       }
 
       Spacer(modifier = Modifier.height(16.dp))
@@ -322,12 +346,14 @@ private fun ExpandedHistoryItem(
           Icon(
               imageVector = Icons.Outlined.Delete,
               contentDescription = "Remove translation",
-              tint = MaterialTheme.colorScheme.error)
+              tint = MaterialTheme.colorScheme.error,
+          )
           Spacer(modifier = Modifier.width(8.dp))
           Text(
               text = "REMOVE",
               style = MaterialTheme.typography.labelLarge,
-              color = MaterialTheme.colorScheme.error)
+              color = MaterialTheme.colorScheme.error,
+          )
         }
       }
     }
@@ -339,11 +365,12 @@ private fun ExpandedHistoryItem(
 private fun Modifier.sharedElementModifier(
     sharedTransitionScope: SharedTransitionScope,
     key: String,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
 ): Modifier {
   with(sharedTransitionScope) {
     return this@sharedElementModifier.sharedElement(
         sharedContentState = rememberSharedContentState(key = key),
-        animatedVisibilityScope = animatedVisibilityScope)
+        animatedVisibilityScope = animatedVisibilityScope,
+    )
   }
 }

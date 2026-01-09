@@ -24,7 +24,8 @@ private val DarkColorScheme =
         onSurface = OffWhiteText,
         secondary = Patina,
         onSecondary = DarkTextOnPatina,
-        error = TerraCotta)
+        error = TerraCotta,
+    )
 
 private val LightColorScheme =
     lightColorScheme(
@@ -36,14 +37,15 @@ private val LightColorScheme =
         secondaryContainer = BeigeTan,
         secondary = Verdigris,
         onSecondary = PureWhite,
-        error = TerraCotta)
+        error = TerraCotta,
+    )
 
 @Composable
 fun JanusTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
   val colorScheme =
       when {

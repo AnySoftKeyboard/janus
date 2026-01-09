@@ -36,7 +36,7 @@ object AppModule {
   fun provideTranslationRepository(
       translationDao: TranslationDao,
       wikipediaApi: LangWikipediaFactory,
-      stringProvider: StringProvider
+      stringProvider: StringProvider,
   ): TranslationRepository {
     return TranslationRepository(translationDao, wikipediaApi, stringProvider)
   }
@@ -72,7 +72,9 @@ object AppModule {
                   .request()
                   .newBuilder()
                   .header(
-                      "User-Agent", "Janus-translations-android/1.0 (ask@evendanan.net) OkHttp/5.x")
+                      "User-Agent",
+                      "Janus-translations-android/1.0 (ask@evendanan.net) OkHttp/5.x",
+                  )
                   .build()
           chain.proceed(request)
         }

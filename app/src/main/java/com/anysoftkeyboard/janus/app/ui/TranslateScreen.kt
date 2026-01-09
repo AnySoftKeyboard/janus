@@ -90,101 +90,115 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
     SharedTransitionLayout {
       Column(
           modifier = Modifier.fillMaxSize().padding(16.dp).padding(paddingValues),
-          horizontalAlignment = Alignment.CenterHorizontally) {
-            // Language selection with swap button
-            LanguageSelectionRow(
-                sourceLang = sourceLang,
-                targetLang = targetLang,
-                pageState = pageState,
-                recentLanguages = recentLanguages,
-                onSourceLanguageSelected = {
-                  viewModel.setSourceLanguage(it)
-                  viewModel.updateRecentLanguage(it)
-                },
-                onTargetLanguageSelected = {
-                  viewModel.setTargetLanguage(it)
-                  viewModel.updateRecentLanguage(it)
-                },
-                onSwapLanguages = { newSource, newTarget, newSearchTerm ->
-                  viewModel.setSourceLanguage(newSource)
-                  viewModel.setTargetLanguage(newTarget)
-                  text = newSearchTerm
-                  if (newSearchTerm.isNotEmpty()) {
-                    viewModel.searchArticles(newSource, newSearchTerm)
-                  } else {
-                    viewModel.clearSearch()
-                  }
-                })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Search input field
-            SearchInputField(
-                text = text,
-                onTextChange = { text = it },
-                onSearch = {
-                  keyboardController?.hide()
-                  viewModel.searchArticles(sourceLang, text)
-                })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // State-based content display
-            AnimatedContent(targetState = pageState, label = "TranslateScreenStateTransition") {
-                targetState ->
-              when (targetState) {
-                is TranslateViewState.Empty ->
-                    InitialEmptyState(
-                        stringResource(welcomeMessage.welcomeMessageResId),
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this)
-                is TranslateViewState.FetchingOptions ->
-                    LoadingState(
-                        stringResource(welcomeMessage.loadingMessageResId),
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this)
-                is TranslateViewState.OptionsFetched ->
-                    SearchResultsView(
-                        pageState = targetState as TranslateViewState.OptionsFetched,
-                        viewModel = viewModel,
-                        sourceLang = sourceLang,
-                        targetLang = targetLang,
-                        snackbarHostState = snackbarHostState,
-                        instruction =
-                            stringResource(
-                                welcomeMessage.searchInstructionResId, targetLang.uppercase()),
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this)
-                is TranslateViewState.Translating ->
-                    Row(
-                        modifier =
-                            Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically) {
-                          JanusLoader(
-                              modifier =
-                                  Modifier.size(48.dp)
-                                      .sharedElement(
-                                          sharedContentState =
-                                              rememberSharedContentState(key = "shared_icon"),
-                                          animatedVisibilityScope = this@AnimatedContent))
-                          Spacer(modifier = Modifier.width(8.dp))
-                          Text(
-                              text =
-                                  stringResource(
-                                      R.string.translating_loading_message, targetLang.uppercase()),
-                              style = MaterialTheme.typography.labelMedium,
-                              color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                is TranslateViewState.Translated ->
-                    TranslationView(
-                        translated = targetState as TranslateViewState.Translated,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedVisibilityScope = this)
-                is TranslateViewState.Error ->
-                    ErrorStateDisplay(error = targetState as TranslateViewState.Error)
+          horizontalAlignment = Alignment.CenterHorizontally,
+      ) {
+        // Language selection with swap button
+        LanguageSelectionRow(
+            sourceLang = sourceLang,
+            targetLang = targetLang,
+            pageState = pageState,
+            recentLanguages = recentLanguages,
+            onSourceLanguageSelected = {
+              viewModel.setSourceLanguage(it)
+              viewModel.updateRecentLanguage(it)
+            },
+            onTargetLanguageSelected = {
+              viewModel.setTargetLanguage(it)
+              viewModel.updateRecentLanguage(it)
+            },
+            onSwapLanguages = { newSource, newTarget, newSearchTerm ->
+              viewModel.setSourceLanguage(newSource)
+              viewModel.setTargetLanguage(newTarget)
+              text = newSearchTerm
+              if (newSearchTerm.isNotEmpty()) {
+                viewModel.searchArticles(newSource, newSearchTerm)
+              } else {
+                viewModel.clearSearch()
               }
-            }
+            },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Search input field
+        SearchInputField(
+            text = text,
+            onTextChange = { text = it },
+            onSearch = {
+              keyboardController?.hide()
+              viewModel.searchArticles(sourceLang, text)
+            },
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // State-based content display
+        AnimatedContent(targetState = pageState, label = "TranslateScreenStateTransition") {
+            targetState ->
+          when (targetState) {
+            is TranslateViewState.Empty ->
+                InitialEmptyState(
+                    stringResource(welcomeMessage.welcomeMessageResId),
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
+            is TranslateViewState.FetchingOptions ->
+                LoadingState(
+                    stringResource(welcomeMessage.loadingMessageResId),
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
+            is TranslateViewState.OptionsFetched ->
+                SearchResultsView(
+                    pageState = targetState as TranslateViewState.OptionsFetched,
+                    viewModel = viewModel,
+                    sourceLang = sourceLang,
+                    targetLang = targetLang,
+                    snackbarHostState = snackbarHostState,
+                    instruction =
+                        stringResource(
+                            welcomeMessage.searchInstructionResId,
+                            targetLang.uppercase(),
+                        ),
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
+            is TranslateViewState.Translating ->
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                  JanusLoader(
+                      modifier =
+                          Modifier.size(48.dp)
+                              .sharedElement(
+                                  sharedContentState =
+                                      rememberSharedContentState(key = "shared_icon"),
+                                  animatedVisibilityScope = this@AnimatedContent,
+                              )
+                  )
+                  Spacer(modifier = Modifier.width(8.dp))
+                  Text(
+                      text =
+                          stringResource(
+                              R.string.translating_loading_message,
+                              targetLang.uppercase(),
+                          ),
+                      style = MaterialTheme.typography.labelMedium,
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                  )
+                }
+            is TranslateViewState.Translated ->
+                TranslationView(
+                    translated = targetState as TranslateViewState.Translated,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
+            is TranslateViewState.Error ->
+                ErrorStateDisplay(error = targetState as TranslateViewState.Error)
           }
+        }
+      }
     }
   }
 }

@@ -32,7 +32,8 @@ data class UiTranslation(
           targetSummary = translation.targetSummary,
           isFavorite = translation.isFavorite,
           timestamp = translation.timestamp,
-          id = translation.id)
+          id = translation.id,
+      )
     }
   }
 
@@ -50,6 +51,7 @@ data class UiTranslation(
         targetShortDescription = targetShortDescription,
         targetSummary = targetSummary,
         isFavorite = isFavorite,
-        timestamp = timestamp)
+        timestamp = timestamp,
+    )
   }
 }

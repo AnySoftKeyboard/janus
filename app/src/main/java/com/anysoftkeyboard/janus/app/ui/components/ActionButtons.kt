@@ -27,19 +27,21 @@ import androidx.compose.ui.platform.LocalContext
 fun WikipediaLinkButton(
     url: String,
     contentDescription: String = "Open in Wikipedia",
-    tint: Color = MaterialTheme.colorScheme.primary
+    tint: Color = MaterialTheme.colorScheme.primary,
 ) {
   val context = LocalContext.current
   IconButton(
       onClick = {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(intent)
-      }) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.OpenInNew,
-            contentDescription = contentDescription,
-            tint = tint)
       }
+  ) {
+    Icon(
+        imageVector = Icons.AutoMirrored.Filled.OpenInNew,
+        contentDescription = contentDescription,
+        tint = tint,
+    )
+  }
 }
 
 /**
@@ -55,7 +57,7 @@ fun CopyToClipboardButton(
     text: String,
     contentDescription: String = "Copy to clipboard",
     tint: Color = MaterialTheme.colorScheme.primary,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
   val context = LocalContext.current
   IconButton(
@@ -64,12 +66,14 @@ fun CopyToClipboardButton(
         val clip = ClipData.newPlainText("article_title", text)
         clipboard.setPrimaryClip(clip)
         onClick?.invoke()
-      }) {
-        Icon(
-            imageVector = Icons.Default.ContentCopy,
-            contentDescription = contentDescription,
-            tint = tint)
       }
+  ) {
+    Icon(
+        imageVector = Icons.Default.ContentCopy,
+        contentDescription = contentDescription,
+        tint = tint,
+    )
+  }
 }
 
 /**
@@ -85,16 +89,18 @@ fun BookmarkButton(
     isBookmarked: Boolean = false,
     contentDescription: String = "Bookmark",
     tint: Color = MaterialTheme.colorScheme.primary,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
 ) {
   IconButton(
       onClick = {
         // TODO: Implement bookmark
         onClick?.invoke()
-      }) {
-        Icon(
-            imageVector = Icons.Default.BookmarkBorder,
-            contentDescription = contentDescription,
-            tint = tint)
       }
+  ) {
+    Icon(
+        imageVector = Icons.Default.BookmarkBorder,
+        contentDescription = contentDescription,
+        tint = tint,
+    )
+  }
 }

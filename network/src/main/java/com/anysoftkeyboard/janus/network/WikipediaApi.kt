@@ -8,7 +8,7 @@ interface WikipediaApi {
   suspend fun search(
       @Query("srsearch") searchTerm: String,
       @Query("srlimit") limit: Int = 10,
-      @Query("srprop") properties: String = "snippet"
+      @Query("srprop") properties: String = "snippet",
   ): SearchResponse
 
   @GET("api.php?action=query&prop=langlinks&format=json&lllimit=max")
@@ -21,6 +21,7 @@ interface WikipediaApi {
   suspend fun getLinks(@Query("pageids") pageIds: String): LangLinksResponse
 
   @GET(
-      "api.php?action=query&prop=extracts|pageprops&format=json&exintro=true&explaintext=true&exsentences=2")
+      "api.php?action=query&prop=extracts|pageprops&format=json&exintro=true&explaintext=true&exsentences=2"
+  )
   suspend fun getArticleDetails(@Query("titles") titles: String): LangLinksResponse
 }

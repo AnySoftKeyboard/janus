@@ -35,7 +35,8 @@ class ProcessTextActivityTest {
       assertEquals(text, nextIntent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT))
       assertEquals(
           Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP,
-          nextIntent.flags and (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
+          nextIntent.flags and (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+      )
     }
   }
 
@@ -61,7 +62,8 @@ class ProcessTextActivityTest {
       assertEquals(text, nextIntent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT))
       assertEquals(
           Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP,
-          nextIntent.flags and (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
+          nextIntent.flags and (Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+      )
     }
   }
 
@@ -88,7 +90,8 @@ class ProcessTextActivityTest {
         android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
         0,
         5,
-        android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE)
+        android.text.Spanned.SPAN_INCLUSIVE_INCLUSIVE,
+    )
 
     val intent =
         Intent(ApplicationProvider.getApplicationContext(), ProcessTextActivity::class.java).apply {
@@ -108,7 +111,9 @@ class ProcessTextActivityTest {
       assertEquals(MainActivity::class.java.name, nextIntent.component?.className)
       // Verify content is preserved
       assertEquals(
-          "Hello World", nextIntent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString())
+          "Hello World",
+          nextIntent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString(),
+      )
     }
   }
 }

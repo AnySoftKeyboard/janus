@@ -61,7 +61,7 @@ fun SearchResultsView(
     snackbarHostState: SnackbarHostState,
     instruction: String,
     sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   val translatedArticles = pageState.options.filter { targetLang in it.availableLanguages }
   val untranslatedArticles = pageState.options.filter { targetLang !in it.availableLanguages }
@@ -79,28 +79,32 @@ fun SearchResultsView(
   Column {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically) {
-          val modifier =
-              if (sharedTransitionScope != null && animatedVisibilityScope != null) {
-                with(sharedTransitionScope) {
-                  Modifier.sharedElement(
-                      sharedContentState = rememberSharedContentState(key = "shared_icon"),
-                      animatedVisibilityScope = animatedVisibilityScope)
-                }
-              } else {
-                Modifier
-              }
-          Icon(
-              painter = painterResource(R.mipmap.ic_launcher_foreground),
-              contentDescription = null,
-              modifier = Modifier.size(48.dp).then(modifier),
-              tint = MaterialTheme.colorScheme.primary)
-          Spacer(modifier = Modifier.width(8.dp))
-          Text(
-              text = instruction,
-              style = MaterialTheme.typography.labelMedium,
-              color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+      val modifier =
+          if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+            with(sharedTransitionScope) {
+              Modifier.sharedElement(
+                  sharedContentState = rememberSharedContentState(key = "shared_icon"),
+                  animatedVisibilityScope = animatedVisibilityScope,
+              )
+            }
+          } else {
+            Modifier
+          }
+      Icon(
+          painter = painterResource(R.mipmap.ic_launcher_foreground),
+          contentDescription = null,
+          modifier = Modifier.size(48.dp).then(modifier),
+          tint = MaterialTheme.colorScheme.primary,
+      )
+      Spacer(modifier = Modifier.width(8.dp))
+      Text(
+          text = instruction,
+          style = MaterialTheme.typography.labelMedium,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+    }
 
     LazyColumn {
       items(translatedArticles) { item ->
@@ -112,7 +116,8 @@ fun SearchResultsView(
             isLoading = false,
             errorMessage = null,
             onClick = { viewModel.fetchTranslation(pageState, item, sourceLang, targetLang) },
-            modifier = Modifier.testTag("search_result_item"))
+            modifier = Modifier.testTag("search_result_item"),
+        )
       }
 
       // Divider between sections
@@ -140,7 +145,8 @@ fun SearchResultsView(
                     showLanguagePickerDialog = true
                   }
                 },
-            modifier = Modifier.testTag("search_result_item"))
+            modifier = Modifier.testTag("search_result_item"),
+        )
       }
     }
 
@@ -151,14 +157,19 @@ fun SearchResultsView(
           onLanguageSelected = { selectedLanguage ->
             // Fetch translation with the selected language
             viewModel.fetchTranslation(
-                pageState, selectedArticleForPicker!!, sourceLang, selectedLanguage)
+                pageState,
+                selectedArticleForPicker!!,
+                sourceLang,
+                selectedLanguage,
+            )
             showLanguagePickerDialog = false
             selectedArticleForPicker = null
           },
           onDismiss = {
             showLanguagePickerDialog = false
             selectedArticleForPicker = null
-          })
+          },
+      )
     }
   }
 }
@@ -168,18 +179,22 @@ fun SearchResultsView(
 private fun SectionDivider() {
   Column(
       modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
-      horizontalAlignment = Alignment.CenterHorizontally) {
-        HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(0.3f),
-            color = MaterialTheme.colorScheme.outlineVariant)
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.search_results_untranslated_section).uppercase(),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(modifier = Modifier.height(8.dp))
-        HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(0.3f),
-            color = MaterialTheme.colorScheme.outlineVariant)
-      }
+      horizontalAlignment = Alignment.CenterHorizontally,
+  ) {
+    HorizontalDivider(
+        modifier = Modifier.fillMaxWidth(0.3f),
+        color = MaterialTheme.colorScheme.outlineVariant,
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(
+        text = stringResource(R.string.search_results_untranslated_section).uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    HorizontalDivider(
+        modifier = Modifier.fillMaxWidth(0.3f),
+        color = MaterialTheme.colorScheme.outlineVariant,
+    )
+  }
 }
