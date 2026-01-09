@@ -40,37 +40,37 @@ class WikipediaClientTest {
   fun `test search response parsing`() = runBlocking {
     val jsonResponse =
         """
-            {
-              "batchcomplete": "",
-              "continue": {
-                "sroffset": 10,
-                "continue": "-|||"
+        {
+          "batchcomplete": "",
+          "continue": {
+            "sroffset": 10,
+            "continue": "-|||"
+          },
+          "query": {
+            "searchinfo": {
+              "totalhits": 901620,
+              "suggestion": "somer",
+              "suggestionsnippet": "somer"
+            },
+            "search": [
+              {
+                "ns": 0,
+                "title": "Summer",
+                "pageid": 29392,
+                "size": 22710,
+                "wordcount": 2461,
+                "snippet": "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
+                "timestamp": "2025-06-27T12:32:40Z"
               },
-              "query": {
-                "searchinfo": {
-                  "totalhits": 901620,
-                  "suggestion": "somer",
-                  "suggestionsnippet": "somer"
-                },
-                "search": [
-                  {
-                    "ns": 0,
-                    "title": "Summer",
-                    "pageid": 29392,
-                    "size": 22710,
-                    "wordcount": 2461,
-                    "snippet": "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
-                    "timestamp": "2025-06-27T12:32:40Z"
-                  },
-                  {
-                    "ns": 0,
-                    "title": "Monster Summer",
-                    "pageid": 71763900,
-                    "snippet": "Monster <span class=\"searchmatch\">Summer</span> is a 2024 American adventure horror film directed by David Henrie, written by Cornelius Uliano and Bryan Schulz, and starring Mason Thames"
-                  }
-                ]
+              {
+                "ns": 0,
+                "title": "Monster Summer",
+                "pageid": 71763900,
+                "snippet": "Monster <span class=\"searchmatch\">Summer</span> is a 2024 American adventure horror film directed by David Henrie, written by Cornelius Uliano and Bryan Schulz, and starring Mason Thames"
               }
-            }
+            ]
+          }
+        }
         """
             .trimIndent()
 
@@ -86,7 +86,8 @@ class WikipediaClientTest {
     assertEquals(29392L, response.query!!.search?.get(0)?.pageid)
     assertEquals(
         "<span class=\"searchmatch\">Summer</span> or summertime is the hottest and brightest of the four temperate seasons, occurring after spring and before autumn. At or centred on the summer",
-        response.query!!.search?.get(0)?.snippet)
+        response.query!!.search?.get(0)?.snippet,
+    )
     assertEquals("Monster Summer", response.query!!.search?.get(1)?.title)
   }
 }

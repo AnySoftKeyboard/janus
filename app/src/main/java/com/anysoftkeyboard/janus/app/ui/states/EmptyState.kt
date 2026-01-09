@@ -45,23 +45,25 @@ private fun EmptyStateMessage(
     message: String,
     iconTint: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier,
-    iconContent: @Composable () -> Unit
+    iconContent: @Composable () -> Unit,
 ) {
   Column(
       modifier = modifier.fillMaxWidth().padding(28.dp),
       horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
-        iconContent()
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = title, style = MaterialTheme.typography.titleMedium, color = iconTint)
-        if (message.isNotEmpty()) {
-          Spacer(modifier = Modifier.height(4.dp))
-          Text(
-              text = message,
-              style = MaterialTheme.typography.bodyMedium,
-              color = MaterialTheme.colorScheme.secondary)
-        }
-      }
+      verticalArrangement = Arrangement.Center,
+  ) {
+    iconContent()
+    Spacer(modifier = Modifier.height(4.dp))
+    Text(text = title, style = MaterialTheme.typography.titleMedium, color = iconTint)
+    if (message.isNotEmpty()) {
+      Spacer(modifier = Modifier.height(4.dp))
+      Text(
+          text = message,
+          style = MaterialTheme.typography.bodyMedium,
+          color = MaterialTheme.colorScheme.secondary,
+      )
+    }
+  }
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -73,7 +75,7 @@ private fun EmptyStateMessageWithPainter(
     painter: Painter,
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   EmptyStateMessage(title, message, iconTint, modifier) {
     val modifier =
@@ -81,7 +83,8 @@ private fun EmptyStateMessageWithPainter(
           with(sharedTransitionScope) {
             Modifier.sharedElement(
                 sharedContentState = rememberSharedContentState(key = "shared_icon"),
-                animatedVisibilityScope = animatedVisibilityScope)
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
           }
         } else {
           Modifier
@@ -90,7 +93,8 @@ private fun EmptyStateMessageWithPainter(
         painter = painter,
         contentDescription = title,
         modifier = Modifier.size(128.dp).then(modifier),
-        tint = iconTint)
+        tint = iconTint,
+    )
   }
 }
 
@@ -100,7 +104,7 @@ private fun EmptyStateMessageWithPainter(
 fun InitialEmptyState(
     welcomeMessage: String,
     sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   EmptyStateMessageWithPainter(
       title = welcomeMessage,
@@ -108,7 +112,8 @@ fun InitialEmptyState(
       iconTint = MaterialTheme.colorScheme.primary,
       painter = painterResource(R.mipmap.ic_launcher_foreground),
       sharedTransitionScope = sharedTransitionScope,
-      animatedVisibilityScope = animatedVisibilityScope)
+      animatedVisibilityScope = animatedVisibilityScope,
+  )
 }
 
 /** Loading state with a progress indicator. */
@@ -117,7 +122,7 @@ fun InitialEmptyState(
 fun LoadingState(
     message: String,
     sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
   EmptyStateMessage(title = message, message = "", iconTint = MaterialTheme.colorScheme.primary) {
     val modifier =
@@ -125,7 +130,8 @@ fun LoadingState(
           with(sharedTransitionScope) {
             Modifier.sharedElement(
                 sharedContentState = rememberSharedContentState(key = "shared_icon"),
-                animatedVisibilityScope = animatedVisibilityScope)
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
           }
         } else {
           Modifier
@@ -146,7 +152,8 @@ fun NoResultsState(searchTerm: String) {
       title = stringResource(R.string.empty_state_no_results_title),
       message = stringResource(R.string.empty_state_no_results_message, searchTerm),
       painter = rememberVectorPainter(image = Icons.Default.Search),
-      modifier = Modifier.testTag("no_results_state"))
+      modifier = Modifier.testTag("no_results_state"),
+  )
 } // TODO: Add Modifier parameter to EmptyStateMessageWithPainter to properly support testTag? Or
 
 // just wrap it?
@@ -177,25 +184,34 @@ fun ErrorStateDisplay(error: TranslateViewState.Error) {
       when (error.errorType) {
         ErrorType.Network ->
             Triple(
-                R.string.error_network_title, R.string.error_network_message, Icons.Default.Warning)
+                R.string.error_network_title,
+                R.string.error_network_message,
+                Icons.Default.Warning,
+            )
         ErrorType.RateLimit ->
             Triple(
                 R.string.error_rate_limit_title,
                 R.string.error_rate_limit_message,
-                Icons.Default.Warning)
+                Icons.Default.Warning,
+            )
         ErrorType.NotFound ->
             Triple(
                 R.string.error_not_found_title,
                 R.string.error_not_found_message,
-                Icons.Default.Warning)
+                Icons.Default.Warning,
+            )
         ErrorType.Server ->
             Triple(
-                R.string.error_server_title, R.string.error_server_message, Icons.Default.Warning)
+                R.string.error_server_title,
+                R.string.error_server_message,
+                Icons.Default.Warning,
+            )
         ErrorType.Unknown ->
             Triple(
                 R.string.error_unknown_title,
                 0, // Use error message from exception if available, or generic
-                Icons.Default.Warning)
+                Icons.Default.Warning,
+            )
       }
 
   val message =
@@ -206,5 +222,6 @@ fun ErrorStateDisplay(error: TranslateViewState.Error) {
       title = stringResource(titleRes),
       message = message,
       painter = rememberVectorPainter(image = icon),
-      modifier = Modifier.testTag("error_state"))
+      modifier = Modifier.testTag("error_state"),
+  )
 }

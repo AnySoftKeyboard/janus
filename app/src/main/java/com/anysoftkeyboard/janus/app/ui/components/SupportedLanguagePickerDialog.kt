@@ -42,7 +42,7 @@ fun SupportedLanguagePickerDialog(
     languages: List<SupportedLanguage>,
     recentLanguages: List<String>,
     onLanguageSelected: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
   val recentSupported =
       remember(recentLanguages) {
@@ -54,34 +54,36 @@ fun SupportedLanguagePickerDialog(
       title = {
         Text(
             text = stringResource(R.string.language_picker_title),
-            style = MaterialTheme.typography.titleLarge)
+            style = MaterialTheme.typography.titleLarge,
+        )
       },
       text = {
         LazyColumn(
             modifier = Modifier.fillMaxWidth().height(400.dp) // Limit height
-            ) {
-              if (recentSupported.isNotEmpty()) {
-                item { TranslationHeader(stringResource(R.string.language_selector_recent)) }
-                items(recentSupported) { language ->
-                  LanguageItem(language, onLanguageSelected, onDismiss)
-                }
-                item { TranslationHeader(stringResource(R.string.language_selector_all_languages)) }
-              }
-
-              items(languages) { language -> LanguageItem(language, onLanguageSelected, onDismiss) }
+        ) {
+          if (recentSupported.isNotEmpty()) {
+            item { TranslationHeader(stringResource(R.string.language_selector_recent)) }
+            items(recentSupported) { language ->
+              LanguageItem(language, onLanguageSelected, onDismiss)
             }
+            item { TranslationHeader(stringResource(R.string.language_selector_all_languages)) }
+          }
+
+          items(languages) { language -> LanguageItem(language, onLanguageSelected, onDismiss) }
+        }
       },
       confirmButton = {},
       dismissButton = {
         TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_cancel)) }
-      })
+      },
+  )
 }
 
 @Composable
 private fun LanguageItem(
     language: SupportedLanguage,
     onLanguageSelected: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
   Column {
     Row(
@@ -94,12 +96,14 @@ private fun LanguageItem(
                 .padding(vertical = 12.dp, horizontal = 8.dp)
                 // Maintain testability with the same tag as the original DropdownMenuItem
                 .testTag("language_menu_item_${language.code}"),
-        verticalAlignment = Alignment.CenterVertically) {
-          Text(
-              text = language.name,
-              style = MaterialTheme.typography.bodyLarge,
-              modifier = Modifier.weight(1f))
-        }
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+      Text(
+          text = language.name,
+          style = MaterialTheme.typography.bodyLarge,
+          modifier = Modifier.weight(1f),
+      )
+    }
     HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
   }
 }

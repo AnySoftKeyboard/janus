@@ -22,7 +22,8 @@ class UiTranslationTest {
             targetShortDescription = "חיית בית",
             targetSummary = "חתולים הם יונקים טורפים קטנים.",
             timestamp = 1234567890L,
-            isFavorite = true)
+            isFavorite = true,
+        )
 
     val uiTranslation = UiTranslation.fromTranslation(translation)
 
@@ -54,7 +55,8 @@ class UiTranslationTest {
             targetArticleUrl = "https://he.wikipedia.org/?curid=4",
             targetShortDescription = null,
             targetSummary = null,
-            isFavorite = false)
+            isFavorite = false,
+        )
 
     val uiTranslation = UiTranslation.fromTranslation(translation)
 
@@ -86,7 +88,8 @@ class UiTranslationTest {
             targetArticleUrl = "https://he.wikipedia.org/?curid=6",
             targetShortDescription = null,
             targetSummary = "ציפורים הן בעלי חיים מעופפים.",
-            isFavorite = false)
+            isFavorite = false,
+        )
 
     val uiTranslation = UiTranslation.fromTranslation(translation)
 
@@ -113,7 +116,8 @@ class UiTranslationTest {
             targetArticleUrl = "",
             targetShortDescription = "",
             targetSummary = "",
-            isFavorite = false)
+            isFavorite = false,
+        )
 
     val uiTranslation = UiTranslation.fromTranslation(translation)
 
@@ -143,7 +147,8 @@ class UiTranslationTest {
             targetSummary = "summary2",
             isFavorite = true,
             timestamp = 1234567890L,
-            id = 1)
+            id = 1,
+        )
 
     val translation = uiTranslation.toTranslation()
 

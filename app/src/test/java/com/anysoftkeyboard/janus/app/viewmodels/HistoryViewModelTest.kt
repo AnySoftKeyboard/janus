@@ -56,7 +56,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+            ),
             Translation(
                 sourceWord = "test2",
                 sourceLangCode = "en",
@@ -67,7 +68,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+            ),
+        )
 
     viewModel.history.test {
       assertEquals(emptyList<Translation>(), awaitItem())
@@ -126,7 +129,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+            ),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -137,7 +141,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+            ),
+        )
 
     viewModel.history.test {
       // Skip initial empty item
@@ -165,7 +171,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+            ),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -176,7 +183,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+            ),
+        )
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -208,7 +217,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+            ),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -219,7 +229,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+            ),
+        )
 
     viewModel.history.test {
       skipItems(1)
@@ -257,7 +269,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url1_es",
                 targetShortDescription = "desc1_es",
-                targetSummary = "summary1_es"),
+                targetSummary = "summary1_es",
+            ),
             Translation(
                 sourceWord = "Dog",
                 sourceLangCode = "en",
@@ -268,7 +281,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "url2_es",
                 targetShortDescription = "desc2_es",
-                targetSummary = "summary2_es"))
+                targetSummary = "summary2_es",
+            ),
+        )
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -300,7 +315,8 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null),
+                targetSummary = null,
+            ),
             Translation(
                 id = 2,
                 sourceWord = "Dog",
@@ -312,7 +328,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null))
+                targetSummary = null,
+            ),
+        )
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
@@ -345,7 +363,9 @@ class HistoryViewModelTest {
                 targetLangCode = "es",
                 targetArticleUrl = "",
                 targetShortDescription = null,
-                targetSummary = null))
+                targetSummary = null,
+            )
+        )
 
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()

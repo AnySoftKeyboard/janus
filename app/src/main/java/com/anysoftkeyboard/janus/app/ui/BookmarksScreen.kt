@@ -23,16 +23,19 @@ fun BookmarksScreen(viewModel: BookmarksViewModel) {
   Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
-          Icon(
-              imageVector = Icons.Default.Build,
-              contentDescription = null,
-              modifier = Modifier.size(72.dp),
-              tint = MaterialTheme.colorScheme.onSurfaceVariant)
-          Text(
-              text = stringResource(R.string.under_construction),
-              style = MaterialTheme.typography.headlineLarge,
-              color = MaterialTheme.colorScheme.onSurface)
-        }
+        verticalArrangement = Arrangement.Center,
+    ) {
+      Icon(
+          imageVector = Icons.Default.Build,
+          contentDescription = null,
+          modifier = Modifier.size(72.dp),
+          tint = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Text(
+          text = stringResource(R.string.under_construction),
+          style = MaterialTheme.typography.headlineLarge,
+          color = MaterialTheme.colorScheme.onSurface,
+      )
+    }
   }
 }

@@ -25,7 +25,9 @@ class TranslationDaoTest {
   fun setup() {
     database =
         Room.inMemoryDatabaseBuilder(
-                ApplicationProvider.getApplicationContext(), AppDatabase::class.java)
+                ApplicationProvider.getApplicationContext(),
+                AppDatabase::class.java,
+            )
             .allowMainThreadQueries()
             .build()
     translationDao = database.translationDao()
@@ -94,7 +96,11 @@ class TranslationDaoTest {
         createTranslation(sourceWord = "a", sourceLang = "en", targetLang = "es", isFavorite = true)
     val t2 =
         createTranslation(
-            sourceWord = "b", sourceLang = "en", targetLang = "es", isFavorite = false)
+            sourceWord = "b",
+            sourceLang = "en",
+            targetLang = "es",
+            isFavorite = false,
+        )
     translationDao.insertTranslation(t1)
     translationDao.insertTranslation(t2)
 
@@ -134,7 +140,11 @@ class TranslationDaoTest {
         createTranslation(sourceWord = "a", sourceLang = "en", targetLang = "es", isFavorite = true)
     val t2 =
         createTranslation(
-            sourceWord = "b", sourceLang = "en", targetLang = "es", isFavorite = false)
+            sourceWord = "b",
+            sourceLang = "en",
+            targetLang = "es",
+            isFavorite = false,
+        )
     translationDao.insertTranslation(t1)
     translationDao.insertTranslation(t2)
 
@@ -184,14 +194,16 @@ class TranslationDaoTest {
             sourceLang = "en",
             targetLang = "es",
             isFavorite = true,
-            timestamp = 1)
+            timestamp = 1,
+        )
     val t2 =
         createTranslation(
             sourceWord = "b",
             sourceLang = "en",
             targetLang = "es",
             isFavorite = true,
-            timestamp = 2)
+            timestamp = 2,
+        )
     translationDao.insertTranslation(t1)
     translationDao.insertTranslation(t2)
 
@@ -314,7 +326,11 @@ class TranslationDaoTest {
         createTranslation(sourceWord = "Cat", sourceLang = "en", targetLang = "es", timestamp = 1)
     val t2 =
         createTranslation(
-            sourceWord = "Category", sourceLang = "en", targetLang = "es", timestamp = 2)
+            sourceWord = "Category",
+            sourceLang = "en",
+            targetLang = "es",
+            timestamp = 2,
+        )
     translationDao.insertTranslation(t1)
     translationDao.insertTranslation(t2)
 

@@ -36,7 +36,9 @@ fun HtmlText(html: String, color: Color) {
                 (color.alpha * 255).toInt(),
                 (color.red * 255).toInt(),
                 (color.green * 255).toInt(),
-                (color.blue * 255).toInt())
+                (color.blue * 255).toInt(),
+            )
         textView.setTextColor(androidColor)
-      })
+      },
+  )
 }

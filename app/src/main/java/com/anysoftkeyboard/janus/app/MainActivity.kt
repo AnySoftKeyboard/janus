@@ -40,8 +40,10 @@ class MainActivity : ComponentActivity() {
     installSplashScreen()
     super.onCreate(savedInstanceState)
     val initialText =
-        if (savedInstanceState == null &&
-            intent?.action == android.content.Intent.ACTION_PROCESS_TEXT) {
+        if (
+            savedInstanceState == null &&
+                intent?.action == android.content.Intent.ACTION_PROCESS_TEXT
+        ) {
           intent?.getCharSequenceExtra(android.content.Intent.EXTRA_PROCESS_TEXT)?.toString()
         } else {
           null
@@ -75,21 +77,22 @@ fun JanusApp(initialText: String? = null) {
                     launchSingleTop = true
                     restoreState = true
                   }
-                })
+                },
+            )
           }
         }
-      }) { innerPadding ->
-        NavHost(
-            navController,
-            startDestination = TabScreen.Translate.route,
-            Modifier.padding(innerPadding)) {
-              composable(TabScreen.Translate.route) {
-                TranslateScreen(hiltViewModel(), initialText)
-              }
-              composable(TabScreen.History.route) { HistoryScreen(hiltViewModel()) }
-              composable(TabScreen.Bookmarks.route) { BookmarksScreen(hiltViewModel()) }
-            }
       }
+  ) { innerPadding ->
+    NavHost(
+        navController,
+        startDestination = TabScreen.Translate.route,
+        Modifier.padding(innerPadding),
+    ) {
+      composable(TabScreen.Translate.route) { TranslateScreen(hiltViewModel(), initialText) }
+      composable(TabScreen.History.route) { HistoryScreen(hiltViewModel()) }
+      composable(TabScreen.Bookmarks.route) { BookmarksScreen(hiltViewModel()) }
+    }
+  }
 }
 
 enum class TabScreen(
@@ -99,7 +102,7 @@ enum class TabScreen(
 ) {
   Translate("translate", R.string.tab_translate, Icons.Default.Translate),
   History("history", R.string.tab_history, Icons.Default.History),
-  Bookmarks("bookmarks", R.string.tab_bookmarks, Icons.Default.Favorite)
+  Bookmarks("bookmarks", R.string.tab_bookmarks, Icons.Default.Favorite),
 }
 
 @Preview(showBackground = true)

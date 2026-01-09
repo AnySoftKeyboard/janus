@@ -110,6 +110,7 @@ class HistoryGrouperTest {
         targetSummary = null,
         isFavorite = false,
         timestamp = timestamp,
-        id = 0)
+        id = 0,
+    )
   }
 }

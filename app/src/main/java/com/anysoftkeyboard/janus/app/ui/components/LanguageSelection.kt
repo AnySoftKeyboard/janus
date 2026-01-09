@@ -47,41 +47,46 @@ fun LanguageSelectionRow(
     recentLanguages: List<String>,
     onSourceLanguageSelected: (String) -> Unit,
     onTargetLanguageSelected: (String) -> Unit,
-    onSwapLanguages: (String, String, String) -> Unit
+    onSwapLanguages: (String, String, String) -> Unit,
 ) {
   Row(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.Center,
-      verticalAlignment = Alignment.CenterVertically) {
-        LanguageSelector(
-            selectedLanguage = sourceLang,
-            recentLanguages = recentLanguages,
-            onLanguageSelected = onSourceLanguageSelected,
-            modifier = Modifier.testTag("source_lang_selector"))
-        IconButton(
-            onClick = {
-              // If translation is shown, put target word in input, else clear
-              val newSearchTerm =
-                  if (pageState is TranslateViewState.Translated) {
-                    when (val translationState = pageState.translation) {
-                      is TranslationState.Translated -> translationState.translation.translatedWord
-                      else -> ""
-                    }
-                  } else {
-                    ""
-                  }
-              onSwapLanguages(targetLang, sourceLang, newSearchTerm)
-            }) {
-              Icon(
-                  imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                  contentDescription = "Swap languages")
-            }
-        LanguageSelector(
-            selectedLanguage = targetLang,
-            recentLanguages = recentLanguages,
-            onLanguageSelected = onTargetLanguageSelected,
-            modifier = Modifier.testTag("target_lang_selector"))
-      }
+      verticalAlignment = Alignment.CenterVertically,
+  ) {
+    LanguageSelector(
+        selectedLanguage = sourceLang,
+        recentLanguages = recentLanguages,
+        onLanguageSelected = onSourceLanguageSelected,
+        modifier = Modifier.testTag("source_lang_selector"),
+    )
+    IconButton(
+        onClick = {
+          // If translation is shown, put target word in input, else clear
+          val newSearchTerm =
+              if (pageState is TranslateViewState.Translated) {
+                when (val translationState = pageState.translation) {
+                  is TranslationState.Translated -> translationState.translation.translatedWord
+                  else -> ""
+                }
+              } else {
+                ""
+              }
+          onSwapLanguages(targetLang, sourceLang, newSearchTerm)
+        }
+    ) {
+      Icon(
+          imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+          contentDescription = "Swap languages",
+      )
+    }
+    LanguageSelector(
+        selectedLanguage = targetLang,
+        recentLanguages = recentLanguages,
+        onLanguageSelected = onTargetLanguageSelected,
+        modifier = Modifier.testTag("target_lang_selector"),
+    )
+  }
 }
 
 /**
@@ -96,7 +101,7 @@ fun LanguageSelector(
     selectedLanguage: String,
     recentLanguages: List<String>,
     onLanguageSelected: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
   // In a real app, you'd get this from a ViewModel
   val languages = supportedLanguages
@@ -115,7 +120,8 @@ fun LanguageSelector(
           languages = languages,
           recentLanguages = recentLanguages,
           onLanguageSelected = onLanguageSelected,
-          onDismiss = { expanded = false })
+          onDismiss = { expanded = false },
+      )
     }
   }
 }

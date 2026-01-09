@@ -52,7 +52,7 @@ fun JanusLoader(
     durationMillis: Int = 2000,
     tint: Color = MaterialTheme.colorScheme.primary,
     dotColor: Color = MaterialTheme.colorScheme.onPrimary,
-    dotColorFill: Color = MaterialTheme.colorScheme.secondary
+    dotColorFill: Color = MaterialTheme.colorScheme.secondary,
 ) {
   // Define the Animation
   val infiniteTransition = rememberInfiniteTransition(label = "JanusLoaderAnimation")
@@ -63,8 +63,10 @@ fun JanusLoader(
           animationSpec =
               infiniteRepeatable(
                   animation = tween(durationMillis, easing = LinearEasing),
-                  repeatMode = RepeatMode.Restart),
-          label = "Progress")
+                  repeatMode = RepeatMode.Restart,
+              ),
+          label = "Progress",
+      )
 
   Box(modifier = modifier) {
     // Background Image
@@ -73,7 +75,8 @@ fun JanusLoader(
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Fit,
-        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(tint))
+        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(tint),
+    )
     // Traveling dots
     Canvas(modifier = Modifier.fillMaxSize()) {
       val points = NormalizedPathPoints
@@ -95,7 +98,8 @@ fun JanusLoader(
                 durationMillis = durationMillis,
                 baseDotRadiusPx = baseDotRadiusPx,
                 delayLevel = level,
-                drawTravelingDot = ::drawTravelingDot)
+                drawTravelingDot = ::drawTravelingDot,
+            )
           }
 
       dots.forEach { it.draw(progress) }
@@ -108,7 +112,7 @@ private class TravelingDot(
     private val durationMillis: Int,
     private val baseDotRadiusPx: Float,
     private val delayLevel: Int,
-    private val drawTravelingDot: (Int, Float) -> Unit
+    private val drawTravelingDot: (Int, Float) -> Unit,
 ) {
   private val delay = delayLevel * 70f
   private val radius = baseDotRadiusPx / (1 + delayLevel)

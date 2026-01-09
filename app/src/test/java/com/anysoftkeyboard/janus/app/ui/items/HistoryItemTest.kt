@@ -31,7 +31,8 @@ class HistoryItemTest {
               "El gato doméstico (Felis silvestris catus), llamado popularmente gato...",
           isFavorite = false,
           timestamp = 1234567890L,
-          id = 1)
+          id = 1,
+      )
 
   @OptIn(ExperimentalSharedTransitionApi::class)
   @Test
@@ -42,7 +43,8 @@ class HistoryItemTest {
             translation = testTranslation,
             isExpanded = false,
             unfocused = false,
-            sharedTransitionScope = this)
+            sharedTransitionScope = this,
+        )
       }
     }
 
@@ -59,7 +61,8 @@ class HistoryItemTest {
             translation = testTranslation,
             isExpanded = false,
             unfocused = true,
-            sharedTransitionScope = this)
+            sharedTransitionScope = this,
+        )
       }
     }
 

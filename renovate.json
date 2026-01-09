@@ -73,5 +73,17 @@
   "prHourlyLimit": 0,
   "timezone": "UTC",
   "assignees": [],
-  "reviewers": []
+  "reviewers": [],
+  "allowedPostUpgradeCommands": [
+    "^\\./gradlew spotlessApply$"
+  ],
+  "postUpgradeTasks": {
+    "commands": [
+      "./gradlew spotlessApply"
+    ],
+    "fileFilters": [
+      "**/*"
+    ],
+    "executionMode": "branch"
+  }
 }

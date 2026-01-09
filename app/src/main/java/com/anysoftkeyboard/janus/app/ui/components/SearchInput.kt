@@ -35,7 +35,7 @@ fun SearchInputField(
     text: String,
     onTextChange: (String) -> Unit,
     onSearch: () -> Unit,
-    label: String = stringResource(R.string.search_input_label)
+    label: String = stringResource(R.string.search_input_label),
 ) {
   OutlinedTextField(
       value = text,
@@ -44,19 +44,22 @@ fun SearchInputField(
       leadingIcon = {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = stringResource(R.string.content_description_search))
+            contentDescription = stringResource(R.string.content_description_search),
+        )
       },
       trailingIcon = {
         if (text.isNotEmpty()) {
           IconButton(onClick = { onTextChange("") }) {
             Icon(
                 imageVector = Icons.Default.Clear,
-                contentDescription = stringResource(R.string.content_description_clear))
+                contentDescription = stringResource(R.string.content_description_clear),
+            )
           }
         }
       },
       keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
       keyboardActions = KeyboardActions(onSearch = { onSearch() }),
       singleLine = true,
-      modifier = Modifier.fillMaxWidth().testTag("search_box"))
+      modifier = Modifier.fillMaxWidth().testTag("search_box"),
+  )
 }

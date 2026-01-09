@@ -31,14 +31,15 @@ import com.anysoftkeyboard.janus.app.R
 fun LanguagePickerDialog(
     availableLanguages: List<String>,
     onLanguageSelected: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
   AlertDialog(
       onDismissRequest = onDismiss,
       title = {
         Text(
             text = stringResource(R.string.language_picker_title),
-            style = MaterialTheme.typography.titleLarge)
+            style = MaterialTheme.typography.titleLarge,
+        )
       },
       text = {
         LazyColumn {
@@ -53,7 +54,8 @@ fun LanguagePickerDialog(
                             onLanguageSelected(language)
                             onDismiss()
                           }
-                          .padding(vertical = 12.dp, horizontal = 8.dp))
+                          .padding(vertical = 12.dp, horizontal = 8.dp),
+              )
               if (language != availableLanguages.last()) {
                 HorizontalDivider()
               }
@@ -64,5 +66,6 @@ fun LanguagePickerDialog(
       confirmButton = {},
       dismissButton = {
         TextButton(onClick = onDismiss) { Text(stringResource(R.string.button_cancel)) }
-      })
+      },
+  )
 }

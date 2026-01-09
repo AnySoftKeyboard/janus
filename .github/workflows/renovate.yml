@@ -23,21 +23,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.1
 
-      - name: Cache Renovate data
-        uses: actions/cache@v5
+      - name: Setup Java
+        uses: actions/setup-java@v5
         with:
-          path: ~/.cache/renovate
-          key: renovate-cache-${{ github.run_id }}
-          restore-keys: |
-            renovate-cache-
+          distribution: 'temurin'
+          java-version: '21'
 
-      - name: Self-hosted Renovate
-        uses: renovatebot/github-action@v44.2.3
-        with:
-          configurationFile: renovate.json
-          token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
-          renovate-version: 39.131.0
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Renovate
         env:
           LOG_LEVEL: debug
           RENOVATE_REPOSITORIES: ${{ github.repository }}
-          RENOVATE_REPOSITORY_CACHE: enabled
+          RENOVATE_PLATFORM: github
+          RENOVATE_TOKEN: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
+          RENOVATE_ALLOWED_POST_UPGRADE_COMMANDS: "^\\./gradlew spotlessApply$"
+        run: npx -y renovate@39.131.0

@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun HistoryItemsList(
     groupedTranslations: Map<String, List<UiTranslation>>,
-    onDelete: (UiTranslation) -> Unit
+    onDelete: (UiTranslation) -> Unit,
 ) {
   var expandedItemId by remember { mutableStateOf<Long?>(null) }
 
@@ -68,35 +68,38 @@ fun HistoryItemsList(
         state = listState,
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)) {
-          groupedTranslations.forEach { (header, translations) ->
-            stickyHeader {
-              TranslationHeader(
-                  text = header,
-                  modifier = Modifier.background(MaterialTheme.colorScheme.background))
-            }
-            items(items = translations, key = { it.timestamp }) { translation ->
-              HistoryItem(
-                  modifier = Modifier.animateItem(),
-                  translation = translation,
-                  isExpanded = expandedItemId == translation.timestamp,
-                  unfocused = expandedItemId != null && expandedItemId != translation.timestamp,
-                  sharedTransitionScope = this@SharedTransitionLayout,
-                  onClick = {
-                    expandedItemId =
-                        if (expandedItemId == translation.timestamp) {
-                          null
-                        } else {
-                          translation.timestamp
-                        }
-                  },
-                  onDelete = {
-                    expandedItemId = null
-                    onDelete(translation)
-                  })
-            }
-          }
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+      groupedTranslations.forEach { (header, translations) ->
+        stickyHeader {
+          TranslationHeader(
+              text = header,
+              modifier = Modifier.background(MaterialTheme.colorScheme.background),
+          )
         }
+        items(items = translations, key = { it.timestamp }) { translation ->
+          HistoryItem(
+              modifier = Modifier.animateItem(),
+              translation = translation,
+              isExpanded = expandedItemId == translation.timestamp,
+              unfocused = expandedItemId != null && expandedItemId != translation.timestamp,
+              sharedTransitionScope = this@SharedTransitionLayout,
+              onClick = {
+                expandedItemId =
+                    if (expandedItemId == translation.timestamp) {
+                      null
+                    } else {
+                      translation.timestamp
+                    }
+              },
+              onDelete = {
+                expandedItemId = null
+                onDelete(translation)
+              },
+          )
+        }
+      }
+    }
   }
 }
 
@@ -104,18 +107,20 @@ fun HistoryItemsList(
 fun TranslationHeader(text: String, modifier: Modifier = Modifier) {
   Row(
       modifier = modifier.fillMaxWidth().padding(vertical = 8.dp),
-      verticalAlignment = Alignment.CenterVertically) {
-        Text(
-            text = "●",
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.primary)
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.secondary)
-        Spacer(modifier = Modifier.width(8.dp))
-        HorizontalDivider(
-            modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
-      }
+      verticalAlignment = Alignment.CenterVertically,
+  ) {
+    Text(
+        text = "●",
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.primary,
+    )
+    Spacer(modifier = Modifier.width(8.dp))
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.secondary,
+    )
+    Spacer(modifier = Modifier.width(8.dp))
+    HorizontalDivider(modifier = Modifier.weight(1f), color = MaterialTheme.colorScheme.onSurface)
+  }
 }

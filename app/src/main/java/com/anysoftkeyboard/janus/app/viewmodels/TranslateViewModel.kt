@@ -22,7 +22,7 @@ sealed class TranslationState() {
 
   data class MissingTranslation(
       val missingLang: String,
-      val availableTranslations: List<Translation>
+      val availableTranslations: List<Translation>,
   ) : TranslationState()
 
   data class Error(val errorMessage: String) : TranslationState()
@@ -36,7 +36,7 @@ sealed class TranslateViewState() {
   data class OptionsFetched(
       val searchTerm: String,
       val options: List<OptionalSourceTerm>,
-      val translations: Map<OptionalSourceTerm, TranslationState>
+      val translations: Map<OptionalSourceTerm, TranslationState>,
   ) : TranslateViewState()
 
   data class Translating(
@@ -44,14 +44,14 @@ sealed class TranslateViewState() {
       val options: List<OptionalSourceTerm>,
       val selectedTerm: OptionalSourceTerm,
       val sourceLang: String,
-      val targetLang: String
+      val targetLang: String,
   ) : TranslateViewState()
 
   data class Translated(
       val term: OptionalSourceTerm,
       val sourceLang: String,
       val targetLang: String,
-      val translation: TranslationState
+      val translation: TranslationState,
   ) : TranslateViewState()
 
   data class Error(val errorType: TranslateViewModel.ErrorType, val errorMessage: String?) :
@@ -66,7 +66,7 @@ constructor(
     private val recentLanguagesRepository:
         com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository,
     private val stringProvider: StringProvider,
-    private val welcomeMessageProvider: TranslationFlowMessagesProvider
+    private val welcomeMessageProvider: TranslationFlowMessagesProvider,
 ) : ViewModel() {
   val recentLanguages: StateFlow<List<String>> = recentLanguagesRepository.recentLanguages
   val sourceLanguage: StateFlow<String> = recentLanguagesRepository.currentSourceLanguage
@@ -91,7 +91,7 @@ constructor(
     RateLimit,
     NotFound,
     Server,
-    Unknown
+    Unknown,
   }
 
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
@@ -113,7 +113,10 @@ constructor(
       try {
         _state.value =
             TranslateViewState.OptionsFetched(
-                term, repository.searchArticles(sourceLang, term), emptyMap())
+                term,
+                repository.searchArticles(sourceLang, term),
+                emptyMap(),
+            )
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching search results", e)
         val errorType = mapToErrorType(e)
@@ -126,7 +129,7 @@ constructor(
       sources: TranslateViewState.OptionsFetched,
       searchPage: OptionalSourceTerm,
       sourceLang: String,
-      targetLang: String
+      targetLang: String,
   ) {
     // Save current search results for back navigation
     previousSearchResults = sources
@@ -134,7 +137,12 @@ constructor(
     // Transition to Translating state
     _state.value =
         TranslateViewState.Translating(
-            sources.searchTerm, sources.options, searchPage, sourceLang, targetLang)
+            sources.searchTerm,
+            sources.options,
+            searchPage,
+            sourceLang,
+            targetLang,
+        )
 
     viewModelScope.launch {
       try {

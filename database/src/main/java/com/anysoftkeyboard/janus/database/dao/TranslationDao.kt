@@ -17,18 +17,20 @@ interface TranslationDao {
   suspend fun insertTranslations(translations: List<Translation>)
 
   @Query(
-      "SELECT * FROM translation_history WHERE sourceWord = :sourceWord AND sourceLangCode = :sourceLang AND targetLangCode = :targetLang LIMIT 1")
+      "SELECT * FROM translation_history WHERE sourceWord = :sourceWord AND sourceLangCode = :sourceLang AND targetLangCode = :targetLang LIMIT 1"
+  )
   suspend fun findTranslation(
       sourceWord: String,
       sourceLang: String,
-      targetLang: String
+      targetLang: String,
   ): Translation?
 
   @Query("SELECT * FROM translation_history ORDER BY timestamp DESC")
   fun getFullHistory(): Flow<List<Translation>>
 
   @Query(
-      "SELECT * FROM translation_history WHERE sourceWord LIKE '%' || :query || '%' OR translatedWord LIKE '%' || :query || '%' ORDER BY timestamp DESC")
+      "SELECT * FROM translation_history WHERE sourceWord LIKE '%' || :query || '%' OR translatedWord LIKE '%' || :query || '%' ORDER BY timestamp DESC"
+  )
   fun searchHistory(query: String): Flow<List<Translation>>
 
   @Query("SELECT * FROM translation_history WHERE isFavorite = 1 ORDER BY timestamp DESC")
