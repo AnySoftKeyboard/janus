@@ -33,13 +33,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">Select the word you wish to translate to %1$s</string>
-    <string name="search_instruction_initial_1">Select the concept to translate to %1$s</string>
-    <string name="search_instruction_initial_2">Select the subject to translate to %1$s</string>
-    <string name="search_instruction_initial_3">Select the specific meaning for %1$s</string>
-    <string name="search_instruction_initial_4">Select the intended idea for %1$s</string>
-    <string name="search_instruction_scholar">Identify the correct context for translation to %1$s</string>
-    <string name="search_instruction_bridge">Choose the meaning to bridge into %1$s</string>
+    <string name="search_instruction_initial">Select the word you wish to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_1">Select the concept to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_2">Select the subject to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_3">Select the specific meaning for %1$s to translate to %2$s</string>
+    <string name="search_instruction_initial_4">Select the intended idea for %1$s to translate to %2$s</string>
+    <string name="search_instruction_scholar">Identify the correct context for translation from %1$s to %2$s</string>
+    <string name="search_instruction_bridge">Choose the meaning to bridge from %1$s into %2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No results found</string>
@@ -58,7 +58,7 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Bridge the gap</string>
     <string name="loading_state_initial_5">Constructing bridges...</string>
-    <string name="search_instruction_initial_5">Select the bridge you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_5">Select the bridge you meant to translate from %1$s to %2$s</string>
 
     <!-- Detecting states -->
     <string name="loading_state_detecting">Detecting language...</string>

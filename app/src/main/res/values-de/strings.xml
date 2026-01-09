@@ -31,13 +31,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">Wähle das Wort, das du nach %1$s übersetzen möchtest</string>
-    <string name="search_instruction_initial_1">Wähle das Konzept zur Übersetzung nach %1$s</string>
-    <string name="search_instruction_initial_2">Wähle das Thema zur Übersetzung nach %1$s</string>
-    <string name="search_instruction_initial_3">Wähle die spezifische Bedeutung für %1$s</string>
-    <string name="search_instruction_initial_4">Wähle die beabsichtigte Idee für %1$s</string>
-    <string name="search_instruction_scholar">Identifiziere den korrekten Kontext für die Übersetzung nach %1$s</string>
-    <string name="search_instruction_bridge">Wähle die Bedeutung, um eine Brücke zu %1$s zu schlagen</string>
+    <string name="search_instruction_initial">Wähle das Wort, das du von %1$s nach %2$s übersetzen möchtest</string>
+    <string name="search_instruction_initial_1">Wähle das Konzept zur Übersetzung von %1$s nach %2$s</string>
+    <string name="search_instruction_initial_2">Wähle das Thema zur Übersetzung von %1$s nach %2$s</string>
+    <string name="search_instruction_initial_3">Wähle die spezifische Bedeutung von %1$s für %2$s</string>
+    <string name="search_instruction_initial_4">Wähle die beabsichtigte Idee von %1$s für %2$s</string>
+    <string name="search_instruction_scholar">Identifiziere den korrekten Kontext für die Übersetzung von %1$s nach %2$s</string>
+    <string name="search_instruction_bridge">Wähle die Bedeutung, um eine Brücke von %1$s zu %2$s zu schlagen</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">Keine Ergebnisse gefunden</string>
@@ -56,7 +56,7 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Die Lücke schließen</string>
     <string name="loading_state_initial_5">Brücken bauen...</string>
-    <string name="search_instruction_initial_5">Wähle die Brücke, die du nach %1$s übersetzen wolltest</string>
+    <string name="search_instruction_initial_5">Wähle die Brücke, die du von %1$s nach %2$s übersetzen wolltest</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Nicht übersetzte Artikel</string>

@@ -157,13 +157,17 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                 )
             is TranslateViewState.OptionsFetched ->
                 SearchResultsView(
-                    pageState = targetState as TranslateViewState.OptionsFetched,
+                    pageState = targetState,
                     viewModel = viewModel,
                     targetLang = targetLang,
                     snackbarHostState = snackbarHostState,
                     instruction =
                         stringResource(
                             welcomeMessage.searchInstructionResId,
+                            (com.anysoftkeyboard.janus.app.util.supportedLanguagesMap[
+                                        targetState.effectiveSourceLang]
+                                    ?.name ?: targetState.effectiveSourceLang)
+                                .uppercase(),
                             targetLang.uppercase(),
                         ),
                     sharedTransitionScope = this@SharedTransitionLayout,
@@ -196,12 +200,11 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                 }
             is TranslateViewState.Translated ->
                 TranslationView(
-                    translated = targetState as TranslateViewState.Translated,
+                    translated = targetState,
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
                 )
-            is TranslateViewState.Error ->
-                ErrorStateDisplay(error = targetState as TranslateViewState.Error)
+            is TranslateViewState.Error -> ErrorStateDisplay(error = targetState)
           }
         }
       }

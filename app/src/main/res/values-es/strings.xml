@@ -31,13 +31,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">Selecciona la palabra que deseas traducir a %1$s</string>
-    <string name="search_instruction_initial_1">Selecciona el concepto para traducir a %1$s</string>
-    <string name="search_instruction_initial_2">Selecciona el tema para traducir a %1$s</string>
-    <string name="search_instruction_initial_3">Selecciona el significado específico para %1$s</string>
-    <string name="search_instruction_initial_4">Selecciona la idea prevista para %1$s</string>
-    <string name="search_instruction_scholar">Identifica el contexto correcto para la traducción a %1$s</string>
-    <string name="search_instruction_bridge">Elige el significado para conectar con %1$s</string>
+    <string name="search_instruction_initial">Selecciona la palabra que deseas traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_1">Selecciona el concepto para traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_2">Selecciona el tema para traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_3">Selecciona el significado específico de %1$s para traducir a %2$s</string>
+    <string name="search_instruction_initial_4">Selecciona la idea prevista de %1$s para traducir a %2$s</string>
+    <string name="search_instruction_scholar">Identifica el contexto correcto para la traducción de %1$s a %2$s</string>
+    <string name="search_instruction_bridge">Elige el significado para conectar de %1$s con %2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No se encontraron resultados</string>
@@ -56,7 +56,7 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Cierra la brecha</string>
     <string name="loading_state_initial_5">Construyendo puentes...</string>
-    <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir a %1$s</string>
+    <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir de %1$s a %2$s</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Artículos sin traducir</string>
