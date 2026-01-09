@@ -142,6 +142,7 @@ val supportedLanguages = listOf(
         content += f'        activeUserCount = {lang["activeUserCount"]}\n'
         content += f'    ),\n'
     content += ")\n"
+    content += "\nval supportedLanguagesMap = supportedLanguages.associateBy { it.code }\n"
 
     # Ensure directory exists
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
