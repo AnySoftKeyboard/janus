@@ -45,31 +45,30 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
   val scope = rememberCoroutineScope()
 
   Scaffold(
-          snackbarHost = {
-            SnackbarHost(snackbarHostState) { data ->
-              Snackbar(
-                      modifier = Modifier.padding(12.dp),
-                      action = {
-                        data.visuals.actionLabel?.let { label ->
-                          TextButton(onClick = { data.performAction() }) {
-                            Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.Undo,
-                                    contentDescription = label
-                            )
-                          }
-                        }
-                      }
-              ) { Text(data.visuals.message) }
-            }
+      snackbarHost = {
+        SnackbarHost(snackbarHostState) { data ->
+          Snackbar(
+              modifier = Modifier.padding(12.dp),
+              action = {
+                data.visuals.actionLabel?.let { label ->
+                  TextButton(onClick = { data.performAction() }) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.Undo, contentDescription = label)
+                  }
+                }
+              },
+          ) {
+            Text(data.visuals.message)
           }
+        }
+      }
   ) { paddingValues ->
     Column(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
       // Search field
       SearchInputField(
-              text = searchQuery,
-              onTextChange = { viewModel.updateSearchQuery(it) },
-              onSearch = { /* No-op for history search, filtering is real-time */},
-              label = stringResource(R.string.search_history_label)
+          text = searchQuery,
+          onTextChange = { viewModel.updateSearchQuery(it) },
+          onSearch = { /* No-op for history search, filtering is real-time */ },
+          label = stringResource(R.string.search_history_label),
       )
 
       // Results or empty state
@@ -80,25 +79,25 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
         val translationRemovedMessage = stringResource(R.string.translation_removed)
         val undoLabel = stringResource(R.string.action_undo)
         val groupedTranslations =
-                remember(history, context) { HistoryGrouper.group(context, history) }
+            remember(history, context) { HistoryGrouper.group(context, history) }
 
         HistoryItemsList(
-                groupedTranslations = groupedTranslations,
-                onDelete = { translation ->
-                  viewModel.deleteTranslation(translation.id)
-                  scope.launch {
-                    val result =
-                            snackbarHostState.showSnackbar(
-                                    message = translationRemovedMessage,
-                                    actionLabel = undoLabel,
-                                    duration = SnackbarDuration.Short,
-                                    withDismissAction = true
-                            )
-                    if (result == SnackbarResult.ActionPerformed) {
-                      viewModel.restoreTranslation(translation)
-                    }
-                  }
+            groupedTranslations = groupedTranslations,
+            onDelete = { translation ->
+              viewModel.deleteTranslation(translation.id)
+              scope.launch {
+                val result =
+                    snackbarHostState.showSnackbar(
+                        message = translationRemovedMessage,
+                        actionLabel = undoLabel,
+                        duration = SnackbarDuration.Short,
+                        withDismissAction = true,
+                    )
+                if (result == SnackbarResult.ActionPerformed) {
+                  viewModel.restoreTranslation(translation)
                 }
+              }
+            },
         )
       }
     }
@@ -108,21 +107,21 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
 @Composable
 private fun EmptySearchResults(query: String) {
   Column(
-          modifier = Modifier.fillMaxSize().padding(32.dp),
-          horizontalAlignment = Alignment.CenterHorizontally,
-          verticalArrangement = Arrangement.Center,
+      modifier = Modifier.fillMaxSize().padding(32.dp),
+      horizontalAlignment = Alignment.CenterHorizontally,
+      verticalArrangement = Arrangement.Center,
   ) {
     Icon(
-            imageVector = Icons.Default.SearchOff,
-            contentDescription = null,
-            modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+        imageVector = Icons.Default.SearchOff,
+        contentDescription = null,
+        modifier = Modifier.size(64.dp),
+        tint = MaterialTheme.colorScheme.onSurfaceVariant,
     )
     Spacer(modifier = Modifier.height(16.dp))
     Text(
-            text = stringResource(R.string.no_history_results, query),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+        text = stringResource(R.string.no_history_results, query),
+        style = MaterialTheme.typography.titleMedium,
+        color = MaterialTheme.colorScheme.onSurface,
     )
   }
 }
