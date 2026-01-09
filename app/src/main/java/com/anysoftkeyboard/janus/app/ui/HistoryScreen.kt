@@ -32,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
-import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.ui.util.HistoryGrouper
 import com.anysoftkeyboard.janus.app.viewmodels.HistoryViewModel
 import kotlinx.coroutines.launch
@@ -79,9 +78,8 @@ fun HistoryScreen(viewModel: HistoryViewModel) {
         val context = LocalContext.current
         val translationRemovedMessage = stringResource(R.string.translation_removed)
         val undoLabel = stringResource(R.string.action_undo)
-        val uiTranslations = remember(history) { history.map { UiTranslation.fromTranslation(it) } }
         val groupedTranslations =
-            remember(uiTranslations, context) { HistoryGrouper.group(context, uiTranslations) }
+            remember(history, context) { HistoryGrouper.group(context, history) }
 
         HistoryItemsList(
             groupedTranslations = groupedTranslations,

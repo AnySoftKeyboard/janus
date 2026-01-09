@@ -3,9 +3,10 @@ package com.anysoftkeyboard.janus.app.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
-import com.anysoftkeyboard.janus.database.entities.Translation
+import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -27,7 +30,7 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
   val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
 
   // History that automatically updates based on search query
-  val history: StateFlow<List<Translation>> =
+  val history: StateFlow<List<UiTranslation>> =
       _searchQuery
           // Debounce search to reduce DB queries, but update immediately on clear
           .debounce { if (it.isBlank()) 0L else 300L }
@@ -38,6 +41,8 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
               repository.searchHistory(query)
             }
           }
+          .map { list -> list.map { UiTranslation.fromTranslation(it) } }
+          .flowOn(Dispatchers.Default)
           .stateIn(
               scope = viewModelScope,
               started = SharingStarted.WhileSubscribed(5000),
@@ -56,7 +61,7 @@ class HistoryViewModel @Inject constructor(private val repository: TranslationRe
     viewModelScope.launch { repository.deleteTranslation(id) }
   }
 
-  fun restoreTranslation(translation: com.anysoftkeyboard.janus.app.ui.data.UiTranslation) {
+  fun restoreTranslation(translation: UiTranslation) {
     viewModelScope.launch { repository.restoreTranslation(translation.toTranslation()) }
   }
 }

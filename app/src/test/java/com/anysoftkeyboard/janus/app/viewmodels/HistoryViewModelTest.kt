@@ -39,7 +39,7 @@ class HistoryViewModelTest {
 
   @Test
   fun `history is empty by default`() = runTest {
-    assertEquals(emptyList<Translation>(), viewModel.history.value)
+    assertEquals(emptyList<UiTranslation>(), viewModel.history.value)
   }
 
   @Test
@@ -73,7 +73,7 @@ class HistoryViewModelTest {
         )
 
     viewModel.history.test {
-      assertEquals(emptyList<Translation>(), awaitItem())
+      assertEquals(emptyList<UiTranslation>(), awaitItem())
 
       fakeRepository.setHistory(testTranslations)
 
@@ -81,9 +81,9 @@ class HistoryViewModelTest {
       assertEquals(testTranslations.size, history.size)
       for (i in testTranslations.indices) {
         assertEquals(testTranslations[i].sourceWord, history[i].sourceWord)
-        assertEquals(testTranslations[i].sourceLangCode, history[i].sourceLangCode)
-        assertEquals(testTranslations[i].translatedWord, history[i].translatedWord)
-        assertEquals(testTranslations[i].targetLangCode, history[i].targetLangCode)
+        assertEquals(testTranslations[i].sourceLangCode, history[i].sourceLang)
+        assertEquals(testTranslations[i].translatedWord, history[i].targetWord)
+        assertEquals(testTranslations[i].targetLangCode, history[i].targetLang)
         assertEquals(testTranslations[i].isFavorite, history[i].isFavorite)
       }
     }
