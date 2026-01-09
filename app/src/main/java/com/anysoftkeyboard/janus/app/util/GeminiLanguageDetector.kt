@@ -13,17 +13,64 @@ class GeminiLanguageDetector @Inject constructor() : LanguageDetector {
 
   override suspend fun detect(text: String): DetectionResult {
     return try {
+      // Request format: "code:confidence" separated by commas
       val prompt =
-          "Detect the language of the following text. Return ONLY the ISO 639-1 language code (e.g., 'en', 'fr', 'es'). If unknown or mixed, return 'unknown'. Text: \"$text\""
+          """
+          Analyze the following text and determine its language.
+          The text might be ambiguous (valid in multiple languages).
+          Return a list of 1 to 3 logical languages with a confidence score (0.0 to 1.0) for each.
+          Format: [2-letter-code]:[confidence]
+          Output examples:
+          - en:1.0
+          - es:0.9, en:0.7
+          - fr:0.8, en:0.75, es:0.1
+          - he:0.95, ar:0.05
+
+          Text: "$text"
+          """
+              .trimIndent()
 
       val response = model.generateContent(prompt)
-      val resultText = response.candidates.firstOrNull()?.text?.trim()?.lowercase() ?: "unknown"
-      Log.d("GeminiDetector", "Input: '$text' -> Detected: '$resultText'")
+      val resultText = response.candidates.firstOrNull()?.text?.trim() ?: ""
+      Log.d("GeminiDetector", "Input: '$text' -> Raw: '$resultText'")
 
-      if (resultText == "unknown" || resultText.length > 5) { // Sanity check length
-        DetectionResult.Failure
-      } else {
-        DetectionResult.Success(resultText, 1.0f)
+      if (resultText.lowercase().contains("unknown") || resultText.isEmpty()) {
+        return DetectionResult.Failure
+      }
+
+      // Cleanup: remove any markdown list characters if present (e.g. "- ") or newlines
+      val cleanText = resultText.replace("\n", ",").replace("-", "").trim()
+
+      val candidates =
+          cleanText
+              .split(",")
+              .mapNotNull {
+                val parts = it.split(":")
+                if (parts.size == 2) {
+                  val code = parts[0].trim().lowercase()
+                  val confidence = parts[1].trim().toFloatOrNull() ?: 0f
+                  if (confidence > 0 && code.length == 2) {
+                    DetectionResult.Ambiguous.Candidate(code, confidence)
+                  } else null
+                } else null
+              }
+              .sortedByDescending { it.confidence }
+
+      when {
+        candidates.isEmpty() -> DetectionResult.Failure
+        candidates.size == 1 ->
+            DetectionResult.Success(candidates[0].languageCode, candidates[0].confidence)
+        else -> {
+          val first = candidates[0]
+          val second = candidates[1]
+          // If first is significantly better, use it. Otherwise ambiguous.
+          if (first.confidence > 0.8f && (first.confidence - second.confidence) > 0.3f) {
+            DetectionResult.Success(first.languageCode, first.confidence)
+          } else {
+            // Return top 3 as ambiguous
+            DetectionResult.Ambiguous(candidates.take(3))
+          }
+        }
       }
     } catch (e: Exception) {
       Log.e("GeminiDetector", "Error detecting language", e)
