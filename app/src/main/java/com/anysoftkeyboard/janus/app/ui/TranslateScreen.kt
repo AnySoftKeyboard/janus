@@ -77,7 +77,8 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
       is TranslateViewState.Translated -> viewModel.backToSearchResults()
       is TranslateViewState.OptionsFetched -> viewModel.clearSearch()
       is TranslateViewState.Error -> viewModel.clearSearch()
-      is TranslateViewState.FetchingOptions -> {
+      is TranslateViewState.FetchingOptions,
+      is TranslateViewState.Detecting -> {
         // Let system handle back during loading
       }
       else -> {
@@ -148,16 +149,25 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
                 )
+            is TranslateViewState.Detecting ->
+                LoadingState(
+                    stringResource(welcomeMessage.detectingMessageResId),
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this,
+                )
             is TranslateViewState.OptionsFetched ->
                 SearchResultsView(
-                    pageState = targetState as TranslateViewState.OptionsFetched,
+                    pageState = targetState,
                     viewModel = viewModel,
-                    sourceLang = sourceLang,
                     targetLang = targetLang,
                     snackbarHostState = snackbarHostState,
                     instruction =
                         stringResource(
                             welcomeMessage.searchInstructionResId,
+                            (com.anysoftkeyboard.janus.app.util.supportedLanguagesMap[
+                                        targetState.effectiveSourceLang]
+                                    ?.name ?: targetState.effectiveSourceLang)
+                                .uppercase(),
                             targetLang.uppercase(),
                         ),
                     sharedTransitionScope = this@SharedTransitionLayout,
@@ -190,12 +200,25 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                 }
             is TranslateViewState.Translated ->
                 TranslationView(
-                    translated = targetState as TranslateViewState.Translated,
+                    translated = targetState,
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
                 )
-            is TranslateViewState.Error ->
-                ErrorStateDisplay(error = targetState as TranslateViewState.Error)
+            is TranslateViewState.Error -> ErrorStateDisplay(error = targetState)
+            is TranslateViewState.AmbiguousSource -> {
+              LoadingState(
+                  stringResource(welcomeMessage.detectingMessageResId),
+                  sharedTransitionScope = this@SharedTransitionLayout,
+                  animatedVisibilityScope = this,
+              )
+              com.anysoftkeyboard.janus.app.ui.components.DisambiguationDialog(
+                  candidates = targetState.candidates,
+                  onLanguageSelected = { langCode ->
+                    viewModel.resolveAmbiguity(langCode, targetState.originalQuery)
+                  },
+                  onDismiss = { viewModel.clearSearch() },
+              )
+            }
           }
         }
       }

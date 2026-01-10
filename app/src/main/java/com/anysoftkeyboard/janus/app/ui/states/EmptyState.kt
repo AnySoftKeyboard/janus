@@ -154,21 +154,7 @@ fun NoResultsState(searchTerm: String) {
       painter = rememberVectorPainter(image = Icons.Default.Search),
       modifier = Modifier.testTag("no_results_state"),
   )
-} // TODO: Add Modifier parameter to EmptyStateMessageWithPainter to properly support testTag? Or
-
-// just wrap it?
-// SearchResultsView calls NoResultsState.
-// Let's look at EmptyStateMessageWithPainter. It wraps EmptyStateMessage which takes modifier in
-// the lambda for Icon but not for the column.
-// I will wrap the content in a Box or Column with the tag if I can't easily pipe it.
-
-// Actually EmptyStateMessage takes a lambda for icon.
-// EmptyStateMessageWithPainter calls EmptyStateMessage.
-// EmptyStateMessage creates a Column.
-
-// I'll update EmptyStateMessageWithPainter to take a modifier and pass it to EmptyStateMessage? No,
-// EmptyStateMessage doesn't take a modifier for the root Column.
-// I should update EmptyStateMessage to accept a modifier for the root Column.
+}
 
 /**
  * Error state display.
@@ -210,6 +196,18 @@ fun ErrorStateDisplay(error: TranslateViewState.Error) {
             Triple(
                 R.string.error_unknown_title,
                 0, // Use error message from exception if available, or generic
+                Icons.Default.Warning,
+            )
+        ErrorType.DetectionFailed ->
+            Triple(
+                R.string.error_detection_failed_title,
+                R.string.error_detection_failed_message,
+                Icons.Default.Warning,
+            )
+        ErrorType.SafetyViolation ->
+            Triple(
+                R.string.error_safety_title,
+                R.string.error_safety_violation,
                 Icons.Default.Warning,
             )
       }

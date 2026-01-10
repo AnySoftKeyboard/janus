@@ -1,6 +1,8 @@
 <resources>
     <!-- App name -->
     <string name="app_name">Janus</string>
+    <string name="auto_detect_language_name">Auto-detect</string>
+    <string name="loading_languages">Loading languages…</string>
 
     <!-- Main navigation tabs -->
     <string name="tab_translate">Translate</string>
@@ -31,13 +33,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">Select the word you wish to translate to %1$s</string>
-    <string name="search_instruction_initial_1">Select the concept to translate to %1$s</string>
-    <string name="search_instruction_initial_2">Select the subject to translate to %1$s</string>
-    <string name="search_instruction_initial_3">Select the specific meaning for %1$s</string>
-    <string name="search_instruction_initial_4">Select the intended idea for %1$s</string>
-    <string name="search_instruction_scholar">Identify the correct context for translation to %1$s</string>
-    <string name="search_instruction_bridge">Choose the meaning to bridge into %1$s</string>
+    <string name="search_instruction_initial">Select the word you wish to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_1">Select the concept to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_2">Select the subject to translate from %1$s to %2$s</string>
+    <string name="search_instruction_initial_3">Select the specific meaning for %1$s to translate to %2$s</string>
+    <string name="search_instruction_initial_4">Select the intended idea for %1$s to translate to %2$s</string>
+    <string name="search_instruction_scholar">Identify the correct context for translation from %1$s to %2$s</string>
+    <string name="search_instruction_bridge">Choose the meaning to bridge from %1$s into %2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No results found</string>
@@ -56,7 +58,23 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Bridge the gap</string>
     <string name="loading_state_initial_5">Constructing bridges...</string>
-    <string name="search_instruction_initial_5">Select the bridge you meant to translate to %1$s</string>
+    <string name="search_instruction_initial_5">Select the bridge you meant to translate from %1$s to %2$s</string>
+
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">Which language is this?</string>
+    <string name="disambiguation_message">The text could be in multiple languages. Please select one.</string>
+    <string name="error_safety_violation">Content flagged as unsafe. Cannot detect language.</string>
+    <string name="error_safety_title">Safety Alert</string>
+
+    <!-- Detecting states -->
+    <string name="loading_state_detecting">Detecting language...</string>
+    <string name="loading_state_detecting_1">Identifying concepts...</string>
+    <string name="loading_state_detecting_2">Analyzing subject...</string>
+    <string name="loading_state_detecting_3">Scanning for meaning...</string>
+    <string name="loading_state_detecting_4">Uncovering origins...</string>
+    <string name="loading_state_detecting_5">Spanning languages...</string>
+    <string name="loading_state_detecting_scholar">Examining context...</string>
+    <string name="loading_state_detecting_bridge">Finding the path...</string>
     <string name="translating_loading_message">Fetching translation...</string>
 
     <!-- Search results -->
@@ -114,4 +132,8 @@
     <string name="process_text_activity_title">Translate with Janus</string>
     <string name="translation_removed">Translation removed</string>
     <string name="action_undo">Undo</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Language Unknown</string>
+    <string name="error_detection_failed_message">Could not detect the language of the input text.</string>
 </resources>

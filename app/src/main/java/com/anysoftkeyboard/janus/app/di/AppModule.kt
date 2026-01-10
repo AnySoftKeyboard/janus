@@ -113,6 +113,14 @@ object AppModule {
   ): android.content.SharedPreferences {
     return context.getSharedPreferences("janus_prefs", Context.MODE_PRIVATE)
   }
+
+  @Provides
+  @Singleton
+  fun provideLanguageDetector(
+      real: com.anysoftkeyboard.janus.app.util.GeminiLanguageDetector
+  ): com.anysoftkeyboard.janus.app.util.LanguageDetector {
+    return real
+  }
 }
 
 interface LangRetrofitFactory {

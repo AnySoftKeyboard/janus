@@ -31,13 +31,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">Selecciona la palabra que deseas traducir a %1$s</string>
-    <string name="search_instruction_initial_1">Selecciona el concepto para traducir a %1$s</string>
-    <string name="search_instruction_initial_2">Selecciona el tema para traducir a %1$s</string>
-    <string name="search_instruction_initial_3">Selecciona el significado específico para %1$s</string>
-    <string name="search_instruction_initial_4">Selecciona la idea prevista para %1$s</string>
-    <string name="search_instruction_scholar">Identifica el contexto correcto para la traducción a %1$s</string>
-    <string name="search_instruction_bridge">Elige el significado para conectar con %1$s</string>
+    <string name="search_instruction_initial">Selecciona la palabra que deseas traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_1">Selecciona el concepto para traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_2">Selecciona el tema para traducir de %1$s a %2$s</string>
+    <string name="search_instruction_initial_3">Selecciona el significado específico de %1$s para traducir a %2$s</string>
+    <string name="search_instruction_initial_4">Selecciona la idea prevista de %1$s para traducir a %2$s</string>
+    <string name="search_instruction_scholar">Identifica el contexto correcto para la traducción de %1$s a %2$s</string>
+    <string name="search_instruction_bridge">Elige el significado para conectar de %1$s con %2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">No se encontraron resultados</string>
@@ -56,7 +56,13 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">Cierra la brecha</string>
     <string name="loading_state_initial_5">Construyendo puentes...</string>
-    <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir a %1$s</string>
+    <string name="search_instruction_initial_5">Selecciona el puente que quisiste traducir de %1$s a %2$s</string>
+
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">¿Qué idioma es este?</string>
+    <string name="disambiguation_message">El texto podría estar en varios idiomas. Por favor selecciona uno.</string>
+    <string name="error_safety_violation">Contenido marcado como inseguro. No se puede detectar el idioma.</string>
+    <string name="error_safety_title">Alerta de Seguridad</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">Artículos sin traducir</string>
@@ -111,4 +117,8 @@
     <string name="error_unknown_title">Problema inesperado</string>
     <string name="language_selector_recent">RECIENTE</string>
     <string name="language_selector_all_languages">TODOS LOS IDIOMAS</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">Idioma desconocido</string>
+    <string name="error_detection_failed_message">No se pudo detectar el idioma del texto de entrada.</string>
 </resources>

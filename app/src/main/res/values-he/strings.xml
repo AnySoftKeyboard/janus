@@ -31,13 +31,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">בחר את המילה שברצונך לתרגם ל-%1$s</string>
-    <string name="search_instruction_initial_1">בחר את המושג לתרגום ל-%1$s</string>
-    <string name="search_instruction_initial_2">בחר את הנושא לתרגום ל-%1$s</string>
-    <string name="search_instruction_initial_3">בחר את המשמעות הספציפית עבור %1$s</string>
-    <string name="search_instruction_initial_4">בחר את הרעיון המיועד עבור %1$s</string>
-    <string name="search_instruction_scholar">זהה את ההקשר הנכון לתרגום ל-%1$s</string>
-    <string name="search_instruction_bridge">בחר את המשמעות לגישור ל-%1$s</string>
+    <string name="search_instruction_initial">בחר את המילה שברצונך לתרגם מ-%1$s ל-%2$s</string>
+    <string name="search_instruction_initial_1">בחר את המושג לתרגום מ-%1$s ל-%2$s</string>
+    <string name="search_instruction_initial_2">בחר את הנושא לתרגום מ-%1$s ל-%2$s</string>
+    <string name="search_instruction_initial_3">בחר את המשמעות הספציפית עבור %1$s לתרגום ל-%2$s</string>
+    <string name="search_instruction_initial_4">בחר את הרעיון המיועד עבור %1$s לתרגום ל-%2$s</string>
+    <string name="search_instruction_scholar">זהה את ההקשר הנכון לתרגום מ-%1$s ל-%2$s</string>
+    <string name="search_instruction_bridge">בחר את המשמעות לגישור מ-%1$s ל-%2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">לא נמצאו תוצאות</string>
@@ -56,7 +56,13 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">גשר על הפער</string>
     <string name="loading_state_initial_5">בונה גשרים...</string>
-    <string name="search_instruction_initial_5">בחר את הגשר שהתכוונת לתרגם ל-%1$s</string>
+    <string name="search_instruction_initial_5">בחר את הגשר שהתכוונת לתרגם מ-%1$s ל-%2$s</string>
+
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">איזו שפה זו?</string>
+    <string name="disambiguation_message">הטקסט עשוי להיות במספר שפות. נא לבחור אחת.</string>
+    <string name="error_safety_violation">התוכן סומן כלא בטוח. לא ניתן לזהות שפה.</string>
+    <string name="error_safety_title">התראת אבטחה</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">מאמרים לא מתורגמים</string>
@@ -111,4 +117,8 @@
     <string name="error_unknown_title">בעיה לא צפויה</string>
     <string name="language_selector_recent">אחרונים</string>
     <string name="language_selector_all_languages">כל השפות</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">שפה לא ידועה</string>
+    <string name="error_detection_failed_message">לא ניתן היה לזהות את השפה של הטקסט שהוזן.</string>
 </resources>

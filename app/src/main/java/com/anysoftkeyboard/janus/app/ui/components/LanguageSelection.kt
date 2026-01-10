@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.util.supportedLanguagesMap
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -49,6 +50,20 @@ fun LanguageSelectionRow(
     onTargetLanguageSelected: (String) -> Unit,
     onSwapLanguages: (String, String, String) -> Unit,
 ) {
+  val autoDetectName =
+      stringResource(com.anysoftkeyboard.janus.app.R.string.auto_detect_language_name)
+  val autoDetectLanguage =
+      remember(autoDetectName) {
+        com.anysoftkeyboard.janus.app.util.SupportedLanguage(
+            code = com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+            name = autoDetectName,
+            localName = autoDetectName,
+            articleCount = 0,
+            pageCount = 0,
+            activeUserCount = 0,
+        )
+      }
+
   Row(
       modifier = Modifier.fillMaxWidth(),
       horizontalArrangement = Arrangement.Center,
@@ -58,6 +73,7 @@ fun LanguageSelectionRow(
         selectedLanguage = sourceLang,
         recentLanguages = recentLanguages,
         onLanguageSelected = onSourceLanguageSelected,
+        prependLanguages = listOf(autoDetectLanguage),
         modifier = Modifier.testTag("source_lang_selector"),
     )
     IconButton(
@@ -101,11 +117,11 @@ fun LanguageSelector(
     selectedLanguage: String,
     recentLanguages: List<String>,
     onLanguageSelected: (String) -> Unit,
+    prependLanguages: List<com.anysoftkeyboard.janus.app.util.SupportedLanguage> = emptyList(),
     modifier: Modifier = Modifier,
 ) {
   // In a real app, you'd get this from a ViewModel
-  val languages = supportedLanguages
-  val languagesMap = supportedLanguagesMap
+  val languages = prependLanguages + supportedLanguages
   var expanded by remember { mutableStateOf(false) }
 
   // Find name for selected code

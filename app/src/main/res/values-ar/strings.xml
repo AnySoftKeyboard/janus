@@ -31,13 +31,13 @@
 
 
     <!-- Search result instructions (Polished) -->
-    <string name="search_instruction_initial">اختر الكلمة التي ترغب في ترجمتها إلى %1$s</string>
-    <string name="search_instruction_initial_1">اختر المفهوم لترجمته إلى %1$s</string>
-    <string name="search_instruction_initial_2">اختر الموضوع لترجمته إلى %1$s</string>
-    <string name="search_instruction_initial_3">اختر المعنى المحدد لـ %1$s</string>
-    <string name="search_instruction_initial_4">اختر الفكرة المقصودة لـ %1$s</string>
-    <string name="search_instruction_scholar">حدد السياق الصحيح للترجمة إلى %1$s</string>
-    <string name="search_instruction_bridge">اختر المعنى للربط بـ %1$s</string>
+    <string name="search_instruction_initial">اختر الكلمة التي ترغب في ترجمتها من %1$s إلى %2$s</string>
+    <string name="search_instruction_initial_1">اختر المفهوم لترجمته من %1$s إلى %2$s</string>
+    <string name="search_instruction_initial_2">اختر الموضوع لترجمته من %1$s إلى %2$s</string>
+    <string name="search_instruction_initial_3">اختر المعنى المحدد لـ %1$s لترجمته إلى %2$s</string>
+    <string name="search_instruction_initial_4">اختر الفكرة المقصودة لـ %1$s لترجمتها إلى %2$s</string>
+    <string name="search_instruction_scholar">حدد السياق الصحيح للترجمة من %1$s إلى %2$s</string>
+    <string name="search_instruction_bridge">اختر المعنى للربط من %1$s بـ %2$s</string>
 
     <!-- No Results (Significant Improvement) -->
     <string name="empty_state_no_results_title">لم يتم العثور على نتائج</string>
@@ -56,7 +56,13 @@
     <!-- New message set: Bridge the gap -->
     <string name="empty_state_initial_5">سد الفجوة</string>
     <string name="loading_state_initial_5">جاري بناء الجسور...</string>
-    <string name="search_instruction_initial_5">اختر الجسر الذي قصدت ترجمته إلى %1$s</string>
+    <string name="search_instruction_initial_5">اختر الجسر الذي قصدت ترجمته من %1$s إلى %2$s</string>
+
+    <!-- Disambiguation -->
+    <string name="disambiguation_title">أي لغة هذه؟</string>
+    <string name="disambiguation_message">قد يكون النص بلغات متعددة. الرجاء تحديد واحدة.</string>
+    <string name="error_safety_violation">تم الإبلاغ عن المحتوى باعتباره غير آمن. لا يمكن اكتشاف اللغة.</string>
+    <string name="error_safety_title">تنبيه أمان</string>
 
     <!-- Search results -->
     <string name="search_results_untranslated_section">مقالات غير مترجمة</string>
@@ -111,4 +117,8 @@
     <string name="error_unknown_title">مشكلة غير متوقعة</string>
     <string name="language_selector_recent">حديث</string>
     <string name="language_selector_all_languages">كل اللغات</string>
+
+    <!-- Detection Failed -->
+    <string name="error_detection_failed_title">لغة غير معروفة</string>
+    <string name="error_detection_failed_message">تعذر اكتشاف لغة النص المُدخل.</string>
 </resources>

@@ -4,7 +4,7 @@ kotlin_gradle_plugin = "2.3.0"
 ksp_gradle_plugin = "2.3.4"
 coreKtx = "1.17.0"
 compileSdk = "36"
-minSdk = "23"
+minSdk = "26"
 targetSdk = "35"
 appcompat = "1.7.1"
 material = "1.13.0"
@@ -35,6 +35,7 @@ hilt_navigation_compose = "1.3.0"
 androidx_core_splashscreen = "1.2.0"
 composeAnimation = "1.10.0"
 dropshots = "0.5.1"
+genai_prompt = "1.0.0-alpha1"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
@@ -78,6 +79,7 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+google-mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "genai_prompt" }
 
 
 [plugins]

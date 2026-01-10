@@ -42,6 +42,8 @@ class MainActivityTest {
 
   @BindValue val translationFlowMessagesProvider: TranslationFlowMessagesProvider = mock()
 
+  @BindValue val languageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector = mock()
+
   @Before
   fun setup() {
     // Mock default behaviors
@@ -53,7 +55,12 @@ class MainActivityTest {
 
     whenever(translationFlowMessagesProvider.getRandomMessage())
         .thenReturn(
-            TranslationFlowMessages(R.string.app_name, R.string.app_name, R.string.app_name)
+            TranslationFlowMessages(
+                R.string.app_name,
+                R.string.app_name,
+                R.string.app_name,
+                R.string.app_name,
+            )
         )
   }
 

@@ -33,6 +33,7 @@ class TranslateViewModelTest {
       com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
   private lateinit var mockRecentLanguagesRepository:
       com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
+  private lateinit var mockLanguageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -42,6 +43,7 @@ class TranslateViewModelTest {
     fakeRepository = FakeTranslationRepository(mock(), mock(), FakeStringProvider())
     mockWelcomeMessageProvider = mock()
     mockRecentLanguagesRepository = mock()
+    mockLanguageDetector = mock()
     whenever(mockRecentLanguagesRepository.recentLanguages)
         .thenReturn(kotlinx.coroutines.flow.MutableStateFlow(emptyList()))
     whenever(mockRecentLanguagesRepository.currentSourceLanguage)
@@ -54,6 +56,7 @@ class TranslateViewModelTest {
             TranslationFlowMessages(
                 com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
                 com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
+                com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
                 com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
             )
         )
@@ -63,6 +66,7 @@ class TranslateViewModelTest {
             mockRecentLanguagesRepository,
             FakeStringProvider(),
             mockWelcomeMessageProvider,
+            mockLanguageDetector,
         )
   }
 
@@ -82,6 +86,10 @@ class TranslateViewModelTest {
     assertEquals(
         com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
         message.welcomeMessageResId,
+    )
+    assertEquals(
+        com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
+        message.detectingMessageResId,
     )
     assertEquals(
         com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
@@ -123,6 +131,50 @@ class TranslateViewModelTest {
       assertEquals(listOf("he", "fr", "de"), optionsFetched.options[0].availableLanguages)
       assertEquals("Winter", optionsFetched.options[1].title)
       assertEquals(listOf("he", "es"), optionsFetched.options[1].availableLanguages)
+      assertEquals("en", optionsFetched.effectiveSourceLang)
+    }
+  }
+
+  @Test
+  fun `searchArticles with auto source language uses detected language`() = runTest {
+    val term = "hola"
+    val detectedLang = "es"
+    whenever(mockLanguageDetector.detect(term))
+        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.Success(detectedLang, 0.9f))
+
+    val searchResults =
+        listOf(
+            OptionalSourceTerm(
+                pageid = 1,
+                title = "Hola",
+                snippet = "Spanish greeting",
+                availableLanguages = listOf("en"),
+            )
+        )
+    fakeRepository.nextSearchResults = searchResults
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles(
+          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          term,
+      )
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
+      advanceUntilIdle()
+
+      val state = awaitItem()
+      assertTrue(state is TranslateViewState.OptionsFetched)
+      val optionsFetched = state as TranslateViewState.OptionsFetched
+      // Verify repository was called with detected language "es"
+      // Verify by checking the results which are returned by the fake repo (it doesn't validate
+      // args but we know flow continued)
+      // To strictly verify arg, we'd need a spy on repository, but checking flow completion is
+      // good enough for now.
+      // We can also verify the detector was called.
+      org.mockito.kotlin.verify(mockLanguageDetector).detect(term)
+      assertEquals("es", optionsFetched.effectiveSourceLang)
     }
   }
 
@@ -193,8 +245,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -256,8 +309,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -396,8 +450,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // First update: Translating state
       val translatingState = awaitItem()
@@ -441,8 +496,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       // Skip to translated state
       skipItems(1) // Translating state
@@ -549,8 +605,9 @@ class TranslateViewModelTest {
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
-      val optionsFetched = TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap())
-      viewModel.fetchTranslation(optionsFetched, searchTerm, "en", "he")
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
 
       skipItems(1) // Translating state
       advanceUntilIdle()
@@ -575,12 +632,14 @@ class TranslateViewModelTest {
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
         )
     val message2 =
         TranslationFlowMessages(
             com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
             com.anysoftkeyboard.janus.app.R.string.loading_state_initial_1,
+            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting_1,
             com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1,
         )
 
@@ -595,6 +654,7 @@ class TranslateViewModelTest {
             mockRecentLanguagesRepository,
             FakeStringProvider(),
             mockWelcomeMessageProvider,
+            mockLanguageDetector,
         )
 
     viewModel.welcomeMessage.test {
@@ -621,5 +681,68 @@ class TranslateViewModelTest {
   fun `updateRecentLanguage calls repository`() = runTest {
     viewModel.updateRecentLanguage("es")
     org.mockito.kotlin.verify(mockRecentLanguagesRepository).addRecentLanguage("es")
+  }
+
+  @Test
+  fun `searchArticles with ambiguous result prompts disambiguation`() = runTest {
+    val term = "queso"
+    val candidates =
+        listOf(
+            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("es", 0.9f),
+            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("pt", 0.8f),
+        )
+    whenever(mockLanguageDetector.detect(term))
+        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous(candidates))
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles(
+          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          term,
+      )
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
+      advanceUntilIdle()
+
+      val state = awaitItem()
+      assertTrue(state is TranslateViewState.AmbiguousSource)
+      val ambiguousState = state as TranslateViewState.AmbiguousSource
+      assertEquals(listOf("es", "pt"), ambiguousState.candidates)
+      assertEquals(term, ambiguousState.originalQuery)
+
+      // Now resolve
+      val searchResults = listOf(OptionalSourceTerm(1, "Queso", "Cheese", listOf("en")))
+      fakeRepository.nextSearchResults = searchResults
+      viewModel.resolveAmbiguity("es", term)
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      val finalState = awaitItem()
+      assertTrue(finalState is TranslateViewState.OptionsFetched)
+      assertEquals("es", (finalState as TranslateViewState.OptionsFetched).effectiveSourceLang)
+    }
+  }
+
+  @Test
+  fun `searchArticles with safety violation sets error state`() = runTest {
+    val term = "unsafe phrase"
+    whenever(mockLanguageDetector.detect(term))
+        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.SafetyViolation)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.searchArticles(
+          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          term,
+      )
+      assertEquals(TranslateViewState.FetchingOptions, awaitItem())
+      assertEquals(TranslateViewState.Detecting, awaitItem())
+      advanceUntilIdle()
+
+      val state = awaitItem()
+      assertTrue(state is TranslateViewState.Error)
+      val error = state as TranslateViewState.Error
+      assertEquals(TranslateViewModel.ErrorType.SafetyViolation, error.errorType)
+    }
   }
 }
