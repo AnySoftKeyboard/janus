@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
+import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
@@ -69,8 +70,7 @@ class TranslateViewModel
 @Inject
 constructor(
     private val repository: TranslationRepository,
-    private val recentLanguagesRepository:
-        com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository,
+    private val recentLanguagesRepository: RecentLanguagesRepository,
     private val stringProvider: StringProvider,
     private val welcomeMessageProvider: TranslationFlowMessagesProvider,
     private val languageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector,

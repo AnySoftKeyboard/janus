@@ -1,10 +1,15 @@
 package com.anysoftkeyboard.janus.app.viewmodels
 
 import app.cash.turbine.test
+import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
+import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
+import com.anysoftkeyboard.janus.app.util.DetectionResult
 import com.anysoftkeyboard.janus.app.util.FakeStringProvider
+import com.anysoftkeyboard.janus.app.util.LanguageDetector
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
+import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -29,11 +34,9 @@ class TranslateViewModelTest {
 
   private lateinit var viewModel: TranslateViewModel
   private lateinit var fakeRepository: FakeTranslationRepository
-  private lateinit var mockWelcomeMessageProvider:
-      com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
-  private lateinit var mockRecentLanguagesRepository:
-      com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
-  private lateinit var mockLanguageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector
+  private lateinit var mockWelcomeMessageProvider: TranslationFlowMessagesProvider
+  private lateinit var mockRecentLanguagesRepository: RecentLanguagesRepository
+  private lateinit var mockLanguageDetector: LanguageDetector
 
   private val testDispatcher = StandardTestDispatcher()
 
@@ -54,10 +57,10 @@ class TranslateViewModelTest {
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(
             TranslationFlowMessages(
-                com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
-                com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
-                com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
-                com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+                R.string.empty_state_initial,
+                R.string.loading_state_initial,
+                R.string.loading_state_detecting,
+                R.string.search_instruction_initial,
             )
         )
     viewModel =
@@ -84,15 +87,15 @@ class TranslateViewModelTest {
   fun `initial welcome message is set from provider`() = runTest {
     val message = viewModel.welcomeMessage.value
     assertEquals(
-        com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
+        R.string.empty_state_initial,
         message.welcomeMessageResId,
     )
     assertEquals(
-        com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
+        R.string.loading_state_detecting,
         message.detectingMessageResId,
     )
     assertEquals(
-        com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+        R.string.search_instruction_initial,
         message.searchInstructionResId,
     )
   }
@@ -140,7 +143,7 @@ class TranslateViewModelTest {
     val term = "hola"
     val detectedLang = "es"
     whenever(mockLanguageDetector.detect(term))
-        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.Success(detectedLang, 0.9f))
+        .thenReturn(DetectionResult.Success(detectedLang, 0.9f))
 
     val searchResults =
         listOf(
@@ -157,7 +160,7 @@ class TranslateViewModelTest {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
       viewModel.searchArticles(
-          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
           term,
       )
       assertEquals(TranslateViewState.FetchingOptions, awaitItem())
@@ -630,17 +633,17 @@ class TranslateViewModelTest {
     // Setup mock to return different messages
     val message1 =
         TranslationFlowMessages(
-            com.anysoftkeyboard.janus.app.R.string.empty_state_initial,
-            com.anysoftkeyboard.janus.app.R.string.loading_state_initial,
-            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting,
-            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial,
+            R.string.empty_state_initial,
+            R.string.loading_state_initial,
+            R.string.loading_state_detecting,
+            R.string.search_instruction_initial,
         )
     val message2 =
         TranslationFlowMessages(
-            com.anysoftkeyboard.janus.app.R.string.empty_state_initial_1,
-            com.anysoftkeyboard.janus.app.R.string.loading_state_initial_1,
-            com.anysoftkeyboard.janus.app.R.string.loading_state_detecting_1,
-            com.anysoftkeyboard.janus.app.R.string.search_instruction_initial_1,
+            R.string.empty_state_initial_1,
+            R.string.loading_state_initial_1,
+            R.string.loading_state_detecting_1,
+            R.string.search_instruction_initial_1,
         )
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())
@@ -688,17 +691,16 @@ class TranslateViewModelTest {
     val term = "queso"
     val candidates =
         listOf(
-            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("es", 0.9f),
-            com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous.Candidate("pt", 0.8f),
+            DetectionResult.Ambiguous.Candidate("es", 0.9f),
+            DetectionResult.Ambiguous.Candidate("pt", 0.8f),
         )
-    whenever(mockLanguageDetector.detect(term))
-        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous(candidates))
+    whenever(mockLanguageDetector.detect(term)).thenReturn(DetectionResult.Ambiguous(candidates))
 
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
       viewModel.searchArticles(
-          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
           term,
       )
       assertEquals(TranslateViewState.FetchingOptions, awaitItem())
@@ -725,14 +727,13 @@ class TranslateViewModelTest {
   @Test
   fun `searchArticles with safety violation sets error state`() = runTest {
     val term = "unsafe phrase"
-    whenever(mockLanguageDetector.detect(term))
-        .thenReturn(com.anysoftkeyboard.janus.app.util.DetectionResult.SafetyViolation)
+    whenever(mockLanguageDetector.detect(term)).thenReturn(DetectionResult.SafetyViolation)
 
     viewModel.pageState.test {
       assertEquals(TranslateViewState.Empty, awaitItem())
 
       viewModel.searchArticles(
-          com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+          LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
           term,
       )
       assertEquals(TranslateViewState.FetchingOptions, awaitItem())

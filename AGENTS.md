@@ -19,6 +19,12 @@
 
 # Code style
 
+## Package names
+- **Never use full package names inline in code.** Always use imports instead.
+- **Incorrect**: `com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository`
+- **Correct**: Add `import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository` at the top and use `RecentLanguagesRepository` in the code.
+- This applies to all classes, including `R` resource references (use `R.string.foo`, not `com.anysoftkeyboard.janus.app.R.string.foo`).
+
 ## Code comments
 - should be rare in our code base: naming and readability should do most of the documenting
 - comments should explain the "why".
