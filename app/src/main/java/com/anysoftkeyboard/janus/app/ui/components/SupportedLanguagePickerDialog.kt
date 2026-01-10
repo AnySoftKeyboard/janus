@@ -59,7 +59,8 @@ fun SupportedLanguagePickerDialog(
       },
       text = {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().height(400.dp) // Limit height
+            modifier =
+                Modifier.fillMaxWidth().height(400.dp).testTag("language_list") // Limit height
         ) {
           if (recentSupported.isNotEmpty()) {
             item { TranslationHeader(stringResource(R.string.language_selector_recent)) }
@@ -94,7 +95,8 @@ private fun LanguageItem(
                   onDismiss()
                 }
                 .padding(vertical = 12.dp, horizontal = 8.dp)
-                // Maintain testability with the same tag as the original DropdownMenuItem
+                // Maintain testability with the same tag as the original
+                // DropdownMenuItem
                 .testTag("language_menu_item_${language.code}"),
         verticalAlignment = Alignment.CenterVertically,
     ) {
