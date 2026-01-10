@@ -1,7 +1,7 @@
 <resources>
     <!-- App name -->
     <string name="app_name">Janus</string>
-    <string name="auto_detect_language_name">Auto-detect</string>
+    <string name="auto_detect_language_name">AI Detection</string>
     <string name="loading_languages">Loading languages…</string>
 
     <!-- Main navigation tabs -->

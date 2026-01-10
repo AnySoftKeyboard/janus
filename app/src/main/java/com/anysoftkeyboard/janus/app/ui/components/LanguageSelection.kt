@@ -126,7 +126,10 @@ fun LanguageSelector(
 
   // Find name for selected code
   // Bolt optimization: Use map for O(1) lookup instead of O(N) list traversal
-  val selectedName = supportedLanguagesMap[selectedLanguage]?.name ?: selectedLanguage
+  val selectedName =
+      prependLanguages.find { it.code == selectedLanguage }?.name
+          ?: supportedLanguagesMap[selectedLanguage]?.name
+          ?: selectedLanguage
 
   Box(modifier = modifier) {
     Button(onClick = { expanded = true }) { Text(selectedName) }
