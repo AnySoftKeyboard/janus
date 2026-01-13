@@ -1,1 +1,4 @@
 Welcome to Janus v0.1.5 (10)
+* New: AI-powered language detection - let Janus detect the source language automatically using on-device AI (on supported devices).
+* Improved language picker now displays all 300+ supported languages in a smooth, scrollable list.
+* Various performance improvements for a snappier experience.
