@@ -11,7 +11,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -28,7 +28,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Checkout Secrets
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           repository: AnySoftKeyboard/secrets
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
@@ -65,7 +65,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -74,7 +74,7 @@ jobs:
           bundler-cache: true
 
       - name: Checkout Secrets
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           repository: AnySoftKeyboard/secrets
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
@@ -100,7 +100,7 @@ jobs:
       contents: write
     steps:
       - name: Checkout main
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6.0.2
         with:
           ref: main
           token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
