@@ -1,7 +1,7 @@
 [versions]
 android_gradle_plugin = "8.13.2"
 kotlin_gradle_plugin = "2.3.0"
-ksp_gradle_plugin = "2.3.4"
+ksp_gradle_plugin = "2.3.5"
 coreKtx = "1.17.0"
 compileSdk = "36"
 minSdk = "26"
