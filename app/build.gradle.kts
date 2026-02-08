@@ -43,6 +43,11 @@ android {
       signingConfig = signingConfigs.getByName("release")
     }
   }
+  flavorDimensions += "store"
+  productFlavors {
+    create("google") { dimension = "store" }
+    create("foss") { dimension = "store" }
+  }
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
   configurations.all { resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0") }
@@ -87,7 +92,11 @@ dependencies {
   implementation(libs.okhttp.logging.interceptor)
   implementation(libs.moshi)
   implementation(libs.moshi.kotlin)
-  implementation(libs.google.mlkit.genai.prompt)
+  "googleImplementation"(libs.google.mlkit.genai.prompt)
+  implementation(libs.optimaize.language.detector) {
+    exclude(group = "com.google.guava", module = "guava")
+    exclude(group = "com.intellij", module = "annotations")
+  }
   implementation(libs.hilt.android)
   implementation(libs.hilt.navigation.compose)
   ksp(libs.hilt.compiler)

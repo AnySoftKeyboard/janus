@@ -36,6 +36,7 @@ androidx_core_splashscreen = "1.2.0"
 composeAnimation = "1.10.0"
 dropshots = "0.5.1"
 genai_prompt = "1.0.0-alpha1"
+optimaize = "0.6"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
@@ -80,6 +81,7 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", v
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt_navigation_compose" }
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 google-mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "genai_prompt" }
+optimaize-language-detector = { group = "com.optimaize.languagedetector", name = "language-detector", version.ref = "optimaize" }
 
 
 [plugins]
