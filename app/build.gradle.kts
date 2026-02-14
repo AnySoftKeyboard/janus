@@ -45,7 +45,7 @@ android {
   }
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
-  configurations.all { resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0") }
+  configurations.all { resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.10") }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
