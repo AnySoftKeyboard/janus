@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
+import com.anysoftkeyboard.janus.app.util.DetectionResult
+import com.anysoftkeyboard.janus.app.util.LanguageDetector
 import com.anysoftkeyboard.janus.app.util.StringProvider
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
@@ -73,7 +75,7 @@ constructor(
     private val recentLanguagesRepository: RecentLanguagesRepository,
     private val stringProvider: StringProvider,
     private val welcomeMessageProvider: TranslationFlowMessagesProvider,
-    private val languageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector,
+    private val languageDetector: LanguageDetector,
 ) : ViewModel() {
   val recentLanguages: StateFlow<List<String>> = recentLanguagesRepository.recentLanguages
   val sourceLanguage: StateFlow<String> = recentLanguagesRepository.currentSourceLanguage
@@ -121,15 +123,11 @@ constructor(
     viewModelScope.launch {
       try {
         val effectiveSourceLang =
-            if (
-                sourceLang ==
-                    com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE
-            ) {
+            if (sourceLang == LanguageDetector.AUTO_DETECT_LANGUAGE_CODE) {
               _state.value = TranslateViewState.Detecting
               when (val detection = languageDetector.detect(term)) {
-                is com.anysoftkeyboard.janus.app.util.DetectionResult.Success ->
-                    detection.detectedLanguageCode
-                is com.anysoftkeyboard.janus.app.util.DetectionResult.Ambiguous -> {
+                is DetectionResult.Success -> detection.detectedLanguageCode
+                is DetectionResult.Ambiguous -> {
                   _state.value =
                       TranslateViewState.AmbiguousSource(
                           candidates = detection.candidates.map { it.languageCode },
@@ -137,7 +135,7 @@ constructor(
                       )
                   return@launch
                 }
-                com.anysoftkeyboard.janus.app.util.DetectionResult.SafetyViolation -> {
+                DetectionResult.SafetyViolation -> {
                   _state.value =
                       TranslateViewState.Error(
                           ErrorType.SafetyViolation,
@@ -145,7 +143,7 @@ constructor(
                       )
                   return@launch
                 }
-                com.anysoftkeyboard.janus.app.util.DetectionResult.Failure -> {
+                DetectionResult.Failure -> {
                   throw Exception("Language detection failed")
                 }
               }

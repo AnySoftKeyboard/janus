@@ -1,7 +1,7 @@
 package com.anysoftkeyboard.janus.app.util
 
 import android.util.Log
-import com.optimaize.langdetect.LanguageDetector
+import com.optimaize.langdetect.LanguageDetector as OptimaizeDetector
 import com.optimaize.langdetect.LanguageDetectorBuilder
 import com.optimaize.langdetect.ngram.NgramExtractors
 import com.optimaize.langdetect.profiles.LanguageProfileReader
@@ -13,10 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Singleton
-class OptimaizeLanguageDetector @Inject constructor() :
-    com.anysoftkeyboard.janus.app.util.LanguageDetector {
+class OptimaizeLanguageDetector @Inject constructor() : LanguageDetector {
 
-  private val detector: LanguageDetector? by lazy {
+  private val detector: OptimaizeDetector? by lazy {
     try {
       // Load all built-in profiles (covers ~70 languages)
       val languageProfiles = LanguageProfileReader().readAllBuiltIn()
