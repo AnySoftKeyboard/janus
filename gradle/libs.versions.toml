@@ -35,7 +35,7 @@ hilt_navigation_compose = "1.3.0"
 androidx_core_splashscreen = "1.2.0"
 composeAnimation = "1.10.0"
 dropshots = "0.5.1"
-genai_prompt = "1.0.0-alpha1"
+genai_prompt = "1.0.0-beta1"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
