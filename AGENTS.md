@@ -15,7 +15,7 @@
 - Do not manually fix linting or formatting issues. The project uses an auto-formatter.
 - You can run the auto-formatter with the command `./gradlew spotlessApply`. This applies to all code in the codebase.
 
---
+---
 
 # Code style
 
@@ -31,7 +31,7 @@
 - if there is a need to explain a complex code block:
   - use clear language
   - you may use: pseudocode, simple diagrams, examples
-  - citations are encourage is relavent
+  - citations are encouraged if relevant
 - comment may be included if a critical "TODO" need - document what needs to be implemented/modified.
 
 ---

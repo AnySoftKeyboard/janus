@@ -41,9 +41,9 @@ RepoType: git
 Repo: https://github.com/AnySoftKeyboard/janus.git
 
 Builds:
-  - versionName: 1.0
-    versionCode: 1
-    commit: [INSERT_COMMIT_SHA_OF_TAG_HERE]
+  - versionName: 0.1.5
+    versionCode: 10
+    commit: v0.1.5
     subdir: app
     sudo:
       - apt-get update || apt-get update
@@ -52,14 +52,14 @@ Builds:
       - yes
     output: build/outputs/apk/release/app-release-unsigned.apk
 
-AutoUpdateMode: Version janus_release_v%v
+AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
-CurrentVersion: 1.0
-CurrentVersionCode: 1
+CurrentVersion: 0.1.5
+CurrentVersionCode: 10
 ```
 
-> [!IMPORTANT]
-> **Replace `[INSERT_COMMIT_SHA_OF_TAG_HERE]`** with the actual full commit SHA of your `v1.0` tag (or whatever your initial release tag is).
+> [!NOTE]
+> The `commit` field uses the git tag name directly (e.g., `v0.1.5`). F-Droid will resolve this to the correct commit SHA. Update this value when preparing a new initial submission.
 
 ## Step 2: Create the Merge Request
 
