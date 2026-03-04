@@ -49,8 +49,8 @@ Builds:
       - apt-get update || apt-get update
       - apt-get install -y openjdk-17-jdk-headless
     gradle:
-      - yes
-    output: build/outputs/apk/release/app-release-unsigned.apk
+      - fossRelease
+    output: build/outputs/apk/foss/release/app-foss-release-unsigned.apk
 
 AutoUpdateMode: Version v%v
 UpdateCheckMode: Tags
