@@ -1,1 +1,4 @@
 Welcome to Janus v0.1.6 (11)
+* Introduced an open-source language-detection engine in addition to the local-I-backed.
+* Improved reliability of automatic language detection with a new fallback mechanism.
+* Regular updates to the supported languages list.
