@@ -41,7 +41,7 @@ platform :android do
   private_lane :deploy_track do |options|
     supply(
       track: options[:track],
-      aab: "app/build/outputs/bundle/release/app-release.aab",
+      aab: "app/build/outputs/bundle/googleRelease/app-google-release.aab",
       json_key: "secrets/playstore-publisher-certs.json",
       package_name: "com.anysoftkeyboard.janus",
       skip_upload_aab: false,
