@@ -22,6 +22,8 @@ This is a standard Gradle project. To build it:
 1. Clone the repository
 2. Import it into the latest stable version of Android Studio
 3. Sync Gradle and build
+  - Use `:app:assembleGoogleDebug` to build the app with a [non-open-source](https://developer.android.com/ai/gemini-nano/ml-kit-genai) on-device AI langguage-detector.
+  - Use `:app:assembleFossDebug` to build the app with an [open-source](https://github.com/optimaize/language-detector) on-device ML langguage-detector.
 
 **Project Details:**
 * Codename: Janus
