@@ -50,7 +50,10 @@ android {
   }
   kotlin { jvmToolchain(21) }
   buildFeatures { compose = true }
-  configurations.all { resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0") }
+  configurations.all {
+    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
+    exclude(group = "com.google.guava", module = "listenablefuture")
+  }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
@@ -94,7 +97,6 @@ dependencies {
   implementation(libs.moshi.kotlin)
   "googleImplementation"(libs.google.mlkit.genai.prompt)
   implementation(libs.optimaize.language.detector) {
-    exclude(group = "com.google.guava", module = "guava")
     exclude(group = "com.intellij", module = "annotations")
   }
   implementation(libs.hilt.android)
