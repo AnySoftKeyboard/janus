@@ -48,14 +48,16 @@ jobs:
           generate_release_notes: true
           append_body: true
           files: |
-            app/build/outputs/apk/release/*.apk
-            app/build/outputs/bundle/release/*.aab
+            app/build/outputs/apk/google/release/*.apk
+            app/build/outputs/bundle/googleRelease/*.aab
+            app/build/outputs/apk/foss/release/*.apk
+            app/build/outputs/bundle/fossRelease/*.aab
 
-      - name: Upload bundle artifact
+      - name: Upload Google Play bundle artifact
         uses: actions/upload-artifact@v6
         with:
           name: aab-bundle
-          path: app/build/outputs/bundle/release/*.aab
+          path: app/build/outputs/bundle/googleRelease/*.aab
           if-no-files-found: error
 
   deploy-play-store:
@@ -81,12 +83,12 @@ jobs:
           path: secrets
 
       - name: Download bundle artifact
-        run: mkdir -p app/build/outputs/bundle/release
+        run: mkdir -p app/build/outputs/bundle/googleRelease
       
       - uses: actions/download-artifact@v7
         with:
           name: aab-bundle
-          path: app/build/outputs/bundle/release
+          path: app/build/outputs/bundle/googleRelease
 
       - name: Deploy to Play Store
         run: bundle exec fastlane deploy
