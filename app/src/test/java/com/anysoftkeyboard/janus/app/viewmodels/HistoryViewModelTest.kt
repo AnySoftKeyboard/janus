@@ -335,12 +335,15 @@ class HistoryViewModelTest {
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
 
-    viewModel.deleteTranslation(1)
-    testDispatcher.scheduler.advanceUntilIdle()
-
     viewModel.history.test {
       // Consume initial empty list
-      awaitItem()
+      skipItems(1)
+
+      val fullHistory = awaitItem()
+      assertEquals(2, fullHistory.size)
+
+      viewModel.deleteTranslation(1)
+      testDispatcher.scheduler.advanceUntilIdle()
 
       val history = awaitItem()
       assertEquals(1, history.size)
@@ -370,21 +373,27 @@ class HistoryViewModelTest {
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
 
-    // First delete
-    viewModel.deleteTranslation(1)
-    testDispatcher.scheduler.advanceUntilIdle()
-
-    // Then restore
-    viewModel.restoreTranslation(UiTranslation.fromTranslation(testTranslations[0]))
-    testDispatcher.scheduler.advanceUntilIdle()
-
     viewModel.history.test {
       // Consume initial empty list (from stateIn)
       skipItems(1)
 
-      val history = awaitItem()
-      assertEquals(1, history.size)
-      assertEquals("Cat", history[0].sourceWord)
+      val fullHistory = awaitItem()
+      assertEquals(1, fullHistory.size)
+
+      // First delete
+      viewModel.deleteTranslation(1)
+      testDispatcher.scheduler.advanceUntilIdle()
+
+      val emptyHistory = awaitItem()
+      assertEquals(0, emptyHistory.size)
+
+      // Then restore
+      viewModel.restoreTranslation(UiTranslation.fromTranslation(testTranslations[0]))
+      testDispatcher.scheduler.advanceUntilIdle()
+
+      val restoredHistory = awaitItem()
+      assertEquals(1, restoredHistory.size)
+      assertEquals("Cat", restoredHistory[0].sourceWord)
     }
   }
 }
