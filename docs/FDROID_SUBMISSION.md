@@ -16,50 +16,39 @@ You need to create a new file in your forked `fdroiddata` repository.
 **Content:**
 
 ```yaml
+AntiFeatures:
+  TetheredNet:
+    en-US: Depends on Wikipedia servers
 Categories:
-  - translation
+  - Translation & Dictionary
 License: Apache-2.0
 SourceCode: https://github.com/AnySoftKeyboard/janus
 IssueTracker: https://github.com/AnySoftKeyboard/janus/issues
 Changelog: https://github.com/AnySoftKeyboard/janus/releases
 
 AutoName: Janus
-Summary: Contextual translations using Wikipedia's knowledge graph
-Description: |-
-  Janus provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia. Instead of literal machine translation, it finds the corresponding Wikipedia article in the target language to offer a more accurate and context-aware translation.
-
-  Features:
-  * Contextual Translation: Uses Wikipedia article titles for accurate, context-aware translations.
-  * Multi-Language Support: Translate from any Wikipedia-supported language to any other.
-  * Rich Information: Displays short descriptions and article summaries.
-  * Full History & Bookmarks: Keeps a log of translations and allows saving important ones.
-  * Searchable History: Quickly find past translations.
-  * Quick Actions: Copy translations and open Wikipedia articles.
-  * Modern UI: Clean interface supporting light and dark themes.
 
 RepoType: git
 Repo: https://github.com/AnySoftKeyboard/janus.git
+Binaries: 
+  https://github.com/AnySoftKeyboard/janus/releases/download/v%v/app-foss-release.apk
 
 Builds:
-  - versionName: 0.1.5
-    versionCode: 10
-    commit: v0.1.5
+  - versionName: 0.1.6
+    versionCode: 11
+    commit: 8cce3bdefe181cdb06a4bbebc64d5105b01277ea
     subdir: app
-    sudo:
-      - apt-get update || apt-get update
-      - apt-get install -y openjdk-17-jdk-headless
     gradle:
-      - fossRelease
-    output: build/outputs/apk/foss/release/app-foss-release-unsigned.apk
+      - foss
+    prebuild: sed -i -e 's/Xmx2048m/Xmx4g/' ../gradle.properties
 
-AutoUpdateMode: Version v%v
+AllowedAPKSigningKeys: 7f8511a4ed715d0e4c7adaa5b66aad463455637a60303883755a03db7cf95393
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.1.5
-CurrentVersionCode: 10
+CurrentVersion: 0.1.6
+CurrentVersionCode: 11
 ```
-
-> [!NOTE]
-> The `commit` field uses the git tag name directly (e.g., `v0.1.5`). F-Droid will resolve this to the correct commit SHA. Update this value when preparing a new initial submission.
 
 ## Step 2: Create the Merge Request
 
@@ -71,7 +60,7 @@ CurrentVersionCode: 10
 ## How Updates Work
 
 Once merged, the line `UpdateCheckMode: Tags` tells F-Droid to watch your GitHub repository.
-When you push a new tag (e.g., `v1.1`), F-Droid's bot will:
+When you push a new tag (e.g., `v0.1.7`), F-Droid's bot will:
 1.  Detect the new tag.
 2.  Automatically create a new build entry in their system.
 3.  Build the app from source.
