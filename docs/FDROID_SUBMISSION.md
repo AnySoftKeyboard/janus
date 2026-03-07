@@ -30,7 +30,7 @@ AutoName: Janus
 
 RepoType: git
 Repo: https://github.com/AnySoftKeyboard/janus.git
-Binaries: 
+Binaries:
   https://github.com/AnySoftKeyboard/janus/releases/download/v%v/app-foss-release.apk
 
 Builds:
