@@ -1,0 +1,29 @@
+name: AI Code Review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  review:
+    name: Cassandra Review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Important: fetch all history for diffing
+
+      - name: Run Cassandra AI Review
+        uses: menny/cassandra@0e02fd244b1c8c1e3a41a8aefb14bf1d367a11ad
+        with:
+          provider: 'google'
+          model_id: 'gemini-3-flash-preview'
+          provider_api_key: ${{ secrets.GEMINI_2_5_FLASH_API_KEY }}
+          # The base branch to compare against (defaults to main)
+          base: ${{ github.event.pull_request.base.sha }}
+          # The head branch/commit (defaults to HEAD)
+          head: ${{ github.event.pull_request.head.sha }}
+          # Reviewing as anysoftkeyboard-bot
+          reviewer_github_token: ${{ secrets.BOT_MASTER_RW_GITHUB_TOKEN_JANUS }}
