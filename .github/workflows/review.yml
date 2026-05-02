@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0 # Important: fetch all history for diffing
 
       - name: Run Cassandra AI Review
-        uses: menny/cassandra@0e02fd244b1c8c1e3a41a8aefb14bf1d367a11ad
+        uses: menny/cassandra@d48f1676bfeb5e41447b1f4463c04050e31339e1
         with:
           provider: 'google'
           model_id: 'gemini-3-flash-preview'
