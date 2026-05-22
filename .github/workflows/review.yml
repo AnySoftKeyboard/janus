@@ -16,10 +16,8 @@ jobs:
           fetch-depth: 0 # Important: fetch all history for diffing
 
       - name: Run Cassandra AI Review
-        uses: menny/cassandra@0e02fd244b1c8c1e3a41a8aefb14bf1d367a11ad
+        uses: menny/cassandra@v0.5.0
         with:
-          provider: 'google'
-          model_id: 'gemini-3-flash-preview'
           provider_api_key: ${{ secrets.GEMINI_2_5_FLASH_API_KEY }}
           # The base branch to compare against (defaults to main)
           base: ${{ github.event.pull_request.base.sha }}
