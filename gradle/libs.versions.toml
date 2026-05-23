@@ -37,6 +37,8 @@ composeAnimation = "1.10.0"
 dropshots = "0.5.1"
 genai_prompt = "1.0.0-beta1"
 optimaize = "0.6"
+google_oss_licenses = "0.10.6"
+play_services_oss_licenses = "17.0.1"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
@@ -82,6 +84,8 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 google-mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "genai_prompt" }
 optimaize-language-detector = { group = "com.optimaize.languagedetector", name = "language-detector", version.ref = "optimaize" }
+play-services-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "play_services_oss_licenses" }
+google-oss-licenses-classpath = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "google_oss_licenses" }
 
 
 [plugins]

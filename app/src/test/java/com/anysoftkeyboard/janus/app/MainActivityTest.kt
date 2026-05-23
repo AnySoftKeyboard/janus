@@ -1,6 +1,7 @@
 package com.anysoftkeyboard.janus.app
 
 import android.content.Intent
+import androidx.compose.material.icons.filled.Info
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -17,6 +18,7 @@ import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -63,6 +65,14 @@ class MainActivityTest {
                 R.string.app_name,
             )
         )
+  }
+
+  @Test
+  fun testTabScreenAbout_isCorrectlyConfigured() {
+    val aboutTab = TabScreen.About
+    assertEquals("about", aboutTab.route)
+    assertEquals(R.string.tab_about, aboutTab.titleRes)
+    assertEquals(androidx.compose.material.icons.Icons.Default.Info, aboutTab.icon)
   }
 
   @Test
