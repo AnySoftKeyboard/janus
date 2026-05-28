@@ -1,4 +1,4 @@
-Janus provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia. Instead of literal machine translation, it finds the corresponding Wikipedia article in the target language to offer a more accurate and context-aware translation.
+Janus Glossa provides contextual word and concept translations by leveraging the vast, human-curated knowledge graph of Wikipedia. Instead of literal machine translation, it finds the corresponding Wikipedia article in the target language to offer a more accurate and context-aware translation.
 
 Features:
 * Contextual Translation: Uses Wikipedia article titles for accurate, context-aware translations.
