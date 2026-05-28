@@ -37,7 +37,7 @@ composeAnimation = "1.10.0"
 dropshots = "0.5.1"
 genai_prompt = "1.0.0-beta1"
 optimaize = "0.6"
-google_oss_licenses = "0.10.6"
+google_oss_licenses = "0.12.0"
 play_services_oss_licenses = "17.0.1"
 
 [libraries]
