@@ -92,7 +92,6 @@ dependencies {
   implementation(libs.androidx.activity.compose)
   implementation(libs.androidx.navigation.compose)
   implementation(libs.androidx.compose.material.icons.extended)
-  implementation(libs.play.services.oss.licenses)
   implementation(libs.androidx.room.runtime)
   implementation(libs.androidx.room.ktx)
   implementation(libs.retrofit)
