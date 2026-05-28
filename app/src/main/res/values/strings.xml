@@ -1,6 +1,6 @@
 <resources>
     <!-- App name -->
-    <string name="app_name">Janus</string>
+    <string name="app_name">Janus Glossa</string>
     <string name="auto_detect_language_name">AI Detection</string>
     <string name="loading_languages">Loading languages…</string>
 
@@ -129,7 +129,7 @@
 <string name="error_unknown_title">Unexpected Issue</string>
     <string name="language_selector_recent">RECENT</string>
     <string name="language_selector_all_languages">ALL LANGUAGES</string>
-    <string name="process_text_activity_title">Translate with Janus</string>
+    <string name="process_text_activity_title">Translate with Janus Glossa</string>
     <string name="translation_removed">Translation removed</string>
     <string name="action_undo">Undo</string>
 
