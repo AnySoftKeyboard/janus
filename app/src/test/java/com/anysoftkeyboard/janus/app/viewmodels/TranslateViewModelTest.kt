@@ -13,6 +13,7 @@ import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -25,6 +26,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 
@@ -48,11 +50,9 @@ class TranslateViewModelTest {
     mockRecentLanguagesRepository = mock()
     mockLanguageDetector = mock()
     whenever(mockRecentLanguagesRepository.recentLanguages)
-        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow(emptyList()))
-    whenever(mockRecentLanguagesRepository.currentSourceLanguage)
-        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow("en"))
-    whenever(mockRecentLanguagesRepository.currentTargetLanguage)
-        .thenReturn(kotlinx.coroutines.flow.MutableStateFlow("he"))
+        .thenReturn(MutableStateFlow(emptyList()))
+    whenever(mockRecentLanguagesRepository.currentSourceLanguage).thenReturn(MutableStateFlow("en"))
+    whenever(mockRecentLanguagesRepository.currentTargetLanguage).thenReturn(MutableStateFlow("he"))
 
     whenever(mockWelcomeMessageProvider.getRandomMessage())
         .thenReturn(
@@ -176,7 +176,7 @@ class TranslateViewModelTest {
       // To strictly verify arg, we'd need a spy on repository, but checking flow completion is
       // good enough for now.
       // We can also verify the detector was called.
-      org.mockito.kotlin.verify(mockLanguageDetector).detect(term)
+      verify(mockLanguageDetector).detect(term)
       assertEquals("es", optionsFetched.effectiveSourceLang)
     }
   }
@@ -671,19 +671,19 @@ class TranslateViewModelTest {
   @Test
   fun `setSourceLanguage calls repository`() = runTest {
     viewModel.setSourceLanguage("fr")
-    org.mockito.kotlin.verify(mockRecentLanguagesRepository).setSourceLanguage("fr")
+    verify(mockRecentLanguagesRepository).setSourceLanguage("fr")
   }
 
   @Test
   fun `setTargetLanguage calls repository`() = runTest {
     viewModel.setTargetLanguage("de")
-    org.mockito.kotlin.verify(mockRecentLanguagesRepository).setTargetLanguage("de")
+    verify(mockRecentLanguagesRepository).setTargetLanguage("de")
   }
 
   @Test
   fun `updateRecentLanguage calls repository`() = runTest {
     viewModel.updateRecentLanguage("es")
-    org.mockito.kotlin.verify(mockRecentLanguagesRepository).addRecentLanguage("es")
+    verify(mockRecentLanguagesRepository).addRecentLanguage("es")
   }
 
   @Test

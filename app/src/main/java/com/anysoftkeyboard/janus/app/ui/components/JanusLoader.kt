@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.core.graphics.PathParser
@@ -75,7 +76,7 @@ fun JanusLoader(
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale.Fit,
-        colorFilter = androidx.compose.ui.graphics.ColorFilter.tint(tint),
+        colorFilter = ColorFilter.tint(tint),
     )
     // Traveling dots
     Canvas(modifier = Modifier.fillMaxSize()) {

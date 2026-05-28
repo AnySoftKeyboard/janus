@@ -19,6 +19,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,6 +31,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.ui.components.DisambiguationDialog
 import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
 import com.anysoftkeyboard.janus.app.ui.components.LanguageSelectionRow
 import com.anysoftkeyboard.janus.app.ui.components.SearchInputField
@@ -38,6 +40,7 @@ import com.anysoftkeyboard.janus.app.ui.states.InitialEmptyState
 import com.anysoftkeyboard.janus.app.ui.states.LoadingState
 import com.anysoftkeyboard.janus.app.ui.states.SearchResultsView
 import com.anysoftkeyboard.janus.app.ui.states.TranslationView
+import com.anysoftkeyboard.janus.app.util.supportedLanguagesMap
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewModel
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 
@@ -60,7 +63,7 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
   val pageState by viewModel.pageState.collectAsState()
 
   // Handle initial search term
-  androidx.compose.runtime.LaunchedEffect(initialSearchTerm) {
+  LaunchedEffect(initialSearchTerm) {
     if (!initialSearchTerm.isNullOrEmpty()) {
       viewModel.searchArticles(sourceLang, initialSearchTerm)
     }
@@ -164,9 +167,8 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                     instruction =
                         stringResource(
                             welcomeMessage.searchInstructionResId,
-                            (com.anysoftkeyboard.janus.app.util.supportedLanguagesMap[
-                                        targetState.effectiveSourceLang]
-                                    ?.name ?: targetState.effectiveSourceLang)
+                            (supportedLanguagesMap[targetState.effectiveSourceLang]?.name
+                                    ?: targetState.effectiveSourceLang)
                                 .uppercase(),
                             targetLang.uppercase(),
                         ),
@@ -211,7 +213,7 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                   sharedTransitionScope = this@SharedTransitionLayout,
                   animatedVisibilityScope = this,
               )
-              com.anysoftkeyboard.janus.app.ui.components.DisambiguationDialog(
+              DisambiguationDialog(
                   candidates = targetState.candidates,
                   onLanguageSelected = { langCode ->
                     viewModel.resolveAmbiguity(langCode, targetState.originalQuery)
