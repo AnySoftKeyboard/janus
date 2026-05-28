@@ -136,4 +136,16 @@
     <!-- Detection Failed -->
     <string name="error_detection_failed_title">Language Unknown</string>
     <string name="error_detection_failed_message">Could not detect the language of the input text.</string>
+
+    <!-- About screen -->
+    <string name="tab_about">About</string>
+    <string name="about_title">Janus Glossa</string>
+    <string name="about_version">v%1$s</string>
+    <string name="about_abstract">Janus Glossa is an open-source tool designed to translate concepts within their context, utilizing the crowd-sourced knowledge of Wikipedia.</string>
+    <string name="about_methodology_title">How it works</string>
+    <string name="about_methodology_text">Unlike standard dictionaries, Janus Glossa aligns concepts. It finds the encyclopedia entry for your term, then follows the inter-language link to the target language to provide a precise, context-aware translation.</string>
+    <string name="about_link_source_code">Source Code</string>
+    <string name="about_link_issue_tracker">Issue Tracker</string>
+    <string name="about_button_licenses">Open Source Licenses</string>
+    <string name="content_description_about">About Janus Glossa</string>
 </resources>

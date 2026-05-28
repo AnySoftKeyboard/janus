@@ -121,4 +121,16 @@
     <!-- Detection Failed -->
     <string name="error_detection_failed_title">Язык неизвестен</string>
     <string name="error_detection_failed_message">Не удалось определить язык введенного текста.</string>
+
+    <!-- About screen -->
+    <string name="tab_about">О приложении</string>
+    <string name="about_title">Janus Glossa</string>
+    <string name="about_version">v%1$s</string>
+    <string name="about_abstract">Janus Glossa — это инструмент с открытым исходным кодом, разработанный для перевода понятий в их контексте с использованием коллективных знаний Википедии.</string>
+    <string name="about_methodology_title">Как это работает</string>
+    <string name="about_methodology_text">В отличие от обычных словарей, Janus Glossa сопоставляет понятия. Он находит словарную статью для вашего термина в энциклопедии, а затем переходит по межъязыковой ссылке на целевой язык, чтобы предоставить точный перевод с учетом контекста.</string>
+    <string name="about_link_source_code">Исходный код</string>
+    <string name="about_link_issue_tracker">Отслеживание ошибок</string>
+    <string name="about_button_licenses">Лицензии открытого ПО</string>
+    <string name="content_description_about">О приложении Janus Glossa</string>
 </resources>

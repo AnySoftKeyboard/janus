@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
@@ -155,7 +156,7 @@ private fun CondensedHistoryItem(
                         key = "source_title_${translation.timestamp}",
                         animatedVisibilityScope = animatedVisibilityScope,
                     ),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Start,
+            textAlign = TextAlign.Start,
         )
 
         Image(
@@ -185,7 +186,7 @@ private fun CondensedHistoryItem(
                         key = "target_title_${translation.timestamp}",
                         animatedVisibilityScope = animatedVisibilityScope,
                     ),
-            textAlign = androidx.compose.ui.text.style.TextAlign.End,
+            textAlign = TextAlign.End,
         )
       }
 

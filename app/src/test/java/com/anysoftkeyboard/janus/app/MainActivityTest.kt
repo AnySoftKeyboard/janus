@@ -1,6 +1,8 @@
 package com.anysoftkeyboard.janus.app
 
 import android.content.Intent
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -8,6 +10,7 @@ import com.anysoftkeyboard.janus.app.di.AppModule
 import com.anysoftkeyboard.janus.app.di.LanguageDetectorModule
 import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
+import com.anysoftkeyboard.janus.app.util.LanguageDetector
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessages
 import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 import dagger.hilt.android.testing.BindValue
@@ -17,6 +20,7 @@ import dagger.hilt.android.testing.HiltTestApplication
 import dagger.hilt.android.testing.UninstallModules
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -24,6 +28,7 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.robolectric.annotation.Config
@@ -43,7 +48,7 @@ class MainActivityTest {
 
   @BindValue val translationFlowMessagesProvider: TranslationFlowMessagesProvider = mock()
 
-  @BindValue val languageDetector: com.anysoftkeyboard.janus.app.util.LanguageDetector = mock()
+  @BindValue val languageDetector: LanguageDetector = mock()
 
   @Before
   fun setup() {
@@ -66,6 +71,14 @@ class MainActivityTest {
   }
 
   @Test
+  fun testTabScreenAbout_isCorrectlyConfigured() {
+    val aboutTab = TabScreen.About
+    assertEquals("about", aboutTab.route)
+    assertEquals(R.string.tab_about, aboutTab.titleRes)
+    assertEquals(Icons.Default.Info, aboutTab.icon)
+  }
+
+  @Test
   fun startMainActivity_withoutProcessText_doesNotSearch() = runTest {
     val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
     ActivityScenario.launch<MainActivity>(intent).use {
@@ -74,7 +87,7 @@ class MainActivityTest {
       // TranslationRepository.searchArticles is a suspend function, checking blocking
       // interactions might be tricky directly if we don't control the dispatcher.
       // But simpler: verify zero interactions with searchArticles
-      verify(translationRepository, org.mockito.kotlin.never()).searchArticles(any(), any())
+      verify(translationRepository, never()).searchArticles(any(), any())
     }
   }
 

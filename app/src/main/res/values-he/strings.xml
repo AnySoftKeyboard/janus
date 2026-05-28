@@ -121,4 +121,16 @@
     <!-- Detection Failed -->
     <string name="error_detection_failed_title">שפה לא ידועה</string>
     <string name="error_detection_failed_message">לא ניתן היה לזהות את השפה של הטקסט שהוזן.</string>
+
+    <!-- About screen -->
+    <string name="tab_about">אודות</string>
+    <string name="about_title">Janus Glossa</string>
+    <string name="about_version">v%1$s</string>
+    <string name="about_abstract">Janus Glossa הוא כלי בקוד פתוח שנועד לתרגם מושגים בתוך ההקשר שלהם, תוך שימוש בידע הקהילתי של ויקיפדיה.</string>
+    <string name="about_methodology_title">איך זה עובד</string>
+    <string name="about_methodology_text">בניגוד למילונים רגילים, Janus Glossa מתאים מושגים. הוא מוצא את הערך באנציקלופדיה עבור המונח שלך, ואז עוקב אחר הקישור הרב-לשוני לשפת היעד כדי לספק תרגום מדויק ותלוי הקשר.</string>
+    <string name="about_link_source_code">קוד מקור</string>
+    <string name="about_link_issue_tracker">מעקב תקלות</string>
+    <string name="about_button_licenses">רישיונות קוד פתוח</string>
+    <string name="content_description_about">אודות Janus Glossa</string>
 </resources>

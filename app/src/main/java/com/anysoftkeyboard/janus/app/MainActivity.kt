@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -28,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.anysoftkeyboard.janus.app.ui.AboutScreen
 import com.anysoftkeyboard.janus.app.ui.BookmarksScreen
 import com.anysoftkeyboard.janus.app.ui.HistoryScreen
 import com.anysoftkeyboard.janus.app.ui.TranslateScreen
@@ -91,6 +93,7 @@ fun JanusApp(initialText: String? = null) {
       composable(TabScreen.Translate.route) { TranslateScreen(hiltViewModel(), initialText) }
       composable(TabScreen.History.route) { HistoryScreen(hiltViewModel()) }
       composable(TabScreen.Bookmarks.route) { BookmarksScreen(hiltViewModel()) }
+      composable(TabScreen.About.route) { AboutScreen() }
     }
   }
 }
@@ -103,6 +106,7 @@ enum class TabScreen(
   Translate("translate", R.string.tab_translate, Icons.Default.Translate),
   History("history", R.string.tab_history, Icons.Default.History),
   Bookmarks("bookmarks", R.string.tab_bookmarks, Icons.Default.Favorite),
+  About("about", R.string.tab_about, Icons.Default.Info),
 }
 
 @Preview(showBackground = true)

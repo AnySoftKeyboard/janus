@@ -75,7 +75,7 @@ class ScreenshotGenerator {
     composeTestRule.onNodeWithTag("source_lang_selector").performClick()
     composeTestRule
         .onNodeWithTag("language_list")
-        .performScrollToNode(androidx.compose.ui.test.hasTestTag("language_menu_item_auto"))
+        .performScrollToNode(hasTestTag("language_menu_item_auto"))
     Thread.sleep(500)
     dropshots.assertSnapshot(name = "b_1_auto_detect_option")
 

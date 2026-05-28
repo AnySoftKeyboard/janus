@@ -19,6 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.util.LanguageDetector
+import com.anysoftkeyboard.janus.app.util.SupportedLanguage
 import com.anysoftkeyboard.janus.app.util.supportedLanguages
 import com.anysoftkeyboard.janus.app.util.supportedLanguagesMap
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
@@ -50,12 +53,11 @@ fun LanguageSelectionRow(
     onTargetLanguageSelected: (String) -> Unit,
     onSwapLanguages: (String, String, String) -> Unit,
 ) {
-  val autoDetectName =
-      stringResource(com.anysoftkeyboard.janus.app.R.string.auto_detect_language_name)
+  val autoDetectName = stringResource(R.string.auto_detect_language_name)
   val autoDetectLanguage =
       remember(autoDetectName) {
-        com.anysoftkeyboard.janus.app.util.SupportedLanguage(
-            code = com.anysoftkeyboard.janus.app.util.LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
+        SupportedLanguage(
+            code = LanguageDetector.AUTO_DETECT_LANGUAGE_CODE,
             name = autoDetectName,
             localName = autoDetectName,
             articleCount = 0,
@@ -117,7 +119,7 @@ fun LanguageSelector(
     selectedLanguage: String,
     recentLanguages: List<String>,
     onLanguageSelected: (String) -> Unit,
-    prependLanguages: List<com.anysoftkeyboard.janus.app.util.SupportedLanguage> = emptyList(),
+    prependLanguages: List<SupportedLanguage> = emptyList(),
     modifier: Modifier = Modifier,
 ) {
   // In a real app, you'd get this from a ViewModel
