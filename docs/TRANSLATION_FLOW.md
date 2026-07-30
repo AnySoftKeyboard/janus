@@ -1,6 +1,6 @@
 # Translation Flow Documentation
 
-This document describes the complete flow of how translations work in Janus, from user input to final display.
+This document describes the complete flow of how translations work in Janus Glossa, from user input to final display.
 
 ## Architecture Overview
 

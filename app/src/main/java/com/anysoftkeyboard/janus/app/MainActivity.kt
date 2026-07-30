@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -40,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     installSplashScreen()
+    enableEdgeToEdge()
     super.onCreate(savedInstanceState)
     val initialText =
         if (

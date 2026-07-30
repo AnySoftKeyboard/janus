@@ -1,6 +1,6 @@
 # F-Droid Submission Guide
 
-This guide outlines the steps to submit **Janus** to the official F-Droid repository.
+This guide outlines the steps to submit **Janus Glossa** to the official F-Droid repository.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ SourceCode: https://github.com/AnySoftKeyboard/janus
 IssueTracker: https://github.com/AnySoftKeyboard/janus/issues
 Changelog: https://github.com/AnySoftKeyboard/janus/releases
 
-AutoName: Janus
+AutoName: Janus Glossa
 
 RepoType: git
 Repo: https://github.com/AnySoftKeyboard/janus.git
