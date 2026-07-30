@@ -1,1 +1,4 @@
 Welcome to Janus Glossa v0.1.7 (12)
+* Rebranded application name to "Janus Glossa".
+* Introduced new "About" section to view app methodology, links, and open-source licenses.
+* Updated supported languages list and language detection capabilities.
