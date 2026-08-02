@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 0 # Important: fetch all history for diffing
 
       - name: Run Cassandra AI Review
-        uses: menny/cassandra@v0.5.0
+        uses: menny/cassandra@v0.7.0
         with:
           provider_api_key: ${{ secrets.GEMINI_2_5_FLASH_API_KEY }}
           # The base branch to compare against (defaults to main)
