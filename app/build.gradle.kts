@@ -55,7 +55,7 @@ android {
     buildConfig = true
   }
   configurations.all {
-    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
+    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.4.10")
     exclude(group = "com.google.guava", module = "listenablefuture")
   }
 
