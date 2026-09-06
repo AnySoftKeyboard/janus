@@ -1,6 +1,5 @@
 plugins {
   id("com.android.application")
-  id("org.jetbrains.kotlin.android")
   alias(libs.plugins.ksp)
   id("dagger.hilt.android.plugin")
   alias(libs.plugins.compose.compiler)
@@ -55,16 +54,15 @@ android {
     buildConfig = true
   }
   configurations.all {
-    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.3.0")
+    resolutionStrategy.force("org.jetbrains.kotlin:kotlin-metadata-jvm:2.4.10")
     exclude(group = "com.google.guava", module = "listenablefuture")
   }
 
   testOptions {
     unitTests.isIncludeAndroidResources = true
     managedDevices {
-      devices {
-        // You can name this whatever you want
-        register<com.android.build.api.dsl.ManagedVirtualDevice>("pixel6Api33") {
+      localDevices {
+        register("pixel6Api33") {
           device = "Pixel 6"
           apiLevel = 33
           systemImageSource = "google"
@@ -126,3 +124,9 @@ dependencies {
   debugImplementation(libs.androidx.compose.ui.test.manifest)
   androidTestImplementation(libs.junit)
 }
+
+tasks.register("testDebugUnitTest") {
+  dependsOn("testGoogleDebugUnitTest", "testFossDebugUnitTest")
+}
+
+tasks.register("lintDebug") { dependsOn("lintGoogleDebug", "lintFossDebug") }
