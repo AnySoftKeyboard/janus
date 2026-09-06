@@ -38,3 +38,4 @@ fastlane/screenshots
 # Mac stuff
 .DS_Store
 .antigravitycli
+.metals/

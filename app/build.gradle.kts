@@ -4,7 +4,7 @@ plugins {
   id("dagger.hilt.android.plugin")
   alias(libs.plugins.compose.compiler)
   alias(libs.plugins.dropshots)
-  id("com.google.android.gms.oss-licenses-plugin")
+  alias(libs.plugins.aboutLibraries)
 }
 
 android {
@@ -78,7 +78,7 @@ dependencies {
   implementation(project(":database"))
   implementation(project(":network"))
   implementation(libs.androidx.core.splashscreen)
-  implementation(libs.play.services.oss.licenses)
+  implementation(libs.aboutlibraries.compose.m3)
   implementation(libs.androidx.core.ktx)
   implementation(libs.androidx.appcompat)
   implementation(libs.com.google.android.material)
