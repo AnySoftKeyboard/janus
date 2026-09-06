@@ -37,8 +37,7 @@ composeAnimation = "1.12.0"
 dropshots = "0.6.0"
 genai_prompt = "1.0.0-beta4"
 optimaize = "0.6"
-google_oss_licenses = "0.13.0"
-play_services_oss_licenses = "17.3.0"
+aboutLibraries = "15.2.0"
 
 [libraries]
 androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "androidx_core_splashscreen" }
@@ -84,8 +83,7 @@ hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-com
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 google-mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "genai_prompt" }
 optimaize-language-detector = { group = "com.optimaize.languagedetector", name = "language-detector", version.ref = "optimaize" }
-play-services-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "play_services_oss_licenses" }
-google-oss-licenses-classpath = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "google_oss_licenses" }
+aboutlibraries-compose-m3 = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 
 
 [plugins]
@@ -96,3 +94,4 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_gradle_plugin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_gradle_plugin" }
 dropshots = { id = "com.dropbox.dropshots", version.ref = "dropshots" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutLibraries" }

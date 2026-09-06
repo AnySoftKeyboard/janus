@@ -1,12 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-  repositories {
-    google()
-    mavenCentral()
-  }
-  dependencies { classpath(libs.google.oss.licenses.classpath) }
-}
-
 plugins {
   alias(libs.plugins.android.application) apply false
   alias(libs.plugins.android.library) apply false
@@ -15,6 +7,7 @@ plugins {
   id("com.diffplug.spotless")
   alias(libs.plugins.hilt) apply false
   alias(libs.plugins.compose.compiler) apply false
+  alias(libs.plugins.aboutLibraries) apply false
 }
 
 spotless {

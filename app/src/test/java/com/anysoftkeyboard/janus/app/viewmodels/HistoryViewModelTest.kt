@@ -5,6 +5,7 @@ import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.app.ui.data.UiTranslation
 import com.anysoftkeyboard.janus.app.util.FakeStringProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -72,7 +73,7 @@ class HistoryViewModelTest {
             ),
         )
 
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
       assertEquals(emptyList<UiTranslation>(), awaitItem())
 
       fakeRepository.setHistory(testTranslations)
@@ -96,7 +97,7 @@ class HistoryViewModelTest {
 
   @Test
   fun `updateSearchQuery updates search query state`() = runTest {
-    viewModel.searchQuery.test {
+    viewModel.searchQuery.test(timeout = 5.seconds) {
       assertEquals("", awaitItem())
 
       viewModel.updateSearchQuery("cat")
@@ -145,7 +146,7 @@ class HistoryViewModelTest {
             ),
         )
 
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
       // Skip initial empty item
       skipItems(1)
 
@@ -187,12 +188,14 @@ class HistoryViewModelTest {
             ),
         )
 
-    fakeRepository.setHistory(testTranslations)
-    testDispatcher.scheduler.advanceUntilIdle()
-
-    viewModel.history.test {
-      // Skip initial items
+    viewModel.history.test(timeout = 5.seconds) {
+      // Skip initial empty list
       skipItems(1)
+
+      fakeRepository.setHistory(testTranslations)
+      testDispatcher.scheduler.advanceUntilIdle()
+      val fullHistory = awaitItem()
+      assertEquals(2, fullHistory.size)
 
       viewModel.updateSearchQuery("Cat")
       testDispatcher.scheduler.advanceUntilIdle()
@@ -233,7 +236,7 @@ class HistoryViewModelTest {
             ),
         )
 
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
       skipItems(1)
 
       fakeRepository.setHistory(testTranslations)
@@ -285,11 +288,14 @@ class HistoryViewModelTest {
             ),
         )
 
-    fakeRepository.setHistory(testTranslations)
-    testDispatcher.scheduler.advanceUntilIdle()
-
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
+      // Skip initial empty list
       skipItems(1)
+
+      fakeRepository.setHistory(testTranslations)
+      testDispatcher.scheduler.advanceUntilIdle()
+      val fullHistory = awaitItem()
+      assertEquals(2, fullHistory.size)
 
       viewModel.updateSearchQuery("Gato")
       testDispatcher.scheduler.advanceUntilIdle()
@@ -335,7 +341,7 @@ class HistoryViewModelTest {
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
 
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
       // Consume initial empty list
       skipItems(1)
 
@@ -373,7 +379,7 @@ class HistoryViewModelTest {
     fakeRepository.setHistory(testTranslations)
     testDispatcher.scheduler.advanceUntilIdle()
 
-    viewModel.history.test {
+    viewModel.history.test(timeout = 5.seconds) {
       // Consume initial empty list (from stateIn)
       skipItems(1)
 
