@@ -1,6 +1,5 @@
 plugins {
   id("com.android.library")
-  id("org.jetbrains.kotlin.android")
   id("com.google.devtools.ksp")
 }
 
@@ -10,10 +9,8 @@ android {
 
   defaultConfig {
     minSdk = libs.versions.minSdk.get().toInt()
-    targetSdk = libs.versions.targetSdk.get().toInt()
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    consumerProguardFiles("consumer-rules.pro")
   }
   kotlin { jvmToolchain(21) }
   testOptions { unitTests.isIncludeAndroidResources = true }
