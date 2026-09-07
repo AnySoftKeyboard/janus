@@ -5,6 +5,7 @@ import com.anysoftkeyboard.janus.app.R
 import com.anysoftkeyboard.janus.app.repository.FakeTranslationRepository
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
+import com.anysoftkeyboard.janus.app.repository.RelatedArticle
 import com.anysoftkeyboard.janus.app.util.DetectionResult
 import com.anysoftkeyboard.janus.app.util.FakeStringProvider
 import com.anysoftkeyboard.janus.app.util.LanguageDetector
@@ -745,5 +746,200 @@ class TranslateViewModelTest {
       val error = state as TranslateViewState.Error
       assertEquals(TranslateViewModel.ErrorType.SafetyViolation, error.errorType)
     }
+  }
+
+  @Test
+  fun `fetchTranslation loads related articles lazily without blocking translation`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Cat",
+            snippet = "domestic species",
+            availableLanguages = listOf("he"),
+        )
+    val translation =
+        Translation(
+            sourceWord = "Cat",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "חתול",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he",
+        )
+    fakeRepository.nextTranslations = listOf(translation)
+    fakeRepository.nextRelatedArticles =
+        listOf(RelatedArticle(2, "Kitten", "Young cat", "A kitten is a juvenile cat."))
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
+      assertTrue(awaitItem() is TranslateViewState.Translating)
+      advanceUntilIdle()
+
+      // Translation is emitted even though related articles load separately
+      val translatedState = awaitItem()
+      assertTrue(translatedState is TranslateViewState.Translated)
+    }
+
+    viewModel.relatedArticles.test {
+      val loaded = awaitItem()
+      assertTrue(loaded is RelatedArticlesState.Loaded)
+      assertEquals("Kitten", (loaded as RelatedArticlesState.Loaded).articles[0].title)
+    }
+  }
+
+  @Test
+  fun `fetchTranslation hides related section when related fetch fails`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Cat",
+            snippet = "domestic species",
+            availableLanguages = listOf("he"),
+        )
+    val translation =
+        Translation(
+            sourceWord = "Cat",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "חתול",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he",
+        )
+    fakeRepository.nextTranslations = listOf(translation)
+    fakeRepository.relatedException = RuntimeException("related failed")
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      val optionsFetched =
+          TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+      viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
+      skipItems(1) // Translating state
+      advanceUntilIdle()
+
+      // Translation still succeeds
+      val translatedState = awaitItem()
+      assertTrue(translatedState is TranslateViewState.Translated)
+    }
+
+    advanceUntilIdle()
+    assertEquals(RelatedArticlesState.Hidden, viewModel.relatedArticles.value)
+  }
+
+  @Test
+  fun `fetchTranslation hides related section when no related articles`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Cat",
+            snippet = "domestic species",
+            availableLanguages = listOf("he"),
+        )
+    val translation =
+        Translation(
+            sourceWord = "Cat",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "חתול",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he",
+        )
+    fakeRepository.nextTranslations = listOf(translation)
+    fakeRepository.nextRelatedArticles = emptyList()
+
+    val optionsFetched =
+        TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+    viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
+    advanceUntilIdle()
+
+    assertTrue(viewModel.pageState.value is TranslateViewState.Translated)
+    assertEquals(RelatedArticlesState.Hidden, viewModel.relatedArticles.value)
+  }
+
+  @Test
+  fun `fetchRelatedTranslation translates the related concept directly`() = runTest {
+    val related = RelatedArticle(5, "Kitten", "Young cat", "A kitten is a juvenile cat.")
+    val translation =
+        Translation(
+            sourceWord = "Kitten",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "חתלתול",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he",
+        )
+    fakeRepository.nextTranslations = listOf(translation)
+
+    viewModel.pageState.test {
+      assertEquals(TranslateViewState.Empty, awaitItem())
+
+      viewModel.fetchRelatedTranslation(related, "en", "he")
+      assertTrue(awaitItem() is TranslateViewState.Translating)
+      advanceUntilIdle()
+
+      val translatedState = awaitItem()
+      assertTrue(translatedState is TranslateViewState.Translated)
+      val translated = translatedState as TranslateViewState.Translated
+      assertEquals("Kitten", translated.term.title)
+      assertEquals("en", translated.sourceLang)
+      assertEquals("he", translated.targetLang)
+    }
+  }
+
+  @Test
+  fun `related articles are cached per source article`() = runTest {
+    val searchTerm =
+        OptionalSourceTerm(
+            pageid = 1,
+            title = "Cat",
+            snippet = "domestic species",
+            availableLanguages = listOf("he"),
+        )
+    val translation =
+        Translation(
+            sourceWord = "Cat",
+            sourceLangCode = "en",
+            sourceArticleUrl = "url",
+            sourceShortDescription = "desc",
+            sourceSummary = "summary",
+            translatedWord = "חתול",
+            targetLangCode = "he",
+            targetArticleUrl = "url_he",
+            targetShortDescription = "desc_he",
+            targetSummary = "summary_he",
+        )
+    fakeRepository.nextTranslations = listOf(translation)
+    fakeRepository.nextRelatedArticles =
+        listOf(RelatedArticle(2, "Kitten", "Young cat", "A kitten is a juvenile cat."))
+    val optionsFetched =
+        TranslateViewState.OptionsFetched("test", listOf(searchTerm), emptyMap(), "en")
+
+    viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
+    advanceUntilIdle()
+    viewModel.fetchTranslation(optionsFetched, searchTerm, "he")
+    advanceUntilIdle()
+
+    assertEquals(1, fakeRepository.getRelatedArticleCalls)
+    assertTrue(viewModel.relatedArticles.value is RelatedArticlesState.Loaded)
   }
 }

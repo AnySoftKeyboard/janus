@@ -90,4 +90,58 @@ class WikipediaClientTest {
     )
     assertEquals("Monster Summer", response.query!!.search?.get(1)?.title)
   }
+
+  @Test
+  fun `test related articles response parsing`() = runBlocking {
+    val jsonResponse =
+        """
+        {
+          "batchcomplete": true,
+          "query": {
+            "pages": {
+              "895672": {
+                "pageid": 895672,
+                "ns": 0,
+                "title": "Feral cat",
+                "pageprops": {
+                  "wikibase-shortdesc": "Unowned or untamed domestic cat in the outdoors"
+                },
+                "extract": "A feral cat or stray cat is an unowned domestic cat."
+              },
+              "629216": {
+                "pageid": 629216,
+                "ns": 0,
+                "title": "Purr",
+                "pageprops": {
+                  "wikibase-shortdesc": "Fluttering vocalization"
+                },
+                "extract": "A purr or whirr is a tonal fluttering sound."
+              }
+            }
+          }
+        }
+        """
+            .trimIndent()
+
+    mockWebServer.enqueue(MockResponse().setBody(jsonResponse))
+
+    val response = wikipediaApi.getRelatedArticles("morelike:Cat", 8)
+
+    val request = mockWebServer.takeRequest()
+    assert(request.path!!.contains("generator=search"))
+    assert(request.path!!.contains("gsrsearch=morelike%3ACat"))
+
+    val pages = response.query?.pages
+    assertEquals(2, pages?.size)
+    assertEquals("Feral cat", pages?.get("895672")?.title)
+    assertEquals(
+        "Unowned or untamed domestic cat in the outdoors",
+        pages?.get("895672")?.pageProps?.wikibaseShortdesc,
+    )
+    assertEquals(
+        "A feral cat or stray cat is an unowned domestic cat.",
+        pages?.get("895672")?.extract,
+    )
+    assertEquals("Purr", pages?.get("629216")?.title)
+  }
 }

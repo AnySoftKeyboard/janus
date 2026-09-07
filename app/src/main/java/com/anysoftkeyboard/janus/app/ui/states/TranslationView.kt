@@ -3,6 +3,7 @@ package com.anysoftkeyboard.janus.app.ui.states
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -19,14 +22,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.repository.RelatedArticle
 import com.anysoftkeyboard.janus.app.ui.components.CopyToClipboardButton
 import com.anysoftkeyboard.janus.app.ui.components.HtmlText
+import com.anysoftkeyboard.janus.app.ui.components.JanusLoader
 import com.anysoftkeyboard.janus.app.ui.components.PivotConnector
 import com.anysoftkeyboard.janus.app.ui.components.WikipediaLinkButton
+import com.anysoftkeyboard.janus.app.viewmodels.RelatedArticlesState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslateViewState
 import com.anysoftkeyboard.janus.app.viewmodels.TranslationState
 
@@ -47,8 +54,10 @@ fun TranslationView(
     translated: TranslateViewState.Translated,
     sharedTransitionScope: SharedTransitionScope? = null,
     animatedVisibilityScope: AnimatedVisibilityScope? = null,
+    relatedState: RelatedArticlesState = RelatedArticlesState.Hidden,
+    onRelatedClick: ((RelatedArticle) -> Unit)? = null,
 ) {
-  Column(modifier = Modifier.fillMaxWidth()) {
+  Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
     SourceArticleSection(
         title = translated.term.title,
         language = translated.sourceLang,
@@ -63,6 +72,12 @@ fun TranslationView(
     )
 
     TranslationContent(translation = translated.translation, targetLang = translated.targetLang)
+
+    RelatedArticlesSection(
+        relatedState = relatedState,
+        sourceLang = translated.sourceLang,
+        onRelatedClick = onRelatedClick,
+    )
   }
 }
 
@@ -262,4 +277,101 @@ private fun UnknownStateContent(translation: TranslationState) {
       text = "Unknown state type: ${translation.javaClass}",
       style = MaterialTheme.typography.bodyMedium,
   )
+}
+
+/** Inline section showing articles related to the translated source article. */
+@Composable
+private fun RelatedArticlesSection(
+    relatedState: RelatedArticlesState,
+    sourceLang: String,
+    onRelatedClick: ((RelatedArticle) -> Unit)?,
+) {
+  when (relatedState) {
+    is RelatedArticlesState.Hidden -> {
+      // Do not disturb the translation view when related articles are unavailable.
+    }
+    is RelatedArticlesState.Loading -> {
+      Spacer(modifier = Modifier.height(8.dp))
+      Row(
+          modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+          verticalAlignment = Alignment.CenterVertically,
+      ) {
+        JanusLoader(modifier = Modifier.size(48.dp))
+        Text(
+            text = stringResource(R.string.related_articles_loading),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+      }
+    }
+    is RelatedArticlesState.Loaded -> {
+      Spacer(modifier = Modifier.height(16.dp))
+      Text(
+          text = stringResource(R.string.related_articles_title),
+          style = MaterialTheme.typography.labelLarge,
+          color = MaterialTheme.colorScheme.onSurfaceVariant,
+      )
+      Spacer(modifier = Modifier.height(8.dp))
+      relatedState.articles.forEach { article ->
+        RelatedArticleItem(
+            article = article,
+            sourceLang = sourceLang,
+            onClick = onRelatedClick?.let { callback -> { callback(article) } },
+        )
+      }
+    }
+  }
+}
+
+/** Card displaying a single related article. Tapping it translates that concept directly. */
+@Composable
+private fun RelatedArticleItem(
+    article: RelatedArticle,
+    sourceLang: String,
+    onClick: (() -> Unit)?,
+) {
+  Card(
+      modifier =
+          Modifier.fillMaxWidth().padding(vertical = 4.dp).testTag("related_article_item").let {
+              modifier ->
+            if (onClick != null) modifier.clickable(onClick = onClick) else modifier
+          },
+      colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+      shape = MaterialTheme.shapes.medium,
+  ) {
+    Column(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
+      Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Text(
+            text = article.title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+        )
+        WikipediaLinkButton(
+            url = "https://${sourceLang}.wikipedia.org/?curid=${article.pageid}",
+            contentDescription = stringResource(R.string.content_description_open_wikipedia),
+        )
+      }
+      article.shortDescription?.let { description ->
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+      }
+      article.extract?.let { extract ->
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = extract,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 3,
+            overflow = TextOverflow.Ellipsis,
+        )
+      }
+    }
+  }
 }

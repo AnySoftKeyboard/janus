@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.anysoftkeyboard.janus.app.repository.OptionalSourceTerm
 import com.anysoftkeyboard.janus.app.repository.RecentLanguagesRepository
+import com.anysoftkeyboard.janus.app.repository.RelatedArticle
 import com.anysoftkeyboard.janus.app.repository.TranslationRepository
 import com.anysoftkeyboard.janus.app.util.DetectionResult
 import com.anysoftkeyboard.janus.app.util.LanguageDetector
@@ -29,6 +30,14 @@ sealed class TranslationState() {
   ) : TranslationState()
 
   data class Error(val errorMessage: String) : TranslationState()
+}
+
+sealed interface RelatedArticlesState {
+  data object Hidden : RelatedArticlesState
+
+  data object Loading : RelatedArticlesState
+
+  data class Loaded(val articles: List<RelatedArticle>) : RelatedArticlesState
 }
 
 sealed class TranslateViewState() {
@@ -108,6 +117,10 @@ constructor(
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
 
+  private val _relatedArticles = MutableStateFlow<RelatedArticlesState>(RelatedArticlesState.Hidden)
+  val relatedArticles: StateFlow<RelatedArticlesState> = _relatedArticles
+  private val relatedCache = mutableMapOf<Pair<String, Long>, List<RelatedArticle>>()
+
   private val _welcomeMessage = MutableStateFlow(welcomeMessageProvider.getRandomMessage())
   val welcomeMessage: StateFlow<TranslationFlowMessages> = _welcomeMessage
 
@@ -174,6 +187,7 @@ constructor(
   }
 
   private suspend fun performSearch(sourceLang: String, term: String) {
+    _relatedArticles.value = RelatedArticlesState.Hidden
     _state.value =
         TranslateViewState.OptionsFetched(
             term,
@@ -221,10 +235,60 @@ constructor(
                 targetLang,
                 translationState,
             )
+        loadRelatedArticles(sources.effectiveSourceLang, searchPage)
       } catch (e: Exception) {
         Log.e("TranslateViewModel", "Error fetching translation", e)
+        _relatedArticles.value = RelatedArticlesState.Hidden
         val errorType = mapToErrorType(e)
         _state.value = TranslateViewState.Error(errorType, e.message)
+      }
+    }
+  }
+
+  fun fetchRelatedTranslation(related: RelatedArticle, sourceLang: String, targetLang: String) {
+    val term = related.toOptionalSourceTerm()
+    val sources =
+        previousSearchResults?.let { previous ->
+          if (previous.options.any { it.pageid == term.pageid }) {
+            previous
+          } else {
+            previous.copy(options = previous.options + term)
+          }
+        }
+            ?: TranslateViewState.OptionsFetched(
+                searchTerm = related.title,
+                options = listOf(term),
+                translations = emptyMap(),
+                effectiveSourceLang = sourceLang,
+            )
+    fetchTranslation(sources, term, targetLang)
+  }
+
+  private fun loadRelatedArticles(sourceLang: String, term: OptionalSourceTerm) {
+    val key = sourceLang to term.pageid
+    relatedCache[key]?.let { cached ->
+      _relatedArticles.value =
+          if (cached.isEmpty()) {
+            RelatedArticlesState.Hidden
+          } else {
+            RelatedArticlesState.Loaded(cached)
+          }
+      return
+    }
+    _relatedArticles.value = RelatedArticlesState.Loading
+    viewModelScope.launch {
+      try {
+        val related = repository.getRelatedArticles(sourceLang, term.title, term.pageid)
+        relatedCache[key] = related
+        _relatedArticles.value =
+            if (related.isEmpty()) {
+              RelatedArticlesState.Hidden
+            } else {
+              RelatedArticlesState.Loaded(related)
+            }
+      } catch (e: Exception) {
+        Log.w("TranslateViewModel", "Error fetching related articles", e)
+        _relatedArticles.value = RelatedArticlesState.Hidden
       }
     }
   }
@@ -251,12 +315,15 @@ constructor(
    * exist, clears to Empty state.
    */
   fun backToSearchResults() {
+    _relatedArticles.value = RelatedArticlesState.Hidden
     previousSearchResults?.let { _state.value = it } ?: run { clearSearch() }
   }
 
   /** Clear search and return to Empty state. Also clears saved search results. */
   fun clearSearch() {
     _state.value = TranslateViewState.Empty
+    _relatedArticles.value = RelatedArticlesState.Hidden
+    relatedCache.clear()
     previousSearchResults = null
     _welcomeMessage.value = welcomeMessageProvider.getRandomMessage()
   }

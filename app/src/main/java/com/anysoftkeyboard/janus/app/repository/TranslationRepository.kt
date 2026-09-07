@@ -15,6 +15,21 @@ data class OptionalSourceTerm(
     val availableLanguages: List<String>,
 )
 
+data class RelatedArticle(
+    val pageid: Long,
+    val title: String,
+    val shortDescription: String?,
+    val extract: String?,
+) {
+  fun toOptionalSourceTerm(): OptionalSourceTerm =
+      OptionalSourceTerm(
+          pageid = pageid,
+          title = title,
+          snippet = extract ?: "",
+          availableLanguages = emptyList(),
+      )
+}
+
 open class TranslationRepository(
     private val translationDao: TranslationDao,
     private val wikipediaApi: LangWikipediaFactory,
@@ -181,6 +196,38 @@ open class TranslationRepository(
           )
         }
         .also { it.forEach { t -> translationDao.insertTranslation(t) } }
+  }
+
+  open suspend fun getRelatedArticles(
+      sourceLang: String,
+      sourceTitle: String,
+      sourcePageId: Long,
+      limit: Int = 8,
+  ): List<RelatedArticle> {
+    val api = wikipediaApi.createWikipediaApi(sourceLang)
+    val response = api.getRelatedArticles(morelikeQuery = "morelike:$sourceTitle", limit = limit)
+    return response.query
+        ?.pages
+        ?.values
+        ?.asSequence()
+        ?.filter { page -> page.ns == 0 }
+        ?.mapNotNull { page ->
+          val pageId = page.pageid
+          if (pageId == null || pageId <= 0 || pageId == sourcePageId) {
+            null
+          } else if (page.pageProps?.disambiguation != null) {
+            null
+          } else {
+            RelatedArticle(
+                pageid = pageId,
+                title = page.title,
+                shortDescription = page.pageProps?.wikibaseShortdesc,
+                extract = page.extract,
+            )
+          }
+        }
+        ?.take(limit)
+        ?.toList() ?: emptyList()
   }
 
   open suspend fun deleteTranslation(id: Int) {

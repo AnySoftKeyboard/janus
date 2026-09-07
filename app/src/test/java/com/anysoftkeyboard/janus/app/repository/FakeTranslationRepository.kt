@@ -22,8 +22,11 @@ constructor(
   private val _bookmarks = MutableStateFlow(emptyList<Translation>())
   var nextSearchResults: List<OptionalSourceTerm> = emptyList()
   var nextTranslations: List<Translation> = emptyList()
+  var nextRelatedArticles: List<RelatedArticle> = emptyList()
   var searchException: Exception? = null
   var fetchException: Exception? = null
+  var relatedException: Exception? = null
+  var getRelatedArticleCalls = 0
 
   override fun getHistory(): Flow<List<Translation>> = _history.asStateFlow()
 
@@ -50,6 +53,17 @@ constructor(
   ): List<Translation> {
     fetchException?.let { throw it }
     return nextTranslations
+  }
+
+  override suspend fun getRelatedArticles(
+      sourceLang: String,
+      sourceTitle: String,
+      sourcePageId: Long,
+      limit: Int,
+  ): List<RelatedArticle> {
+    relatedException?.let { throw it }
+    getRelatedArticleCalls++
+    return nextRelatedArticles
   }
 
   fun setHistory(history: List<Translation>) {
