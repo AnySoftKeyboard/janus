@@ -846,4 +846,163 @@ class TranslationRepositoryTest {
         assertEquals("Cat", result[0].title)
         assertEquals(listOf("he"), result[0].availableLanguages)
       }
+
+  @Test
+  fun `test getRelatedArticles returns mapped articles`() = runTest {
+    val kittenPage =
+        PageLangLinks(
+            pageid = 2,
+            ns = 0,
+            title = "Kitten",
+            langLinks = null,
+            pageProps = PageProps(disambiguation = null, wikibaseShortdesc = "Young cat"),
+            links = null,
+            extract = "A kitten is a juvenile cat.",
+        )
+    val purrPage =
+        PageLangLinks(
+            pageid = 3,
+            ns = 0,
+            title = "Purr",
+            langLinks = null,
+            pageProps =
+                PageProps(disambiguation = null, wikibaseShortdesc = "Fluttering vocalization"),
+            links = null,
+            extract = "A purr is a tonal fluttering sound.",
+        )
+    val response =
+        LangLinksResponse(query = LangLinksQuery(pages = mapOf("2" to kittenPage, "3" to purrPage)))
+
+    whenever(wikipediaApi.getRelatedArticles(any(), any())).thenReturn(response)
+
+    val result = repository.getRelatedArticles("en", "Cat", 1L)
+
+    assertEquals(2, result.size)
+    assertEquals("Kitten", result[0].title)
+    assertEquals(2L, result[0].pageid)
+    assertEquals("Young cat", result[0].shortDescription)
+    assertEquals("A kitten is a juvenile cat.", result[0].extract)
+    assertEquals("Purr", result[1].title)
+    verify(wikipediaApi).getRelatedArticles("morelike:Cat", 8)
+  }
+
+  @Test
+  fun `test getRelatedArticles filters source page invalid pages and disambiguation`() = runTest {
+    val selfPage =
+        PageLangLinks(
+            pageid = 1,
+            ns = 0,
+            title = "Cat",
+            langLinks = null,
+            pageProps = null,
+            links = null,
+            extract = "The cat is a domestic species.",
+        )
+    val validPage =
+        PageLangLinks(
+            pageid = 2,
+            ns = 0,
+            title = "Kitten",
+            langLinks = null,
+            pageProps = null,
+            links = null,
+            extract = "A kitten is a juvenile cat.",
+        )
+    val disambPage =
+        PageLangLinks(
+            pageid = 3,
+            ns = 0,
+            title = "Cat (disambiguation)",
+            langLinks = null,
+            pageProps = PageProps(disambiguation = "", wikibaseShortdesc = null),
+            links = null,
+            extract = null,
+        )
+    val nonMainNamespacePage =
+        PageLangLinks(
+            pageid = 4,
+            ns = 1,
+            title = "Talk:Cat",
+            langLinks = null,
+            pageProps = null,
+            links = null,
+            extract = null,
+        )
+    val invalidPage =
+        PageLangLinks(
+            pageid = null,
+            ns = 0,
+            title = "Missing",
+            langLinks = null,
+            pageProps = null,
+            links = null,
+            extract = null,
+        )
+    val response =
+        LangLinksResponse(
+            query =
+                LangLinksQuery(
+                    pages =
+                        mapOf(
+                            "1" to selfPage,
+                            "2" to validPage,
+                            "3" to disambPage,
+                            "4" to nonMainNamespacePage,
+                            "5" to invalidPage,
+                        )
+                )
+        )
+
+    whenever(wikipediaApi.getRelatedArticles(any(), any())).thenReturn(response)
+
+    val result = repository.getRelatedArticles("en", "Cat", 1L)
+
+    assertEquals(1, result.size)
+    assertEquals("Kitten", result[0].title)
+  }
+
+  @Test
+  fun `test getRelatedArticles with null query returns empty list`() = runTest {
+    whenever(wikipediaApi.getRelatedArticles(any(), any()))
+        .thenReturn(LangLinksResponse(query = null))
+
+    val result = repository.getRelatedArticles("en", "Cat", 1L)
+
+    assertEquals(0, result.size)
+  }
+
+  @Test
+  fun `test getRelatedArticles respects limit`() = runTest {
+    val pages =
+        (10..14).associate { id ->
+          id.toString() to
+              PageLangLinks(
+                  pageid = id.toLong(),
+                  ns = 0,
+                  title = "Article $id",
+                  langLinks = null,
+                  pageProps = null,
+                  links = null,
+                  extract = null,
+              )
+        }
+    whenever(wikipediaApi.getRelatedArticles(any(), any()))
+        .thenReturn(LangLinksResponse(query = LangLinksQuery(pages = pages)))
+
+    val result = repository.getRelatedArticles("en", "Cat", 1L, limit = 2)
+
+    assertEquals(2, result.size)
+    verify(wikipediaApi).getRelatedArticles("morelike:Cat", 2)
+  }
+
+  @Test
+  fun `test getRelatedArticles normalizes multi-word titles to underscores`() = runTest {
+    whenever(wikipediaApi.getRelatedArticles(any(), any()))
+        .thenReturn(LangLinksResponse(query = null))
+
+    val result = repository.getRelatedArticles("en", "New York City", 1L)
+
+    assertEquals(0, result.size)
+    verify(wikipediaApi).getRelatedArticles("morelike:New_York_City", 8)
+  }
 }

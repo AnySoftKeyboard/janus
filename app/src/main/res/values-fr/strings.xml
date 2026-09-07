@@ -67,6 +67,10 @@
     <!-- Search results -->
     <string name="search_results_untranslated_section">Articles non traduits</string>
 
+    <!-- Related articles -->
+    <string name="related_articles_title">Articles connexes</string>
+    <string name="related_articles_loading">Recherche d\'articles connexes...</string>
+
     <!-- Translation view -->
     <string name="translation_not_available">Traduction non disponible pour %1$s</string>
     <string name="available_translations">Traductions disponibles : %1$s</string>

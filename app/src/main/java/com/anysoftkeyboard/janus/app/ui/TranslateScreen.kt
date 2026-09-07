@@ -71,6 +71,7 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
 
   val recentLanguages by viewModel.recentLanguages.collectAsState()
   val welcomeMessage by viewModel.welcomeMessage.collectAsState()
+  val relatedState by viewModel.relatedArticles.collectAsState()
   val snackbarHostState = remember { SnackbarHostState() }
   val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -205,6 +206,14 @@ fun TranslateScreen(viewModel: TranslateViewModel, initialSearchTerm: String? = 
                     translated = targetState,
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this,
+                    relatedState = relatedState,
+                    onRelatedClick = { related ->
+                      viewModel.fetchRelatedTranslation(
+                          related,
+                          targetState.sourceLang,
+                          targetState.targetLang,
+                      )
+                    },
                 )
             is TranslateViewState.Error -> ErrorStateDisplay(error = targetState)
             is TranslateViewState.AmbiguousSource -> {

@@ -67,6 +67,10 @@
     <!-- Search results -->
     <string name="search_results_untranslated_section">Непереведённые статьи</string>
 
+    <!-- Related articles -->
+    <string name="related_articles_title">Похожие статьи</string>
+    <string name="related_articles_loading">Поиск похожих статей...</string>
+
     <!-- Translation view -->
     <string name="translation_not_available">Перевод недоступен для %1$s</string>
     <string name="available_translations">Доступные переводы: %1$s</string>

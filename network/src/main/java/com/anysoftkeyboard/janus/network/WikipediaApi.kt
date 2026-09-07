@@ -24,4 +24,12 @@ interface WikipediaApi {
       "api.php?action=query&prop=extracts|pageprops&format=json&exintro=true&explaintext=true&exsentences=2"
   )
   suspend fun getArticleDetails(@Query("titles") titles: String): LangLinksResponse
+
+  @GET(
+      "api.php?action=query&generator=search&prop=pageprops|extracts&format=json&exintro=true&explaintext=true&exsentences=2"
+  )
+  suspend fun getRelatedArticles(
+      @Query("gsrsearch") morelikeQuery: String,
+      @Query("gsrlimit") limit: Int = 8,
+  ): LangLinksResponse
 }
