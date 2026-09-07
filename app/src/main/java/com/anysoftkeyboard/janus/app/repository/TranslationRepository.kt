@@ -205,7 +205,12 @@ open class TranslationRepository(
       limit: Int = 8,
   ): List<RelatedArticle> {
     val api = wikipediaApi.createWikipediaApi(sourceLang)
-    val response = api.getRelatedArticles(morelikeQuery = "morelike:$sourceTitle", limit = limit)
+    // MediaWiki canonical title form: multi-word titles use underscores.
+    val response =
+        api.getRelatedArticles(
+            morelikeQuery = "morelike:${sourceTitle.replace(' ', '_')}",
+            limit = limit,
+        )
     return response.query
         ?.pages
         ?.values

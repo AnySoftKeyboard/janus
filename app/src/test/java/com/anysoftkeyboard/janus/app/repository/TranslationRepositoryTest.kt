@@ -994,4 +994,15 @@ class TranslationRepositoryTest {
     assertEquals(2, result.size)
     verify(wikipediaApi).getRelatedArticles("morelike:Cat", 2)
   }
+
+  @Test
+  fun `test getRelatedArticles normalizes multi-word titles to underscores`() = runTest {
+    whenever(wikipediaApi.getRelatedArticles(any(), any()))
+        .thenReturn(LangLinksResponse(query = null))
+
+    val result = repository.getRelatedArticles("en", "New York City", 1L)
+
+    assertEquals(0, result.size)
+    verify(wikipediaApi).getRelatedArticles("morelike:New_York_City", 8)
+  }
 }

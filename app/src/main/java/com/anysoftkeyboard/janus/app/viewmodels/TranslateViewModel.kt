@@ -15,6 +15,8 @@ import com.anysoftkeyboard.janus.app.util.TranslationFlowMessagesProvider
 import com.anysoftkeyboard.janus.database.entities.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -116,10 +118,10 @@ constructor(
 
   private val _state = MutableStateFlow<TranslateViewState>(TranslateViewState.Empty)
   val pageState: StateFlow<TranslateViewState> = _state
-
   private val _relatedArticles = MutableStateFlow<RelatedArticlesState>(RelatedArticlesState.Hidden)
   val relatedArticles: StateFlow<RelatedArticlesState> = _relatedArticles
   private val relatedCache = mutableMapOf<Pair<String, Long>, List<RelatedArticle>>()
+  private var relatedArticlesJob: Job? = null
 
   private val _welcomeMessage = MutableStateFlow(welcomeMessageProvider.getRandomMessage())
   val welcomeMessage: StateFlow<TranslationFlowMessages> = _welcomeMessage
@@ -187,6 +189,7 @@ constructor(
   }
 
   private suspend fun performSearch(sourceLang: String, term: String) {
+    cancelRelatedArticlesLoad()
     _relatedArticles.value = RelatedArticlesState.Hidden
     _state.value =
         TranslateViewState.OptionsFetched(
@@ -265,6 +268,7 @@ constructor(
   }
 
   private fun loadRelatedArticles(sourceLang: String, term: OptionalSourceTerm) {
+    cancelRelatedArticlesLoad()
     val key = sourceLang to term.pageid
     relatedCache[key]?.let { cached ->
       _relatedArticles.value =
@@ -276,21 +280,40 @@ constructor(
       return
     }
     _relatedArticles.value = RelatedArticlesState.Loading
-    viewModelScope.launch {
-      try {
-        val related = repository.getRelatedArticles(sourceLang, term.title, term.pageid)
-        relatedCache[key] = related
-        _relatedArticles.value =
-            if (related.isEmpty()) {
-              RelatedArticlesState.Hidden
-            } else {
-              RelatedArticlesState.Loaded(related)
+    relatedArticlesJob =
+        viewModelScope.launch {
+          try {
+            val related = repository.getRelatedArticles(sourceLang, term.title, term.pageid)
+            relatedCache[key] = related
+            if (isShowingTranslationOf(sourceLang, term.pageid)) {
+              _relatedArticles.value =
+                  if (related.isEmpty()) {
+                    RelatedArticlesState.Hidden
+                  } else {
+                    RelatedArticlesState.Loaded(related)
+                  }
             }
-      } catch (e: Exception) {
-        Log.w("TranslateViewModel", "Error fetching related articles", e)
-        _relatedArticles.value = RelatedArticlesState.Hidden
-      }
-    }
+          } catch (e: CancellationException) {
+            throw e
+          } catch (e: Exception) {
+            Log.w("TranslateViewModel", "Error fetching related articles", e)
+            if (isShowingTranslationOf(sourceLang, term.pageid)) {
+              _relatedArticles.value = RelatedArticlesState.Hidden
+            }
+          }
+        }
+  }
+
+  private fun isShowingTranslationOf(sourceLang: String, pageId: Long): Boolean {
+    val current = _state.value
+    return current is TranslateViewState.Translated &&
+        current.sourceLang == sourceLang &&
+        current.term.pageid == pageId
+  }
+
+  private fun cancelRelatedArticlesLoad() {
+    relatedArticlesJob?.cancel()
+    relatedArticlesJob = null
   }
 
   private fun mapToErrorType(e: Exception): ErrorType {
@@ -315,12 +338,14 @@ constructor(
    * exist, clears to Empty state.
    */
   fun backToSearchResults() {
+    cancelRelatedArticlesLoad()
     _relatedArticles.value = RelatedArticlesState.Hidden
     previousSearchResults?.let { _state.value = it } ?: run { clearSearch() }
   }
 
   /** Clear search and return to Empty state. Also clears saved search results. */
   fun clearSearch() {
+    cancelRelatedArticlesLoad()
     _state.value = TranslateViewState.Empty
     _relatedArticles.value = RelatedArticlesState.Hidden
     relatedCache.clear()

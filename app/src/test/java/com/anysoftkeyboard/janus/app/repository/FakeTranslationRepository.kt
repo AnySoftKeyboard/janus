@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 
-class FakeTranslationRepository
+open class FakeTranslationRepository
 @Inject
 constructor(
     private val translationDao: TranslationDao,
