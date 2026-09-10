@@ -142,6 +142,12 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 
         // 4. References
         ReferenceLinkRow(
+            label = stringResource(R.string.about_link_donate_wikipedia),
+            url = WIKIPEDIA_DONATE_URL,
+            context = context,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        ReferenceLinkRow(
             label = stringResource(R.string.about_link_source_code),
             url = "https://github.com/AnySoftKeyboard/janus",
             context = context,
@@ -175,6 +181,9 @@ fun AboutScreen(modifier: Modifier = Modifier) {
   }
 }
 
+private const val WIKIPEDIA_DONATE_URL =
+    "https://donate.wikimedia.org/?utm_source=JanusGlossa&utm_medium=AndroidApp&utm_campaign=JanusGlossa"
+
 @Composable
 private fun ReferenceLinkRow(
     label: String,
@@ -187,8 +196,7 @@ private fun ReferenceLinkRow(
           modifier
               .fillMaxWidth()
               .clickable {
-                val intent =
-                    android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 context.startActivity(intent)
               }
               .padding(vertical = 12.dp),

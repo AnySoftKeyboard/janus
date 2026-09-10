@@ -133,6 +133,7 @@
     <string name="about_abstract">Janus Glossa هي أداة مفتوحة المصدر مصممة لترجمة المفاهيم داخل سياقها، باستخدام المعرفة الجماعية لـ ويكيبيديا.</string>
     <string name="about_methodology_title">كيف يعمل</string>
     <string name="about_methodology_text">على عكس القواميس القياسية، يقوم Janus Glossa بمحاذاة المفاهيم. فهو يبحث عن إدخال الموسوعة لمصطلحك، ثم يتبع الرابط بين اللغات إلى اللغة المستهدفة لتقديم ترجمة دقيقة ومناسبة للسياق.</string>
+    <string name="about_link_donate_wikipedia">اشكر ويكيبيديا بالتبرع</string>
     <string name="about_link_source_code">كود المصدر</string>
     <string name="about_link_issue_tracker">متتبع المشكلات</string>
     <string name="about_button_licenses">تراخيص البرمجيات مفتوحة المصدر</string>

@@ -133,6 +133,7 @@
     <string name="about_abstract">Janus Glossa es una herramienta de código abierto diseñada para traducir conceptos dentro de su contexto, utilizando el conocimiento colectivo de Wikipedia.</string>
     <string name="about_methodology_title">Cómo funciona</string>
     <string name="about_methodology_text">A diferencia de los diccionarios estándar, Janus Glossa alinea conceptos. Encuentra la entrada de la enciclopedia para su término y luego sigue el enlace interlingüístico al idioma de destino para proporcionar una traducción precisa y consciente del contexto.</string>
+    <string name="about_link_donate_wikipedia">Agradece a Wikipedia donando</string>
     <string name="about_link_source_code">Código fuente</string>
     <string name="about_link_issue_tracker">Seguimiento de problemas</string>
     <string name="about_button_licenses">Licencias de código abierto</string>
