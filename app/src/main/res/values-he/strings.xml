@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">הדף לא נמצא</string>
     <string name="error_langlinks_not_found">קישורי תרגום לא נמצאו</string>
+    <string name="error_no_browser">לא נמצא דפדפן אינטרנט. הקישור הועתק ללוח.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">חיפוש</string>

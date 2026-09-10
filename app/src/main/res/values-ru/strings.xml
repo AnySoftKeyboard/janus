@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Страница не найдена</string>
     <string name="error_langlinks_not_found">Ссылки на переводы не найдены</string>
+    <string name="error_no_browser">Веб-браузер не найден. Ссылка скопирована в буфер обмена.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Поиск</string>

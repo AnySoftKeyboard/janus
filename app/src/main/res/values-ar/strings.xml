@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">الصفحة غير موجودة</string>
     <string name="error_langlinks_not_found">روابط الترجمة غير موجودة</string>
+    <string name="error_no_browser">لم يتم العثور على متصفح ويب. تم نسخ الرابط إلى الحافظة.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">بحث</string>

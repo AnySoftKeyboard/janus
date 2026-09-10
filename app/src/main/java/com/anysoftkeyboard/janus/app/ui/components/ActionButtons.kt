@@ -3,8 +3,6 @@ package com.anysoftkeyboard.janus.app.ui.components
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.BookmarkBorder
@@ -15,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import com.anysoftkeyboard.janus.app.util.openUrlSafely
 
 /**
  * Icon button that opens a Wikipedia article URL in the browser.
@@ -30,12 +29,7 @@ fun WikipediaLinkButton(
     tint: Color = MaterialTheme.colorScheme.primary,
 ) {
   val context = LocalContext.current
-  IconButton(
-      onClick = {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        context.startActivity(intent)
-      }
-  ) {
+  IconButton(onClick = { context.openUrlSafely(url) }) {
     Icon(
         imageVector = Icons.AutoMirrored.Filled.OpenInNew,
         contentDescription = contentDescription,

@@ -99,6 +99,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Page not found</string>
     <string name="error_langlinks_not_found">Translation links not found</string>
+    <string name="error_no_browser">No web browser found. Link copied to clipboard.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Search</string>

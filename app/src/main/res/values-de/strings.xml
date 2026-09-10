@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Seite nicht gefunden</string>
     <string name="error_langlinks_not_found">Übersetzungslinks nicht gefunden</string>
+    <string name="error_no_browser">Kein Webbrowser gefunden. Link in die Zwischenablage kopiert.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Suchen</string>

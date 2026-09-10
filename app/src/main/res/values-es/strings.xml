@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Página no encontrada</string>
     <string name="error_langlinks_not_found">Enlaces de traducción no encontrados</string>
+    <string name="error_no_browser">No se encontró ningún navegador web. Enlace copiado al portapapeles.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Buscar</string>
