@@ -1,8 +1,6 @@
 package com.anysoftkeyboard.janus.app.ui
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -41,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.anysoftkeyboard.janus.app.BuildConfig
 import com.anysoftkeyboard.janus.app.R
+import com.anysoftkeyboard.janus.app.util.openUrlSafely
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 
@@ -142,6 +141,12 @@ fun AboutScreen(modifier: Modifier = Modifier) {
 
         // 4. References
         ReferenceLinkRow(
+            label = stringResource(R.string.about_link_donate_wikipedia),
+            url = WIKIPEDIA_DONATE_URL,
+            context = context,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        ReferenceLinkRow(
             label = stringResource(R.string.about_link_source_code),
             url = "https://github.com/AnySoftKeyboard/janus",
             context = context,
@@ -175,6 +180,9 @@ fun AboutScreen(modifier: Modifier = Modifier) {
   }
 }
 
+private const val WIKIPEDIA_DONATE_URL =
+    "https://donate.wikimedia.org/?utm_source=JanusGlossa&utm_medium=AndroidApp&utm_campaign=JanusGlossa"
+
 @Composable
 private fun ReferenceLinkRow(
     label: String,
@@ -186,11 +194,7 @@ private fun ReferenceLinkRow(
       modifier =
           modifier
               .fillMaxWidth()
-              .clickable {
-                val intent =
-                    android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url))
-                context.startActivity(intent)
-              }
+              .clickable { context.openUrlSafely(url) }
               .padding(vertical = 12.dp),
       verticalAlignment = Alignment.CenterVertically,
   ) {

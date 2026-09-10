@@ -99,6 +99,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Page not found</string>
     <string name="error_langlinks_not_found">Translation links not found</string>
+    <string name="error_no_browser">No web browser found. Link copied to clipboard.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Search</string>
@@ -148,6 +149,7 @@
     <string name="about_abstract">Janus Glossa is an open-source tool designed to translate concepts within their context, utilizing the crowd-sourced knowledge of Wikipedia.</string>
     <string name="about_methodology_title">How it works</string>
     <string name="about_methodology_text">Unlike standard dictionaries, Janus Glossa aligns concepts. It finds the encyclopedia entry for your term, then follows the inter-language link to the target language to provide a precise, context-aware translation.</string>
+    <string name="about_link_donate_wikipedia">Thank Wikipedia by donating</string>
     <string name="about_link_source_code">Source Code</string>
     <string name="about_link_issue_tracker">Issue Tracker</string>
     <string name="about_button_licenses">Open Source Licenses</string>

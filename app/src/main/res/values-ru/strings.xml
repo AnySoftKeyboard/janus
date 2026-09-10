@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">Страница не найдена</string>
     <string name="error_langlinks_not_found">Ссылки на переводы не найдены</string>
+    <string name="error_no_browser">Веб-браузер не найден. Ссылка скопирована в буфер обмена.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">Поиск</string>
@@ -133,6 +134,7 @@
     <string name="about_abstract">Janus Glossa — это инструмент с открытым исходным кодом, разработанный для перевода понятий в их контексте с использованием коллективных знаний Википедии.</string>
     <string name="about_methodology_title">Как это работает</string>
     <string name="about_methodology_text">В отличие от обычных словарей, Janus Glossa сопоставляет понятия. Он находит словарную статью для вашего термина в энциклопедии, а затем переходит по межъязыковой ссылке на целевой язык, чтобы предоставить точный перевод с учетом контекста.</string>
+    <string name="about_link_donate_wikipedia">Поблагодарить Википедию пожертвованием</string>
     <string name="about_link_source_code">Исходный код</string>
     <string name="about_link_issue_tracker">Отслеживание ошибок</string>
     <string name="about_button_licenses">Лицензии открытого ПО</string>

@@ -85,6 +85,7 @@
     <!-- Repository errors -->
     <string name="error_page_not_found">הדף לא נמצא</string>
     <string name="error_langlinks_not_found">קישורי תרגום לא נמצאו</string>
+    <string name="error_no_browser">לא נמצא דפדפן אינטרנט. הקישור הועתק ללוח.</string>
 
     <!-- Content descriptions for accessibility -->
     <string name="content_description_search">חיפוש</string>
@@ -133,6 +134,7 @@
     <string name="about_abstract">Janus Glossa הוא כלי בקוד פתוח שנועד לתרגם מושגים בתוך ההקשר שלהם, תוך שימוש בידע הקהילתי של ויקיפדיה.</string>
     <string name="about_methodology_title">איך זה עובד</string>
     <string name="about_methodology_text">בניגוד למילונים רגילים, Janus Glossa מתאים מושגים. הוא מוצא את הערך באנציקלופדיה עבור המונח שלך, ואז עוקב אחר הקישור הרב-לשוני לשפת היעד כדי לספק תרגום מדויק ותלוי הקשר.</string>
+    <string name="about_link_donate_wikipedia">הודו לוויקיפדיה באמצעות תרומה</string>
     <string name="about_link_source_code">קוד מקור</string>
     <string name="about_link_issue_tracker">מעקב תקלות</string>
     <string name="about_button_licenses">רישיונות קוד פתוח</string>
